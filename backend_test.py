@@ -551,7 +551,7 @@ class ElvaBackendTester:
             return False
 
     def test_error_handling(self):
-        """Test 11: Error handling scenarios"""
+        """Test 12: Error handling scenarios"""
         try:
             # Test invalid message ID for approval
             payload = {
