@@ -219,7 +219,7 @@ function App() {
   };
 
   const renderEditForm = () => {
-    if (!editedData || !editMode) return null;
+    if (!editedData) return null;
 
     const handleFieldChange = (field, value) => {
       setEditedData(prev => ({
@@ -229,34 +229,48 @@ function App() {
     };
 
     return (
-      <div className="space-y-3">
-        <h4 className="text-sm font-medium text-blue-300">✏️ Edit Details:</h4>
-        {Object.entries(editedData).map(([key, value]) => {
-          if (key === 'intent') return null;
-          
-          return (
-            <div key={key}>
-              <label className="block text-xs text-gray-300 mb-1 capitalize font-medium">
-                {key.replace('_', ' ')}
-              </label>
-              {Array.isArray(value) ? (
-                <input
-                  type="text"
-                  value={value.join(', ')}
-                  onChange={(e) => handleFieldChange(key, e.target.value.split(', '))}
-                  className="w-full px-3 py-2 bg-gray-800 border border-blue-500/30 rounded-lg text-white text-sm focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
-                />
-              ) : (
-                <textarea
-                  value={value || ''}
-                  onChange={(e) => handleFieldChange(key, e.target.value)}
-                  rows={key === 'body' || key === 'post_content' ? 3 : 1}
-                  className="w-full px-3 py-2 bg-gray-800 border border-blue-500/30 rounded-lg text-white text-sm resize-none focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
-                />
-              )}
-            </div>
-          );
-        })}
+      <div className="space-y-4">
+        <h4 className="text-sm font-medium text-blue-300 flex items-center">
+          <span className="mr-2">✏️</span>
+          Edit Action Details:
+        </h4>
+        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-500/30">
+          {Object.entries(editedData).map(([key, value]) => {
+            if (key === 'intent') return null;
+            
+            return (
+              <div key={key} className="mb-3 last:mb-0">
+                <label className="block text-sm text-blue-200 mb-2 capitalize font-medium">
+                  {key.replace(/_/g, ' ')}:
+                </label>
+                {Array.isArray(value) ? (
+                  <input
+                    type="text"
+                    value={value.join(', ')}
+                    onChange={(e) => handleFieldChange(key, e.target.value.split(', ').filter(v => v.trim()))}
+                    className="w-full px-4 py-3 bg-gray-800 border border-blue-500/30 rounded-lg text-white text-sm focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200 placeholder-gray-500"
+                    placeholder={`Enter ${key.replace(/_/g, ' ')}...`}
+                  />
+                ) : (
+                  <textarea
+                    value={value || ''}
+                    onChange={(e) => handleFieldChange(key, e.target.value)}
+                    rows={key === 'body' || key === 'post_content' ? 4 : 2}
+                    className="w-full px-4 py-3 bg-gray-800 border border-blue-500/30 rounded-lg text-white text-sm resize-none focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200 placeholder-gray-500"
+                    placeholder={`Enter ${key.replace(/_/g, ' ')}...`}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+        
+        <div className="mt-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
+          <div className="text-xs text-green-300 mb-2">✅ Current Values Preview:</div>
+          <pre className="text-xs text-green-200 whitespace-pre-wrap font-mono">
+            {JSON.stringify(editedData, null, 2)}
+          </pre>
+        </div>
       </div>
     );
   };
