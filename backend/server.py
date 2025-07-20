@@ -178,15 +178,25 @@ class ApprovalRequest(BaseModel):
 def convert_objectid_to_str(doc):
     """Convert MongoDB ObjectId to string for JSON serialization"""
     if isinstance(doc, dict):
+        new_doc = {}
         for key, value in doc.items():
-            if hasattr(value, '__dict__') and hasattr(value, 'binary'):
+            if key == '_id':
+                # Skip MongoDB's _id field
+                continue
+            elif hasattr(value, 'binary') or str(type(value)) == "<class 'bson.objectid.ObjectId'>":
                 # This is likely an ObjectId
-                doc[key] = str(value)
+                new_doc[key] = str(value)
             elif isinstance(value, dict):
-                doc[key] = convert_objectid_to_str(value)
+                new_doc[key] = convert_objectid_to_str(value)
             elif isinstance(value, list):
-                doc[key] = [convert_objectid_to_str(item) if isinstance(item, dict) else item for item in value]
-    return doc
+                new_doc[key] = [convert_objectid_to_str(item) if isinstance(item, dict) else str(item) if hasattr(item, 'binary') else item for item in value]
+            else:
+                new_doc[key] = value
+        return new_doc
+    elif hasattr(doc, 'binary') or str(type(doc)) == "<class 'bson.objectid.ObjectId'>":
+        return str(doc)
+    else:
+        return doc
 
 def detect_intent(user_input: str) -> dict:
     try:
