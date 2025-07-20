@@ -387,74 +387,119 @@ Structure your response clearly so the main content can be extracted for approva
         return base_message
 
     async def _synchronize_content_fields(self, intent_data: dict, claude_response: str, classification: TaskClassification) -> dict:
-        """Synchronize content fields between Claude response and intent data"""
+        """Synchronize content fields between Claude response and intent data to ensure unified content"""
         intent = intent_data.get("intent", "general_chat")
         
         try:
             if intent == "send_email":
-                # Extract subject and body from Claude's response
+                # Extract subject and body from Claude's response for perfect synchronization
                 subject_match = re.search(r'Subject:\s*(.+)', claude_response)
-                body_match = re.search(r'Body:\s*(.*?)(?:\n\n|$)', claude_response, re.DOTALL)
+                # Enhanced body extraction - capture everything after "Body:" until next section or end
+                body_match = re.search(r'Body:\s*(.*?)(?:\n\nThe content|$)', claude_response, re.DOTALL)
                 
                 if subject_match:
-                    intent_data["subject"] = subject_match.group(1).strip()
+                    extracted_subject = subject_match.group(1).strip()
+                    intent_data["subject"] = extracted_subject
+                    logger.info(f"📧 Subject synchronized: {extracted_subject}")
+                    
                 if body_match:
-                    intent_data["body"] = body_match.group(1).strip()
+                    extracted_body = body_match.group(1).strip()
+                    intent_data["body"] = extracted_body
+                    logger.info(f"📧 Body synchronized: {len(extracted_body)} characters")
                     
             elif intent == "linkedin_post" or intent == "creative_writing":
-                # Extract the main content between markdown/formatting
-                # Look for content after emoji indicators like 📱 or between quotes
+                # Enhanced LinkedIn post content extraction with multiple fallback patterns
                 content_patterns = [
-                    r'📱[^:]*:\s*\n\n"([^"]+)"',  # Quoted content after 📱
-                    r'📱[^:]*:\s*\n\n([^"]+?)(?:\n\n|This should|Feel free|$)',  # Unquoted content after 📱
-                    r'Here\'s[^:]*:\s*\n\n"([^"]+)"',  # Quoted content after "Here's"
-                    r'Here\'s[^:]*:\s*\n\n([^"]+?)(?:\n\n|This|Feel free|$)',  # Unquoted content after "Here's"
-                    r'"([^"]+?)"',  # Any quoted content
-                    r'post[^:]*:\s*\n\n([^"]+?)(?:\n\n|$)'  # Content after "post:"
+                    # Pattern 1: Content after 📱 emoji with various formats
+                    r'📱.*?:\s*\n+(.*?)(?:\n\n(?:This|Feel free|Let me know)|$)',
+                    # Pattern 2: Content after "Here's" with various formats  
+                    r'Here\'s.*?:\s*\n+(.*?)(?:\n\n(?:This|Feel free|Let me know)|$)',
+                    # Pattern 3: Quoted content anywhere in response
+                    r'"([^"]{50,})"',  # Look for substantial quoted content (50+ chars)
+                    # Pattern 4: Content between blank lines (main content block)
+                    r'\n\n([^"]+?)\n\n',
+                    # Pattern 5: Everything after first sentence if it's an intro
+                    r'^[^.!?]+[.!?]\s*\n+(.*?)(?:\n\nThis|$)',
                 ]
                 
                 extracted_content = None
-                for pattern in content_patterns:
+                for i, pattern in enumerate(content_patterns, 1):
                     match = re.search(pattern, claude_response, re.DOTALL | re.IGNORECASE)
                     if match:
-                        extracted_content = match.group(1).strip()
-                        break
+                        candidate_content = match.group(1).strip()
+                        # Validate content quality (not just intro text)
+                        if len(candidate_content) > 20 and not candidate_content.lower().startswith(('here', 'i\'ve', 'let me')):
+                            extracted_content = candidate_content
+                            logger.info(f"📱 Pattern {i} matched for {intent}")
+                            break
                 
-                # If no pattern matches, extract content after first line break
+                # Final fallback: Extract main content block (skip first line if it's intro)
                 if not extracted_content:
-                    lines = claude_response.split('\n')
-                    if len(lines) > 2:
-                        # Skip the first intro line, get the main content
-                        content_start = 1
-                        while content_start < len(lines) and not lines[content_start].strip():
-                            content_start += 1
-                        if content_start < len(lines):
-                            extracted_content = '\n'.join(lines[content_start:]).strip()
-                            # Remove trailing explanatory text
-                            if "This should" in extracted_content:
-                                extracted_content = extracted_content.split("This should")[0].strip()
-                            if "Feel free" in extracted_content:
-                                extracted_content = extracted_content.split("Feel free")[0].strip()
+                    lines = [line.strip() for line in claude_response.split('\n') if line.strip()]
+                    if len(lines) > 1:
+                        # Skip intro line, take substantial content
+                        content_lines = []
+                        start_found = False
+                        for line in lines[1:]:  # Skip first line
+                            # Stop at explanatory text
+                            if any(phrase in line.lower() for phrase in ['this should', 'feel free', 'let me know', 'hope this']):
+                                break
+                            # Skip emoji lines or short connector lines
+                            if len(line) > 10 and not line.startswith('📱') and not line.startswith('✨'):
+                                content_lines.append(line)
+                                start_found = True
+                            elif start_found and line:  # Include short lines within content
+                                content_lines.append(line)
+                        
+                        if content_lines:
+                            extracted_content = '\n'.join(content_lines).strip()
+                            logger.info(f"📱 Fallback extraction for {intent}")
                 
+                # Store the unified content
                 if extracted_content:
+                    # Clean up extracted content
+                    extracted_content = extracted_content.replace('""', '"').strip()
+                    
                     if intent == "linkedin_post":
                         intent_data["post_content"] = extracted_content
+                        logger.info(f"🎯 LinkedIn post content unified: {len(extracted_content)} characters")
                     elif intent == "creative_writing":
                         intent_data["content"] = extracted_content
+                        logger.info(f"🎯 Creative content unified: {len(extracted_content)} characters")
+                else:
+                    logger.warning(f"⚠️ Could not extract unified content for {intent}, using original")
                         
             elif intent == "set_reminder":
-                # Extract reminder details
-                reminder_match = re.search(r'remind you[^"]*"([^"]+)"', claude_response, re.IGNORECASE)
-                if reminder_match:
-                    intent_data["reminder_text"] = reminder_match.group(1).strip()
+                # Extract reminder details with better pattern matching
+                reminder_patterns = [
+                    r'remind you[^"]*"([^"]+)"',
+                    r'reminder[^:]*:\s*"([^"]+)"',
+                    r'reminder[^:]*:\s*([^"]+?)(?:\n|$)'
+                ]
+                
+                for pattern in reminder_patterns:
+                    reminder_match = re.search(pattern, claude_response, re.IGNORECASE)
+                    if reminder_match:
+                        intent_data["reminder_text"] = reminder_match.group(1).strip()
+                        logger.info(f"⏰ Reminder text synchronized")
+                        break
                     
             elif intent == "add_todo":
-                # Extract task details
-                task_match = re.search(r'task[^"]*"([^"]+)"', claude_response, re.IGNORECASE)
-                if task_match:
-                    intent_data["task"] = task_match.group(1).strip()
+                # Extract task details with better pattern matching
+                task_patterns = [
+                    r'task[^"]*"([^"]+)"',
+                    r'todo[^:]*:\s*"([^"]+)"',
+                    r'todo[^:]*:\s*([^"]+?)(?:\n|$)'
+                ]
+                
+                for pattern in task_patterns:
+                    task_match = re.search(pattern, claude_response, re.IGNORECASE)
+                    if task_match:
+                        intent_data["task"] = task_match.group(1).strip()
+                        logger.info(f"✅ Task text synchronized")
+                        break
             
-            logger.info(f"🔗 Content Synchronized: {intent} - Extracted fields from Claude response")
+            logger.info(f"🔗 Content Synchronized: {intent} - All fields unified with Claude response")
             return intent_data
             
         except Exception as e:
