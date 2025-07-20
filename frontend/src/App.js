@@ -452,11 +452,21 @@ function App() {
           <div className="bg-gray-900/95 border border-blue-500/30 rounded-2xl p-6 max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl backdrop-blur-xl">
             <h3 className="text-xl font-bold mb-4 text-blue-300 flex items-center">
               <span className="mr-2">🔍</span>
-              Review & Approve Action
+              Review AI-Generated Action
             </h3>
             
+            <div className="mb-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
+              <div className="text-xs text-green-300 flex items-center mb-1">
+                <span className="mr-2">✨</span>
+                <span>AI has pre-filled all the details below based on your request</span>
+              </div>
+              <div className="text-xs text-gray-400">
+                Review the information, make any changes needed, then approve to execute!
+              </div>
+            </div>
+            
             <div className="mb-6">
-              <div className="text-sm text-gray-300 mb-3 font-medium">🤖 AI Response:</div>
+              <div className="text-sm text-gray-300 mb-3 font-medium">🤖 AI Summary:</div>
               <div className="bg-black/40 p-4 rounded-lg text-sm border border-blue-500/20">
                 {pendingApproval.response}
               </div>
