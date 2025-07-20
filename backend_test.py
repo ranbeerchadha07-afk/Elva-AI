@@ -233,10 +233,10 @@ class ElvaBackendTester:
             return False
 
     def test_intent_detection_add_todo(self):
-        """Test 5: Intent detection for add_todo"""
+        """Test 5: Intent detection for add_todo with pre-filled data"""
         try:
             payload = {
-                "message": "Add a task to review the quarterly reports by Friday",
+                "message": "Add finish the project to my todo list",
                 "session_id": self.session_id,
                 "user_id": "test_user"
             }
@@ -257,8 +257,23 @@ class ElvaBackendTester:
                     self.log_test("Intent Detection - Add Todo", False, "Todo intent should need approval", data)
                     return False
                 
+                # Check intent data structure and pre-filled content
+                expected_fields = ["task"]
+                intent_fields = list(intent_data.keys())
+                missing_fields = [field for field in expected_fields if field not in intent_fields]
+                
+                if missing_fields:
+                    self.log_test("Intent Detection - Add Todo", False, f"Missing intent fields: {missing_fields}", intent_data)
+                    return False
+                
+                # Check if task was populated with meaningful content
+                task = intent_data.get("task", "")
+                if not task or task.strip() == "":
+                    self.log_test("Intent Detection - Add Todo", False, "task field is empty", intent_data)
+                    return False
+                
                 self.message_ids.append(data["id"])
-                self.log_test("Intent Detection - Add Todo", True, f"Correctly classified as add_todo")
+                self.log_test("Intent Detection - Add Todo", True, f"Correctly classified as add_todo with pre-filled data: task='{task}'")
                 return True
             else:
                 self.log_test("Intent Detection - Add Todo", False, f"HTTP {response.status_code}", response.text)
