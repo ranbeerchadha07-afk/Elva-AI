@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime
 import json
 import httpx
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
 ROOT_DIR = Path(__file__).parent
