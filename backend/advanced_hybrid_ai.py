@@ -228,12 +228,15 @@ Examples:
                 base_confidence = min(base_confidence + 0.05, 1.0)
                 factors.append("Context available → Enhanced confidence")
         
-        # Creative requirement override
+        # Creative requirement override (but preserve sequential routing for specific intents)
         if classification.creative_requirement == "high":
-            if primary_model != ModelChoice.CLAUDE:
+            if primary_model != ModelChoice.CLAUDE and primary_model != ModelChoice.BOTH_SEQUENTIAL:
                 primary_model = ModelChoice.CLAUDE
                 base_confidence = min(base_confidence + 0.15, 1.0)
                 factors.append("High creativity requirement → Claude")
+            elif primary_model == ModelChoice.BOTH_SEQUENTIAL:
+                # Keep sequential routing for intents that need content synchronization
+                factors.append("High creativity with sequential routing preserved")
         
         # Determine fallback
         fallback_model = None
