@@ -275,12 +275,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Backend Server Setup"
-    - "Intent Detection Module (intent_detection.py)"
-    - "Webhook Handler Module (webhook_handler.py)" 
-    - "Environment Configuration"
-    - "Chat API Endpoints"
-    - "Approval Workflow API"
+    - "Real-time Chat Functionality"
+    - "Approval Modal System"
+    - "Session Management & New Chat"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
