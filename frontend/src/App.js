@@ -396,51 +396,71 @@ function App() {
       {/* Approval Modal */}
       {showApprovalModal && pendingApproval && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-gray-900/95 border border-blue-500/30 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-xl">
+          <div className="bg-gray-900/95 border border-blue-500/30 rounded-2xl p-6 max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl backdrop-blur-xl">
             <h3 className="text-xl font-bold mb-4 text-blue-300 flex items-center">
               <span className="mr-2">🔍</span>
               Review & Approve Action
             </h3>
             
-            <div className="mb-4">
-              <div className="text-sm text-gray-300 mb-2 font-medium">AI Response:</div>
-              <div className="bg-black/40 p-3 rounded-lg text-sm border border-blue-500/20">
+            <div className="mb-6">
+              <div className="text-sm text-gray-300 mb-3 font-medium">🤖 AI Response:</div>
+              <div className="bg-black/40 p-4 rounded-lg text-sm border border-blue-500/20">
                 {pendingApproval.response}
               </div>
             </div>
 
             <div className="mb-6">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-sm text-gray-300 font-medium">Action Details:</div>
-                <button
-                  onClick={() => setEditMode(!editMode)}
-                  className="text-xs text-blue-400 hover:text-blue-300 px-3 py-1 border border-blue-500/30 rounded-full hover:border-blue-400/50 transition-all duration-200"
-                >
-                  {editMode ? '❌ Cancel Edit' : '✏️ Edit'}
-                </button>
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-sm text-gray-300 font-medium">⚙️ Action Configuration:</div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setEditMode(!editMode)}
+                    className={`text-xs px-3 py-1.5 border rounded-full transition-all duration-200 ${
+                      editMode 
+                        ? 'text-red-400 border-red-500/30 hover:border-red-400/50 bg-red-900/20' 
+                        : 'text-blue-400 border-blue-500/30 hover:border-blue-400/50 bg-blue-900/20'
+                    }`}
+                  >
+                    {editMode ? '👀 View Only' : '✏️ Edit Fields'}
+                  </button>
+                </div>
               </div>
               
               {editMode ? renderEditForm() : (
-                <pre className="bg-black/40 p-3 rounded-lg text-xs text-gray-300 whitespace-pre-wrap overflow-x-auto font-mono border border-blue-500/20">
-                  {JSON.stringify(editedData, null, 2)}
-                </pre>
+                <div className="bg-black/40 p-4 rounded-lg border border-blue-500/20">
+                  <div className="text-xs text-blue-300 mb-2">📋 Detected Intent Data:</div>
+                  <pre className="text-xs text-gray-300 whitespace-pre-wrap overflow-x-auto font-mono">
+                    {JSON.stringify(editedData, null, 2)}
+                  </pre>
+                </div>
               )}
             </div>
 
             <div className="flex space-x-3">
               <button
                 onClick={() => handleApproval(false)}
-                className="flex-1 bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-lg transition-colors border border-gray-600/50 font-medium"
+                className="flex-1 bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-lg transition-colors border border-gray-600/50 font-medium flex items-center justify-center"
               >
-                ❌ Cancel
+                <span className="mr-2">❌</span>
+                Cancel
               </button>
               <button
                 onClick={() => handleApproval(true)}
-                className="flex-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 px-4 py-3 rounded-lg transition-all duration-300 shadow-lg font-medium"
+                className="flex-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 px-4 py-3 rounded-lg transition-all duration-300 shadow-lg font-medium flex items-center justify-center"
               >
-                {editMode ? '✅ Approve with Changes' : '✅ Approve'}
+                <span className="mr-2">✅</span>
+                {editMode ? 'Approve Changes' : 'Approve Action'}
               </button>
             </div>
+
+            {editMode && (
+              <div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                <div className="text-xs text-blue-300 flex items-center">
+                  <span className="mr-2">💡</span>
+                  Tip: Make your changes above, then click "Approve Changes" to execute with your modifications!
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
