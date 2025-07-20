@@ -584,6 +584,7 @@ class ElvaBackendTester:
             self.test_intent_detection_send_email,
             self.test_intent_detection_create_event,
             self.test_intent_detection_add_todo,
+            self.test_intent_detection_set_reminder,
             self.test_approval_workflow_approved,
             self.test_approval_workflow_rejected,
             self.test_approval_workflow_edited_data,
