@@ -234,7 +234,11 @@ async def get_routing_stats(session_id: str):
 async def root():
     return {"message": "Elva AI Backend is running! 🤖✨", "version": "1.0"}
 
-# Health check endpoint
+@api_router.get("/")
+async def root():
+    return {"message": "Elva AI Backend with Advanced Hybrid Routing! 🤖✨🧠", "version": "2.0"}
+
+# Health check endpoint - Enhanced for advanced hybrid system
 @api_router.get("/health")
 async def health_check():
     try:
@@ -244,14 +248,31 @@ async def health_check():
         health_status = {
             "status": "healthy",
             "mongodb": "connected",
-            "hybrid_ai_system": {
+            "advanced_hybrid_ai_system": {
+                "version": "2.0",
                 "groq_api_key": "configured" if os.getenv("GROQ_API_KEY") else "missing",
                 "claude_api_key": "configured" if os.getenv("CLAUDE_API_KEY") else "missing",
                 "groq_model": "llama3-8b-8192",
                 "claude_model": "claude-3-5-sonnet-20241022",
-                "routing": {
-                    "claude_tasks": ["general_chat", "send_email", "linkedin_post", "friendly_responses"],
-                    "groq_tasks": ["intent_detection", "structured_parsing", "logical_reasoning"]
+                "sophisticated_features": {
+                    "task_classification": [
+                        "primary_intent", "emotional_complexity", "professional_tone", 
+                        "creative_requirement", "technical_complexity", "response_length",
+                        "user_engagement_level", "context_dependency", "reasoning_type"
+                    ],
+                    "routing_strategies": [
+                        "intent_based", "emotional_routing", "professional_routing",
+                        "creative_routing", "sequential_execution", "context_enhancement"
+                    ],
+                    "advanced_capabilities": [
+                        "conversation_history_tracking", "context_aware_responses",
+                        "fallback_mechanisms", "confidence_scoring", "routing_explanation"
+                    ]
+                },
+                "routing_models": {
+                    "claude_tasks": ["high_emotional", "creative_content", "conversational", "professional_warm"],
+                    "groq_tasks": ["logical_reasoning", "structured_analysis", "technical_complex", "intent_detection"],
+                    "sequential_tasks": ["professional_emails", "linkedin_posts", "complex_creative"]
                 }
             },
             "n8n_webhook": "configured" if os.getenv("N8N_WEBHOOK_URL") else "missing"
