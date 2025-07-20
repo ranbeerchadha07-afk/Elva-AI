@@ -1,0 +1,50 @@
+{
+  "total_tests": 6,
+  "passed": 6,
+  "failed": 0,
+  "success_rate": 100.0,
+  "results": [
+    {
+      "test": "Hybrid Routing - General Chat",
+      "success": true,
+      "details": "Claude provided emotionally intelligent response: Hi there! I'm doing great, thanks for asking! I'm always happy to help with any concerns you may hav...",
+      "timestamp": "2025-07-20T11:20:41.341692",
+      "response_data": null
+    },
+    {
+      "test": "Hybrid Routing - Email Intent",
+      "success": true,
+      "details": "Groq detected intent + Claude generated professional draft. Recipient: Maria",
+      "timestamp": "2025-07-20T11:20:43.125816",
+      "response_data": null
+    },
+    {
+      "test": "Hybrid Routing - LinkedIn Post",
+      "success": true,
+      "details": "Groq detected LinkedIn intent + Claude generated professional content. Topic: AI Ethics",
+      "timestamp": "2025-07-20T11:20:44.952339",
+      "response_data": null
+    },
+    {
+      "test": "Complex Intent Context",
+      "success": true,
+      "details": "All 3 complex intent scenarios handled correctly",
+      "timestamp": "2025-07-20T11:20:48.263102",
+      "response_data": null
+    },
+    {
+      "test": "Error Handling - Fallback",
+      "success": true,
+      "details": "Ambiguous input handled gracefully: general_chat",
+      "timestamp": "2025-07-20T11:20:50.383399",
+      "response_data": null
+    },
+    {
+      "test": "Performance Comparison",
+      "success": true,
+      "details": "Both models performing well: Claude (general chat): 3.16s, 1492 chars | Groq (intent): 14.84s, 5 fields extracted",
+      "timestamp": "2025-07-20T11:21:09.381462",
+      "response_data": null
+    }
+  ]
+}
