@@ -193,7 +193,24 @@ def detect_intent(user_input: str) -> dict:
         chain = intent_prompt | llm
         response = chain.invoke({"input": user_input})
         logger.info(f"LLM response for intent detection: {response.content}")
-        return json.loads(response.content)
+        
+        # Extract JSON from the response (LLM might add extra text)
+        content = response.content.strip()
+        
+        # Find the first { and last } to extract JSON
+        start_idx = content.find('{')
+        end_idx = content.rfind('}')
+        
+        if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+            json_str = content[start_idx:end_idx + 1]
+            return json.loads(json_str)
+        else:
+            # If no JSON found, treat as general chat
+            return {
+                "intent": "general_chat",
+                "message": user_input
+            }
+            
     except Exception as e:
         logger.error(f"Intent detection error: {e}")
         return {
