@@ -30,14 +30,39 @@ function App() {
 
   useEffect(() => {
     loadChatHistory();
+    // Add welcome message when starting a new chat
+    if (messages.length === 0) {
+      addWelcomeMessage();
+    }
   }, [sessionId]);
+
+  const addWelcomeMessage = () => {
+    const welcomeMessage = {
+      id: 'welcome_' + Date.now(),
+      response: "Hi Buddy 👋 Good to see you! Elva AI at your service. Ask me anything or tell me what to do!",
+      isUser: false,
+      isWelcome: true,
+      timestamp: new Date()
+    };
+    setMessages([welcomeMessage]);
+  };
 
   const loadChatHistory = async () => {
     try {
       const response = await axios.get(`${API}/history/${sessionId}`);
-      setMessages(response.data.messages || []);
+      const historyMessages = response.data.messages || [];
+      if (historyMessages.length === 0) {
+        addWelcomeMessage();
+      } else {
+        setMessages(historyMessages.map(msg => ({
+          ...msg,
+          isUser: false, // History messages are from AI
+          timestamp: new Date(msg.timestamp)
+        })));
+      }
     } catch (error) {
       console.error('Error loading chat history:', error);
+      addWelcomeMessage();
     }
   };
 
@@ -85,7 +110,7 @@ function App() {
       console.error('Error sending message:', error);
       const errorMessage = {
         id: Date.now(),
-        response: 'Sorry, I encountered an error. Please try again.',
+        response: 'Sorry, I encountered an error. Please try again! 🤖',
         isUser: false,
         timestamp: new Date()
       };
@@ -109,8 +134,8 @@ function App() {
       const statusMessage = {
         id: Date.now(),
         response: approved ? 
-          '✅ Action executed successfully!' : 
-          '❌ Action cancelled',
+          '✅ Perfect! Action executed successfully! Your request has been sent to the automation system.' : 
+          '❌ No worries! Action cancelled as requested.',
         isUser: false,
         timestamp: new Date()
       };
@@ -119,6 +144,13 @@ function App() {
 
     } catch (error) {
       console.error('Error handling approval:', error);
+      const errorMessage = {
+        id: Date.now(),
+        response: '⚠️ Something went wrong with the approval. Please try again!',
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setShowApprovalModal(false);
       setPendingApproval(null);
@@ -136,9 +168,11 @@ function App() {
     if (!intentData || intentData.intent === 'general_chat') return null;
 
     return (
-      <div className="mt-2 p-3 bg-purple-900/30 rounded-lg border border-purple-500/30">
-        <div className="text-xs text-purple-300 mb-2">Detected Intent: {intentData.intent}</div>
-        <pre className="text-xs text-gray-300 whitespace-pre-wrap">
+      <div className="mt-3 p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
+        <div className="text-xs text-blue-300 mb-2 font-medium">
+          🎯 Detected Intent: {intentData.intent.replace('_', ' ').toUpperCase()}
+        </div>
+        <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono">
           {JSON.stringify(intentData, null, 2)}
         </pre>
       </div>
@@ -157,13 +191,13 @@ function App() {
 
     return (
       <div className="space-y-3">
-        <h4 className="text-sm font-medium text-purple-300">Edit Details:</h4>
+        <h4 className="text-sm font-medium text-blue-300">✏️ Edit Details:</h4>
         {Object.entries(editedData).map(([key, value]) => {
           if (key === 'intent') return null;
           
           return (
             <div key={key}>
-              <label className="block text-xs text-gray-300 mb-1 capitalize">
+              <label className="block text-xs text-gray-300 mb-1 capitalize font-medium">
                 {key.replace('_', ' ')}
               </label>
               {Array.isArray(value) ? (
@@ -171,14 +205,14 @@ function App() {
                   type="text"
                   value={value.join(', ')}
                   onChange={(e) => handleFieldChange(key, e.target.value.split(', '))}
-                  className="w-full px-3 py-2 bg-gray-800 border border-purple-500/30 rounded text-white text-sm"
+                  className="w-full px-3 py-2 bg-gray-800 border border-blue-500/30 rounded-lg text-white text-sm focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
                 />
               ) : (
                 <textarea
                   value={value || ''}
                   onChange={(e) => handleFieldChange(key, e.target.value)}
                   rows={key === 'body' || key === 'post_content' ? 3 : 1}
-                  className="w-full px-3 py-2 bg-gray-800 border border-purple-500/30 rounded text-white text-sm resize-none"
+                  className="w-full px-3 py-2 bg-gray-800 border border-blue-500/30 rounded-lg text-white text-sm resize-none focus:border-blue-400/60 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
                 />
               )}
             </div>
@@ -188,29 +222,38 @@ function App() {
     );
   };
 
+  const renderAIAvatar = () => {
+    return (
+      <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center mr-3 shadow-lg">
+        <span className="text-white text-sm font-bold">🤖</span>
+      </div>
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/30 to-purple-900/40 text-white">
       {/* Header */}
-      <div className="bg-black/30 backdrop-blur-md border-b border-purple-500/30">
+      <div className="bg-black/40 backdrop-blur-xl border-b border-blue-500/20 shadow-lg">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-              <span className="text-xl font-bold">E</span>
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-xl border-2 border-blue-400/20">
+              <span className="text-2xl font-bold">E</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
                 Elva AI
               </h1>
-              <p className="text-xs text-gray-400">Smart Assistant</p>
+              <p className="text-xs text-gray-400 font-medium">Your personal smart assistant</p>
             </div>
           </div>
           
           <button
             onClick={startNewChat}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-200"
+            className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 px-6 py-2.5 rounded-full flex items-center space-x-2 transition-all duration-300 shadow-lg hover:shadow-xl border border-blue-500/20 hover:border-blue-400/40"
+            title="Start New Chat"
           >
-            <span className="text-lg">+</span>
-            <span className="text-sm">New Chat</span>
+            <span className="text-xl">+</span>
+            <span className="text-sm font-medium">New Chat</span>
           </button>
         </div>
       </div>
@@ -218,39 +261,54 @@ function App() {
       {/* Chat Area */}
       <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col h-screen">
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-6">
+        <div className="flex-1 overflow-y-auto space-y-4 mb-6 scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
           {messages.length === 0 && (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🤖</span>
+            <div className="text-center py-16">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl">
+                <span className="text-3xl">🤖</span>
               </div>
-              <h2 className="text-xl font-semibold mb-2">Welcome to Elva AI!</h2>
-              <p className="text-gray-400">I can help you with emails, calendar events, reminders, todos, LinkedIn posts, and general conversation.</p>
+              <h2 className="text-2xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Welcome to Elva AI!
+              </h2>
+              <p className="text-gray-400 text-lg">Your personal smart assistant</p>
+              <p className="text-gray-500 text-sm mt-2">I can help you with emails, calendar events, reminders, todos, LinkedIn posts, and general conversation.</p>
             </div>
           )}
 
           {messages.map((msg, index) => (
-            <div key={index} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
-                msg.isUser 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' 
-                  : 'bg-black/40 border border-purple-500/30 backdrop-blur-sm'
-              }`}>
-                <div className="text-sm">
-                  {msg.isUser ? msg.message : msg.response}
+            <div key={index} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'} animate-slide-in`}>
+              <div className={`flex max-w-xs lg:max-w-md ${msg.isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+                {!msg.isUser && renderAIAvatar()}
+                <div className={`px-4 py-3 rounded-2xl ${
+                  msg.isUser 
+                    ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white shadow-lg ml-3' 
+                    : 'bg-black/30 border border-blue-500/20 backdrop-blur-sm shadow-lg'
+                } ${msg.isWelcome ? 'border-2 border-blue-400/40 bg-gradient-to-r from-blue-900/40 to-purple-900/40' : ''}`}>
+                  <div className="text-sm leading-relaxed">
+                    {msg.isUser ? msg.message : msg.response}
+                    {msg.isWelcome && (
+                      <div className="mt-2 text-xs text-blue-300 flex items-center">
+                        <span className="animate-pulse">✨</span>
+                        <span className="ml-1">Ready to help you!</span>
+                      </div>
+                    )}
+                  </div>
+                  {!msg.isUser && renderIntentData(msg.intent_data)}
                 </div>
-                {!msg.isUser && renderIntentData(msg.intent_data)}
               </div>
             </div>
           ))}
 
           {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-black/40 border border-purple-500/30 backdrop-blur-sm px-4 py-2 rounded-2xl">
-                <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+            <div className="flex justify-start animate-slide-in">
+              <div className="flex">
+                {renderAIAvatar()}
+                <div className="bg-black/30 border border-blue-500/20 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-lg">
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -260,23 +318,23 @@ function App() {
         </div>
 
         {/* Input Area */}
-        <div className="bg-black/30 backdrop-blur-md rounded-2xl border border-purple-500/30 p-4">
+        <div className="bg-black/30 backdrop-blur-xl rounded-2xl border border-blue-500/20 p-4 shadow-xl">
           <div className="flex space-x-4">
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="Ask me anything..."
-              className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none"
+              placeholder="Ask me anything... ✨"
+              className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none text-lg"
               disabled={isLoading}
             />
             <button
               onClick={sendMessage}
               disabled={isLoading || !inputMessage.trim()}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:from-gray-600 disabled:to-gray-600 px-6 py-2 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 disabled:from-gray-600 disabled:to-gray-700 px-8 py-3 rounded-full transition-all duration-300 disabled:cursor-not-allowed shadow-lg hover:shadow-xl border border-blue-500/20"
             >
-              Send
+              <span className="font-medium">Send</span>
             </button>
           </div>
         </div>
@@ -284,32 +342,33 @@ function App() {
 
       {/* Approval Modal */}
       {showApprovalModal && pendingApproval && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-gray-900 border border-purple-500/30 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
-            <h3 className="text-lg font-semibold mb-4 text-purple-300">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-gray-900/95 border border-blue-500/30 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl backdrop-blur-xl">
+            <h3 className="text-xl font-bold mb-4 text-blue-300 flex items-center">
+              <span className="mr-2">🔍</span>
               Review & Approve Action
             </h3>
             
             <div className="mb-4">
-              <div className="text-sm text-gray-300 mb-2">AI Response:</div>
-              <div className="bg-black/40 p-3 rounded-lg text-sm">
+              <div className="text-sm text-gray-300 mb-2 font-medium">AI Response:</div>
+              <div className="bg-black/40 p-3 rounded-lg text-sm border border-blue-500/20">
                 {pendingApproval.response}
               </div>
             </div>
 
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
-                <div className="text-sm text-gray-300">Action Details:</div>
+                <div className="text-sm text-gray-300 font-medium">Action Details:</div>
                 <button
                   onClick={() => setEditMode(!editMode)}
-                  className="text-xs text-purple-400 hover:text-purple-300"
+                  className="text-xs text-blue-400 hover:text-blue-300 px-3 py-1 border border-blue-500/30 rounded-full hover:border-blue-400/50 transition-all duration-200"
                 >
-                  {editMode ? 'Cancel Edit' : 'Edit'}
+                  {editMode ? '❌ Cancel Edit' : '✏️ Edit'}
                 </button>
               </div>
               
               {editMode ? renderEditForm() : (
-                <pre className="bg-black/40 p-3 rounded-lg text-xs text-gray-300 whitespace-pre-wrap overflow-x-auto">
+                <pre className="bg-black/40 p-3 rounded-lg text-xs text-gray-300 whitespace-pre-wrap overflow-x-auto font-mono border border-blue-500/20">
                   {JSON.stringify(editedData, null, 2)}
                 </pre>
               )}
@@ -318,15 +377,15 @@ function App() {
             <div className="flex space-x-3">
               <button
                 onClick={() => handleApproval(false)}
-                className="flex-1 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors"
+                className="flex-1 bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-lg transition-colors border border-gray-600/50 font-medium"
               >
-                Cancel
+                ❌ Cancel
               </button>
               <button
                 onClick={() => handleApproval(true)}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-lg transition-all duration-200"
+                className="flex-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 px-4 py-3 rounded-lg transition-all duration-300 shadow-lg font-medium"
               >
-                {editMode ? 'Approve with Changes' : 'Approve'}
+                {editMode ? '✅ Approve with Changes' : '✅ Approve'}
               </button>
             </div>
           </div>
