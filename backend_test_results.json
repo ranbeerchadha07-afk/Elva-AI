@@ -1,0 +1,85 @@
+{
+  "total_tests": 11,
+  "passed": 0,
+  "failed": 11,
+  "success_rate": 0.0,
+  "results": [
+    {
+      "test": "Server Connectivity",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:29.015541",
+      "response_data": ""
+    },
+    {
+      "test": "Intent Detection - General Chat",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:29.533205",
+      "response_data": ""
+    },
+    {
+      "test": "Intent Detection - Send Email",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:30.053978",
+      "response_data": ""
+    },
+    {
+      "test": "Intent Detection - Create Event",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:30.570115",
+      "response_data": ""
+    },
+    {
+      "test": "Intent Detection - Add Todo",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:31.087228",
+      "response_data": ""
+    },
+    {
+      "test": "Approval Workflow - Approved",
+      "success": false,
+      "details": "No message IDs available for approval test",
+      "timestamp": "2025-07-20T05:37:31.587595",
+      "response_data": null
+    },
+    {
+      "test": "Approval Workflow - Rejected",
+      "success": false,
+      "details": "Failed to create reminder for rejection test",
+      "timestamp": "2025-07-20T05:37:32.106231",
+      "response_data": null
+    },
+    {
+      "test": "Approval Workflow - Edited Data",
+      "success": false,
+      "details": "Failed to create email for edit test",
+      "timestamp": "2025-07-20T05:37:32.622496",
+      "response_data": null
+    },
+    {
+      "test": "Chat History - Retrieval",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:33.142772",
+      "response_data": ""
+    },
+    {
+      "test": "Chat History - Clearing",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-20T05:37:33.663339",
+      "response_data": ""
+    },
+    {
+      "test": "Error Handling - Invalid Message ID",
+      "success": false,
+      "details": "Expected 404, got 502",
+      "timestamp": "2025-07-20T05:37:34.202633",
+      "response_data": null
+    }
+  ]
+}
