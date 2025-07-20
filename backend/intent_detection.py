@@ -20,6 +20,12 @@ llm = ChatOpenAI(
 intent_prompt = ChatPromptTemplate.from_messages([
     ("system", """You are an AI assistant that detects user intent and extracts structured JSON for different tasks.
 
+CRITICAL INSTRUCTIONS:
+- Respond with ONLY valid JSON, no additional text or explanations
+- All JSON must be complete and properly formatted
+- Do not add any text before or after the JSON
+- For all intents except general_chat, populate ALL fields with realistic content
+
 You can detect the following intents:
 1. send_email
 2. create_event
@@ -28,67 +34,57 @@ You can detect the following intents:
 5. linkedin_post
 6. general_chat
 
-IMPORTANT: For all intents except general_chat, you must populate ALL fields with realistic content based on the user's request. DO NOT leave fields empty unless absolutely no information can be inferred.
+Examples of COMPLETE JSON responses:
 
-Return only valid JSON based on the examples below.
-
----- Examples ----
-
-👉 send_email - ALWAYS populate recipient_name, subject, and body:
-{{
+For "Send an email to John about the meeting":
+{
   "intent": "send_email",
-  "recipient_name": "John Smith",
-  "recipient_email": "john.smith@company.com",
-  "subject": "Project Status Update",
-  "body": "Hi John,\n\nI wanted to provide you with an update on the current project status. We've made significant progress and are on track to meet our deadline.\n\nBest regards"
-}}
+  "recipient_name": "John",
+  "recipient_email": "",
+  "subject": "Meeting Update",
+  "body": "Hi John,\\n\\nI wanted to update you about our upcoming meeting. Please let me know if you have any questions.\\n\\nBest regards"
+}
 
-👉 create_event - ALWAYS populate event_title, date, time:
-{{
+For "Create a team meeting for tomorrow at 2pm":
+{
   "intent": "create_event",
   "event_title": "Team Meeting",
-  "date": "2024-01-15",
-  "time": "10:00 AM",
-  "participants": ["team@company.com", "manager@company.com"],
-  "location": "Conference Room A"
-}}
+  "date": "tomorrow",
+  "time": "2:00 PM",
+  "participants": ["team@company.com"],
+  "location": "Conference Room"
+}
 
-👉 add_todo - ALWAYS populate task:
-{{
-  "intent": "add_todo",
-  "task": "Complete quarterly report and submit to management",
-  "due_date": "2024-01-20"
-}}
-
-👉 set_reminder - ALWAYS populate reminder_text:
-{{
+For "Remind me to call the client":
+{
   "intent": "set_reminder",
-  "reminder_text": "Call client about contract renewal",
-  "reminder_time": "2:00 PM",
-  "reminder_date": "tomorrow"
-}}
+  "reminder_text": "Call client about project status",
+  "reminder_time": "",
+  "reminder_date": "today"
+}
 
-👉 linkedin_post - ALWAYS populate topic and post_content:
-{{
+For "Add finish the report to my todo list":
+{
+  "intent": "add_todo",
+  "task": "Finish the quarterly report",
+  "due_date": ""
+}
+
+For "Post about AI on LinkedIn":
+{
   "intent": "linkedin_post",
-  "topic": "Artificial Intelligence in Business",
+  "topic": "Artificial Intelligence",
   "category": "Technology",
-  "post_content": "Excited to share insights on how AI is transforming business operations. The future of work is here! #AI #Technology #Business"
-}}
+  "post_content": "Excited to share insights about AI advancements! #AI #Technology"
+}
 
-👉 general_chat:
-{{
+For anything else:
+{
   "intent": "general_chat",
   "message": "original user message"
-}}
+}
 
-RULES:
-- If user mentions a specific person's name, use it for recipient_name
-- If no email is mentioned, leave recipient_email empty but fill other fields
-- Generate realistic, professional content for email body, event details, etc.
-- Infer reasonable dates/times if not specified (e.g., "tomorrow", "next week", "2:00 PM")
-- For participants, include relevant stakeholders based on context
-"""),
+REMEMBER: Return ONLY the JSON object, nothing else."""),
     ("user", "{input}")
 ])
 
