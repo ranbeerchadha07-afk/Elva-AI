@@ -519,7 +519,7 @@ class ElvaBackendTester:
             return False
 
     def test_chat_history_clearing(self):
-        """Test 10: Chat history clearing"""
+        """Test 11: Chat history clearing"""
         try:
             response = requests.delete(f"{BACKEND_URL}/history/{self.session_id}", timeout=10)
             
