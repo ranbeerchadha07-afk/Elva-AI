@@ -340,7 +340,10 @@ async def get_chat_history(session_id: str):
             {"session_id": session_id}
         ).sort("timestamp", 1).to_list(1000)
         
-        return {"messages": messages}
+        # Convert ObjectIds to strings for JSON serialization
+        serializable_messages = [convert_objectid_to_str(msg) for msg in messages]
+        
+        return {"messages": serializable_messages}
     except Exception as e:
         logger.error(f"History error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
