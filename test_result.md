@@ -115,67 +115,43 @@ backend:
     status_history:
         -working: "NA"
         -agent: "main"
-        -comment: "Basic FastAPI server with MongoDB connection created"
+        -comment: "Refactored backend with proper file structure - server.py, intent_detection.py, webhook_handler.py. Added N8N_WEBHOOK_URL to .env file"
 
-  - task: "Groq API Integration with LangChain"
+  - task: "Intent Detection Module (intent_detection.py)"
     implemented: true
     working: "NA"
-    file: "server.py"
+    file: "intent_detection.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
         -working: "NA"
         -agent: "main"
-        -comment: "Implemented intent detection using ChatOpenAI with Groq endpoint, structured prompts for 6 intents: send_email, create_event, add_todo, set_reminder, linkedin_post, general_chat"
+        -comment: "Created separate intent_detection.py module with LangChain+Groq integration, structured prompts, and all intent handling functions"
 
-  - task: "Chat API Endpoints"
+  - task: "Webhook Handler Module (webhook_handler.py)"
     implemented: true
     working: "NA"
-    file: "server.py"
+    file: "webhook_handler.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
         -working: "NA"
         -agent: "main"
-        -comment: "Created /api/chat endpoint that detects intent, handles general chat directly, generates friendly drafts for actions. Returns structured response with needs_approval flag"
+        -comment: "Created webhook_handler.py with proper n8n integration, validation, error handling, and timeout management"
 
-  - task: "Approval Workflow API"
+  - task: "Environment Configuration"
     implemented: true
     working: "NA"
-    file: "server.py"
+    file: ".env"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
         -working: "NA"
         -agent: "main"
-        -comment: "Created /api/approve endpoint that handles user approval/rejection, sends approved actions to n8n webhook, supports edited data"
-
-  - task: "N8N Webhook Integration"
-    implemented: true
-    working: "NA"
-    file: "server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-        -working: "NA"
-        -agent: "main"
-        -comment: "Integrated n8n webhook URL, formats intent data for webhook, handles async HTTP requests with error handling"
-
-  - task: "Chat History Management"
-    implemented: true
-    working: "NA"
-    file: "server.py"
-    stuck_count: 0
-    priority: "medium"
-    needs_retesting: true
-    status_history:
-        -working: "NA"
-        -agent: "main"
-        -comment: "Created MongoDB-based session history storage with /api/history endpoints for load/clear operations"
+        -comment: "Added N8N_WEBHOOK_URL to .env file: https://kumararpit9468.app.n8n.cloud/webhook/elva-entry"
 
 frontend:
   - task: "Dark Neon Chat Interface"
