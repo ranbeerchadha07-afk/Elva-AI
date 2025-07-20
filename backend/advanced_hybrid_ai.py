@@ -566,6 +566,7 @@ Create event: {{"intent": "create_event", "event_title": "Title", "date": "Date"
 Add todo: {{"intent": "add_todo", "task": "Task description", "due_date": "Date"}}
 Set reminder: {{"intent": "set_reminder", "reminder_text": "Text", "reminder_date": "Date"}}
 LinkedIn post: {{"intent": "linkedin_post", "topic": "Topic", "post_content": "Content"}}
+Creative writing: {{"intent": "creative_writing", "content": "Creative content", "topic": "Topic"}}
 General chat: {{"intent": "general_chat", "message": "original message"}}
 
 Return ONLY the JSON object."""
