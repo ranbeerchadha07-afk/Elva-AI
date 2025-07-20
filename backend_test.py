@@ -425,7 +425,7 @@ class ElvaBackendTester:
             return False
 
     def test_approval_workflow_edited_data(self):
-        """Test 8: Approval workflow with edited data"""
+        """Test 9: Approval workflow with edited data"""
         try:
             # Create an email intent
             payload = {
