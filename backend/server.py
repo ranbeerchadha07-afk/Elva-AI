@@ -175,6 +175,19 @@ class ApprovalRequest(BaseModel):
     edited_data: Optional[dict] = None
 
 # Helper functions
+def convert_objectid_to_str(doc):
+    """Convert MongoDB ObjectId to string for JSON serialization"""
+    if isinstance(doc, dict):
+        for key, value in doc.items():
+            if hasattr(value, '__dict__') and hasattr(value, 'binary'):
+                # This is likely an ObjectId
+                doc[key] = str(value)
+            elif isinstance(value, dict):
+                doc[key] = convert_objectid_to_str(value)
+            elif isinstance(value, list):
+                doc[key] = [convert_objectid_to_str(item) if isinstance(item, dict) else item for item in value]
+    return doc
+
 def detect_intent(user_input: str) -> dict:
     try:
         chain = intent_prompt | llm
