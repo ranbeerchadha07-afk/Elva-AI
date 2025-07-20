@@ -192,6 +192,7 @@ def detect_intent(user_input: str) -> dict:
     try:
         chain = intent_prompt | llm
         response = chain.invoke({"input": user_input})
+        logger.info(f"LLM response for intent detection: {response.content}")
         return json.loads(response.content)
     except Exception as e:
         logger.error(f"Intent detection error: {e}")
