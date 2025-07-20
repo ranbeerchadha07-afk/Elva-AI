@@ -1,0 +1,39 @@
+{
+  "total_tests": 4,
+  "passed": 3,
+  "failed": 1,
+  "success_rate": 75.0,
+  "results": [
+    {
+      "test": "Email Content Synchronization",
+      "success": true,
+      "details": "Email content properly synchronized. \u2705 Content synchronized - Subject: 'Quarterly Meeting Schedule' | Body: 685 chars",
+      "timestamp": "2025-07-20T13:01:31.043176",
+      "response_data": null
+    },
+    {
+      "test": "LinkedIn Content Synchronization",
+      "success": true,
+      "details": "LinkedIn content properly synchronized. \u2705 LinkedIn content synchronized - 1585 chars",
+      "timestamp": "2025-07-20T13:01:36.400018",
+      "response_data": null
+    },
+    {
+      "test": "Creative Writing Content Synchronization",
+      "success": false,
+      "details": "Missing content field",
+      "timestamp": "2025-07-20T13:01:40.103919",
+      "response_data": {
+        "intent": "creative_writing",
+        "message": "Write a creative post about teamwork and collaboration"
+      }
+    },
+    {
+      "test": "Content Extraction Patterns",
+      "success": true,
+      "details": "Successfully extracted LinkedIn content with 4/4 expected keywords",
+      "timestamp": "2025-07-20T13:01:41.104585",
+      "response_data": null
+    }
+  ]
+}
