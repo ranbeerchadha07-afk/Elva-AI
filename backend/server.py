@@ -94,46 +94,26 @@ def convert_objectid_to_str(doc):
 @api_router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        logger.info(f"🚀 Hybrid AI Chat Request: {request.message}")
+        logger.info(f"🚀 Advanced Hybrid AI Chat: {request.message}")
         
-        # Detect intent using Groq (fast logical reasoning)
-        intent_data = await detect_intent(request.message)
-        logger.info(f"🧠 Intent Detection (Groq): {intent_data}")
+        # Use advanced hybrid processing with sophisticated routing
+        intent_data, response_text, routing_decision = await advanced_hybrid_ai.process_message(
+            request.message, 
+            request.session_id
+        )
         
-        # Handle general chat using Claude (emotional intelligence)
-        if intent_data.get("intent") == "general_chat":
-            response_text = await handle_general_chat(request.message)
-            logger.info(f"💬 General Chat Response (Claude): Generated")
-            
-            # Save to database
-            chat_msg = ChatMessage(
-                session_id=request.session_id,
-                user_id=request.user_id,
-                message=request.message,
-                response=response_text,
-                intent_data=intent_data
-            )
-            await db.chat_messages.insert_one(chat_msg.dict())
-            
-            return ChatResponse(
-                id=chat_msg.id,
-                message=request.message,
-                response=response_text,
-                intent_data=intent_data,
-                needs_approval=False,
-                timestamp=chat_msg.timestamp
-            )
+        logger.info(f"🧠 Advanced Routing: {routing_decision.primary_model.value} (confidence: {routing_decision.confidence:.2f})")
+        logger.info(f"💡 Routing Logic: {routing_decision.reasoning}")
         
-        # Generate friendly draft using Claude (emotional intelligence + professional tone)
-        draft_response = await generate_friendly_draft(intent_data)
-        logger.info(f"💝 Friendly Draft (Claude): Generated for {intent_data.get('intent')}")
+        # Determine if approval is needed
+        needs_approval = intent_data.get("intent") not in ["general_chat"]
         
         # Save to database
         chat_msg = ChatMessage(
             session_id=request.session_id,
             user_id=request.user_id,
             message=request.message,
-            response=draft_response,
+            response=response_text,
             intent_data=intent_data
         )
         await db.chat_messages.insert_one(chat_msg.dict())
@@ -141,14 +121,14 @@ async def chat(request: ChatRequest):
         return ChatResponse(
             id=chat_msg.id,
             message=request.message,
-            response=draft_response,
+            response=response_text,
             intent_data=intent_data,
-            needs_approval=True,
+            needs_approval=needs_approval,
             timestamp=chat_msg.timestamp
         )
         
     except Exception as e:
-        logger.error(f"💥 Hybrid Chat Error: {e}")
+        logger.error(f"💥 Advanced Hybrid Chat Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/approve")
