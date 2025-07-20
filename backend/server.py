@@ -63,52 +63,52 @@ Return only valid JSON based on the examples below.
 ---- Examples ----
 
 👉 send_email:
-{
+{{
   "intent": "send_email",
   "recipient_name": "",
   "recipient_email": "",
   "subject": "",
   "body": ""
-}
+}}
 
 👉 create_event:
-{
+{{
   "intent": "create_event",
   "event_title": "",
   "date": "",
   "time": "",
   "participants": [],
   "location": ""
-}
+}}
 
 👉 add_todo:
-{
+{{
   "intent": "add_todo",
   "task": "",
   "due_date": ""
-}
+}}
 
 👉 set_reminder:
-{
+{{
   "intent": "set_reminder",
   "reminder_text": "",
   "reminder_time": "",
   "reminder_date": ""
-}
+}}
 
 👉 linkedin_post:
-{
+{{
   "intent": "linkedin_post",
   "topic": "",
   "category": "",
   "post_content": ""
-}
+}}
 
 👉 general_chat:
-{
+{{
   "intent": "general_chat",
   "message": "original user message"
-}
+}}
 """),
     ("user", "{input}")
 ])
