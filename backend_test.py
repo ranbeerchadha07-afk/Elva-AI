@@ -574,48 +574,74 @@ class ElvaBackendTester:
             return False
 
     def test_health_endpoint(self):
-        """Test 13: Health endpoint functionality"""
+        """Test 13: Health endpoint functionality - Hybrid AI System"""
         try:
             response = requests.get(f"{BACKEND_URL}/health", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 
-                # Check required fields
-                required_fields = ["status", "mongodb", "groq_api_key", "n8n_webhook"]
+                # Check required fields for hybrid system
+                required_fields = ["status", "mongodb", "hybrid_ai_system", "n8n_webhook"]
                 missing_fields = [field for field in required_fields if field not in data]
                 
                 if missing_fields:
-                    self.log_test("Health Endpoint", False, f"Missing fields: {missing_fields}", data)
+                    self.log_test("Health Endpoint - Hybrid AI", False, f"Missing fields: {missing_fields}", data)
                     return False
                 
                 # Check status is healthy
                 if data.get("status") != "healthy":
-                    self.log_test("Health Endpoint", False, f"Status not healthy: {data.get('status')}", data)
+                    self.log_test("Health Endpoint - Hybrid AI", False, f"Status not healthy: {data.get('status')}", data)
                     return False
                 
                 # Check MongoDB connection
                 if data.get("mongodb") != "connected":
-                    self.log_test("Health Endpoint", False, f"MongoDB not connected: {data.get('mongodb')}", data)
+                    self.log_test("Health Endpoint - Hybrid AI", False, f"MongoDB not connected: {data.get('mongodb')}", data)
                     return False
                 
-                # Check API keys are configured
-                if data.get("groq_api_key") != "configured":
-                    self.log_test("Health Endpoint", False, "Groq API key not configured", data)
+                # Check hybrid AI system configuration
+                hybrid_ai_system = data.get("hybrid_ai_system", {})
+                
+                # Check both Claude and Groq API keys are configured
+                if hybrid_ai_system.get("groq_api_key") != "configured":
+                    self.log_test("Health Endpoint - Hybrid AI", False, "Groq API key not configured", data)
+                    return False
+                    
+                if hybrid_ai_system.get("claude_api_key") != "configured":
+                    self.log_test("Health Endpoint - Hybrid AI", False, "Claude API key not configured", data)
                     return False
                 
+                # Check model configurations
+                if hybrid_ai_system.get("groq_model") != "llama3-8b-8192":
+                    self.log_test("Health Endpoint - Hybrid AI", False, f"Wrong Groq model: {hybrid_ai_system.get('groq_model')}", data)
+                    return False
+                    
+                if hybrid_ai_system.get("claude_model") != "claude-3-5-sonnet-20241022":
+                    self.log_test("Health Endpoint - Hybrid AI", False, f"Wrong Claude model: {hybrid_ai_system.get('claude_model')}", data)
+                    return False
+                
+                # Check task routing configuration
+                routing = hybrid_ai_system.get("routing", {})
+                claude_tasks = routing.get("claude_tasks", [])
+                groq_tasks = routing.get("groq_tasks", [])
+                
+                if not claude_tasks or not groq_tasks:
+                    self.log_test("Health Endpoint - Hybrid AI", False, "Task routing not configured", data)
+                    return False
+                
+                # Check N8N webhook
                 if data.get("n8n_webhook") != "configured":
-                    self.log_test("Health Endpoint", False, "N8N webhook not configured", data)
+                    self.log_test("Health Endpoint - Hybrid AI", False, "N8N webhook not configured", data)
                     return False
                 
-                self.log_test("Health Endpoint", True, "All services healthy and configured")
+                self.log_test("Health Endpoint - Hybrid AI", True, f"Hybrid AI system healthy: Claude ({hybrid_ai_system.get('claude_model')}) + Groq ({hybrid_ai_system.get('groq_model')}) with proper task routing")
                 return True
             else:
-                self.log_test("Health Endpoint", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Health Endpoint - Hybrid AI", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Health Endpoint", False, f"Error: {str(e)}")
+            self.log_test("Health Endpoint - Hybrid AI", False, f"Error: {str(e)}")
             return False
 
     def run_all_tests(self):
