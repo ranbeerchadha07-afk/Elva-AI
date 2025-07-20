@@ -145,7 +145,7 @@ class HybridAIChat:
         logger.info(f"🧠 Intent Detection (Groq): {user_input}")
         
         # Intent detection is a structured, logical task - use Groq
-        intent_prompt = """You are an AI assistant that detects user intent and extracts structured JSON for different tasks.
+        system_message = """You are an AI assistant that detects user intent and extracts structured JSON for different tasks.
 
 CRITICAL INSTRUCTIONS:
 - Respond with ONLY valid JSON, no additional text or explanations
@@ -164,57 +164,57 @@ You can detect the following intents:
 Examples of COMPLETE JSON responses:
 
 For "Send an email to John about the meeting":
-{
+{{
   "intent": "send_email",
   "recipient_name": "John",
   "recipient_email": "",
   "subject": "Meeting Update",
   "body": "Hi John,\\n\\nI wanted to update you about our upcoming meeting. Please let me know if you have any questions.\\n\\nBest regards"
-}
+}}
 
 For "Create a team meeting for tomorrow at 2pm":
-{
+{{
   "intent": "create_event",
   "event_title": "Team Meeting",
   "date": "tomorrow",
   "time": "2:00 PM",
   "participants": ["team@company.com"],
   "location": "Conference Room"
-}
+}}
 
 For "Remind me to call the client":
-{
+{{
   "intent": "set_reminder",
   "reminder_text": "Call client about project status",
   "reminder_time": "",
   "reminder_date": "today"
-}
+}}
 
 For "Add finish the report to my todo list":
-{
+{{
   "intent": "add_todo",
   "task": "Finish the quarterly report",
   "due_date": ""
-}
+}}
 
 For "Post about AI on LinkedIn":
-{
+{{
   "intent": "linkedin_post",
   "topic": "Artificial Intelligence",
   "category": "Technology",
   "post_content": "Excited to share insights about AI advancements! #AI #Technology"
-}
+}}
 
 For anything else:
-{
+{{
   "intent": "general_chat",
   "message": "original user message"
-}
+}}
 
 REMEMBER: Return ONLY the JSON object, nothing else."""
 
         try:
-            response = await self._get_groq_response(user_input, intent_prompt)
+            response = await self._get_groq_response(user_input, system_message)
             
             # Extract JSON from the response
             content = response.strip()
