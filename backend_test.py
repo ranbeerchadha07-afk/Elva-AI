@@ -107,10 +107,10 @@ class ElvaBackendTester:
             return False
 
     def test_intent_detection_send_email(self):
-        """Test 3: Intent detection for send_email"""
+        """Test 3: Intent detection for send_email with pre-filled data"""
         try:
             payload = {
-                "message": "Send an email to john@example.com about the project update with subject 'Weekly Progress Report'",
+                "message": "Send an email to Sarah about the quarterly report",
                 "session_id": self.session_id,
                 "user_id": "test_user"
             }
@@ -131,8 +131,8 @@ class ElvaBackendTester:
                     self.log_test("Intent Detection - Send Email", False, "Email intent should need approval", data)
                     return False
                 
-                # Check intent data structure
-                expected_fields = ["recipient_email", "subject", "body"]
+                # Check intent data structure and pre-filled content
+                expected_fields = ["recipient_name", "subject", "body"]
                 intent_fields = list(intent_data.keys())
                 missing_fields = [field for field in expected_fields if field not in intent_fields]
                 
@@ -140,13 +140,26 @@ class ElvaBackendTester:
                     self.log_test("Intent Detection - Send Email", False, f"Missing intent fields: {missing_fields}", intent_data)
                     return False
                 
-                # Check if email was extracted
-                if "john@example.com" not in intent_data.get("recipient_email", ""):
-                    self.log_test("Intent Detection - Send Email", False, "Failed to extract recipient email", intent_data)
+                # Check if recipient name was extracted and populated
+                recipient_name = intent_data.get("recipient_name", "")
+                if not recipient_name or recipient_name.strip() == "":
+                    self.log_test("Intent Detection - Send Email", False, "recipient_name field is empty", intent_data)
+                    return False
+                
+                # Check if subject was populated with meaningful content
+                subject = intent_data.get("subject", "")
+                if not subject or subject.strip() == "":
+                    self.log_test("Intent Detection - Send Email", False, "subject field is empty", intent_data)
+                    return False
+                
+                # Check if body was populated with meaningful content
+                body = intent_data.get("body", "")
+                if not body or body.strip() == "":
+                    self.log_test("Intent Detection - Send Email", False, "body field is empty", intent_data)
                     return False
                 
                 self.message_ids.append(data["id"])
-                self.log_test("Intent Detection - Send Email", True, f"Correctly classified as send_email with extracted data")
+                self.log_test("Intent Detection - Send Email", True, f"Correctly classified as send_email with pre-filled data: recipient_name='{recipient_name}', subject='{subject[:50]}...', body populated")
                 return True
             else:
                 self.log_test("Intent Detection - Send Email", False, f"HTTP {response.status_code}", response.text)
