@@ -71,6 +71,31 @@ function App() {
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
 
+    // Check if user is trying to approve/reject a pending action
+    const approvalKeywords = ['send it', 'approve', 'yes', 'confirm', 'execute', 'do it', 'go ahead'];
+    const rejectionKeywords = ['cancel', 'no', 'reject', 'don\'t send', 'abort', 'stop'];
+    const message = inputMessage.toLowerCase().trim();
+    
+    // If there's a pending approval and user uses approval/rejection keywords
+    if (pendingApproval && (approvalKeywords.some(keyword => message.includes(keyword)) || 
+                           rejectionKeywords.some(keyword => message.includes(keyword)))) {
+      
+      const isApproval = approvalKeywords.some(keyword => message.includes(keyword));
+      
+      const userMessage = {
+        id: Date.now(),
+        message: inputMessage,
+        isUser: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, userMessage]);
+      setInputMessage('');
+      
+      // Handle the approval/rejection directly
+      await handleApproval(isApproval);
+      return;
+    }
+
     const userMessage = {
       id: Date.now(),
       message: inputMessage,
