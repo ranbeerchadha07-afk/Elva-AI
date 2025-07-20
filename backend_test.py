@@ -376,7 +376,7 @@ class ElvaBackendTester:
             return False
 
     def test_approval_workflow_rejected(self):
-        """Test 7: Approval workflow - rejected action"""
+        """Test 8: Approval workflow - rejected action"""
         # First create a new action intent to reject
         try:
             payload = {
