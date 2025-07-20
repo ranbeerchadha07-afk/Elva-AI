@@ -1,122 +1,99 @@
 {
   "total_tests": 13,
-  "passed": 12,
-  "failed": 1,
-  "success_rate": 92.3076923076923,
+  "passed": 13,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Server Connectivity",
       "success": true,
       "details": "Backend server is running and accessible",
-      "timestamp": "2025-07-20T11:18:16.540848",
+      "timestamp": "2025-07-20T11:19:12.110315",
       "response_data": null
     },
     {
       "test": "Intent Detection - General Chat",
       "success": true,
       "details": "Correctly classified as general_chat, response: Hello there! I'm doing wonderfully, thank you for asking! It's always a pleasure to connect with som...",
-      "timestamp": "2025-07-20T11:18:17.662409",
+      "timestamp": "2025-07-20T11:19:13.223961",
       "response_data": null
     },
     {
       "test": "Intent Detection - Send Email",
       "success": true,
       "details": "Correctly classified as send_email with pre-filled data: recipient_name='Sarah', subject='Quarterly Report Update...', body populated",
-      "timestamp": "2025-07-20T11:18:18.843425",
+      "timestamp": "2025-07-20T11:19:14.382610",
       "response_data": null
     },
     {
       "test": "Intent Detection - Create Event",
       "success": true,
       "details": "Correctly classified as create_event with pre-filled data: title='Team Meeting', date='tomorrow', time='2:00 PM'",
-      "timestamp": "2025-07-20T11:18:20.131269",
+      "timestamp": "2025-07-20T11:19:15.800775",
       "response_data": null
     },
     {
       "test": "Intent Detection - Add Todo",
       "success": true,
       "details": "Correctly classified as add_todo with pre-filled data: task='Finish the project'",
-      "timestamp": "2025-07-20T11:18:21.649174",
+      "timestamp": "2025-07-20T11:19:17.087382",
       "response_data": null
     },
     {
       "test": "Intent Detection - Set Reminder",
       "success": true,
       "details": "Correctly classified as set_reminder with pre-filled data: reminder_text='Call mom'",
-      "timestamp": "2025-07-20T11:18:22.833450",
+      "timestamp": "2025-07-20T11:19:18.097259",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Approved",
       "success": true,
       "details": "Action approved and sent to n8n webhook",
-      "timestamp": "2025-07-20T11:18:28.065020",
+      "timestamp": "2025-07-20T11:19:21.942951",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Rejected",
       "success": true,
       "details": "Action correctly rejected",
-      "timestamp": "2025-07-20T11:18:29.969659",
+      "timestamp": "2025-07-20T11:19:23.393468",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Edited Data",
       "success": true,
       "details": "Action approved with edited data",
-      "timestamp": "2025-07-20T11:18:32.142190",
+      "timestamp": "2025-07-20T11:19:26.220227",
       "response_data": null
     },
     {
       "test": "Chat History - Retrieval",
       "success": true,
       "details": "Retrieved 7 messages from history",
-      "timestamp": "2025-07-20T11:18:32.661086",
+      "timestamp": "2025-07-20T11:19:26.741437",
       "response_data": null
     },
     {
       "test": "Chat History - Clearing",
       "success": true,
       "details": "Chat history successfully cleared",
-      "timestamp": "2025-07-20T11:18:33.199811",
+      "timestamp": "2025-07-20T11:19:27.280688",
       "response_data": null
     },
     {
       "test": "Error Handling - Invalid Message ID",
       "success": true,
       "details": "Correctly returned 404 for invalid message ID",
-      "timestamp": "2025-07-20T11:18:33.745818",
+      "timestamp": "2025-07-20T11:19:27.809038",
       "response_data": null
     },
     {
-      "test": "Health Endpoint",
-      "success": false,
-      "details": "Missing fields: ['groq_api_key']",
-      "timestamp": "2025-07-20T11:18:34.263285",
-      "response_data": {
-        "status": "healthy",
-        "mongodb": "connected",
-        "hybrid_ai_system": {
-          "groq_api_key": "configured",
-          "claude_api_key": "configured",
-          "groq_model": "llama3-8b-8192",
-          "claude_model": "claude-3-5-sonnet-20241022",
-          "routing": {
-            "claude_tasks": [
-              "general_chat",
-              "send_email",
-              "linkedin_post",
-              "friendly_responses"
-            ],
-            "groq_tasks": [
-              "intent_detection",
-              "structured_parsing",
-              "logical_reasoning"
-            ]
-          }
-        },
-        "n8n_webhook": "configured"
-      }
+      "test": "Health Endpoint - Hybrid AI",
+      "success": true,
+      "details": "Hybrid AI system healthy: Claude (claude-3-5-sonnet-20241022) + Groq (llama3-8b-8192) with proper task routing",
+      "timestamp": "2025-07-20T11:19:28.326765",
+      "response_data": null
     }
   ]
 }
