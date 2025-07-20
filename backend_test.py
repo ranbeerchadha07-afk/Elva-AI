@@ -478,7 +478,7 @@ class ElvaBackendTester:
             return False
 
     def test_chat_history_retrieval(self):
-        """Test 9: Chat history retrieval"""
+        """Test 10: Chat history retrieval"""
         try:
             response = requests.get(f"{BACKEND_URL}/history/{self.session_id}", timeout=10)
             
