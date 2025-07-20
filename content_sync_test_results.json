@@ -1,45 +1,35 @@
 {
   "total_tests": 4,
-  "passed": 3,
-  "failed": 1,
-  "success_rate": 75.0,
+  "passed": 4,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Email Content Synchronization",
       "success": true,
       "details": "Email content properly synchronized. \u2705 Content synchronized - Subject: 'Quarterly Meeting Schedule' | Body: 685 chars",
-      "timestamp": "2025-07-20T13:04:36.788543",
+      "timestamp": "2025-07-20T13:05:33.594599",
       "response_data": null
     },
     {
       "test": "LinkedIn Content Synchronization",
       "success": true,
       "details": "LinkedIn content properly synchronized. \u2705 LinkedIn content synchronized - 1585 chars",
-      "timestamp": "2025-07-20T13:04:39.214368",
+      "timestamp": "2025-07-20T13:05:35.954463",
       "response_data": null
     },
     {
       "test": "Creative Writing Content Synchronization",
-      "success": false,
-      "details": "Wrong intent detected: general_chat",
-      "timestamp": "2025-07-20T13:04:42.497305",
-      "response_data": {
-        "id": "3212b59d-af4d-4536-a7e5-4427bc3c9bae",
-        "message": "Write creative content about teamwork and collaboration for my website",
-        "response": "**The Power of Unity: Why Teamwork is the Key to Unlocking Success**\n\nImagine a puzzle with thousands of pieces, each one representing a unique skill, perspective, or expertise. When these pieces are scattered across the table, it's overwhelming to think about how to bring them together to form a cohesive whole. But what if I told you that the solution lies not in trying to force each piece to fit perfectly, but in embracing the beauty of imperfection and collaboration?\n\nTeamwork is the unsung hero of modern success. It's the glue that holds together the most innovative companies, the most groundbreaking research, and the most remarkable achievements. When individuals come together, sharing their strengths and weaknesses, they create a synergy that's greater than the sum of its parts. It's a beautiful dance of give-and-take, where each participant brings their unique flavor to the table, and together, they craft something truly remarkable.\n\n**The Magic of Collaboration**\n\nWhen teams work together, they tap into a collective genius that's unmatched by any individual. It's the ability to:\n\n* Share knowledge and expertise, filling in the gaps and creating a more comprehensive understanding of the task at hand\n* Bounce ideas off each other, sparking creativity and innovation\n* Support and motivate one another, fostering a sense of camaraderie and shared purpose\n* Learn from each other's strengths and weaknesses, growing and developing as individuals and as a team\n\n**The Benefits of Teamwork**\n\nSo, what are the tangible benefits of teamwork and collaboration? Here are just a few:\n\n* Increased productivity: When everyone is working together towards a common goal, tasks are completed more efficiently and effectively\n* Improved communication: Team members learn to listen, adapt, and respond to each other's needs, reducing misunderstandings and miscommunications\n* Enhanced creativity: The collective brainpower of a team can come up with solutions that might have taken an individual months or even years to develop\n* Better problem-solving: Teams can tackle complex challenges from multiple angles, finding innovative solutions that might have been overlooked by a single individual\n\n**The Future of Teamwork**\n\nAs we move forward in an increasingly interconnected world, the importance of teamwork and collaboration will only continue to grow. It's no longer enough to be a solo superstar; success requires the ability to work seamlessly with others, to adapt to changing circumstances, and to thrive in a fast-paced, ever-evolving environment.\n\nSo, the next time you're faced with a puzzle, don't try to force each piece to fit perfectly. Instead, embrace the beauty of imperfection and collaboration. Find your tribe, share your strengths and weaknesses, and together, create something truly remarkable.\n\n**Conclusion**\n\nTeamwork is the key to unlocking success in today's fast-paced, interconnected world. By embracing the power of collaboration, we can achieve things that would be impossible alone. So, the next time you're faced with a challenge, remember that you don't have to go it alone. Find your team, and together, create something truly remarkable.\n\n---\n\nI hope you find this content engaging and inspiring! Let me know if you have any specific requests or changes you'd like me to make.",
-        "intent_data": {
-          "intent": "general_chat",
-          "message": "Teamwork is the fuel that ignites the fire of success. When individuals come together, sharing their unique skills and perspectives, the outcome is often far greater than the sum of its parts. Collaboration breeds creativity, fosters innovation, and builds trust. It's the glue that holds teams together, allowing them to overcome obstacles and achieve their goals. So, let's celebrate the power of teamwork and collaboration, and recognize the incredible things we can accomplish when we work together towards a common purpose."
-        },
-        "needs_approval": false,
-        "timestamp": "2025-07-20T13:04:42.491684"
-      }
+      "success": true,
+      "details": "Creative content properly synchronized. \u2705 Creative content synchronized - 2601 chars",
+      "timestamp": "2025-07-20T13:05:39.092189",
+      "response_data": null
     },
     {
       "test": "Content Extraction Patterns",
       "success": true,
       "details": "Successfully extracted LinkedIn content with 4/4 expected keywords",
-      "timestamp": "2025-07-20T13:04:43.497878",
+      "timestamp": "2025-07-20T13:05:40.092747",
       "response_data": null
     }
   ]
