@@ -8,31 +8,39 @@
       "test": "Email Content Synchronization",
       "success": true,
       "details": "Email content properly synchronized. \u2705 Content synchronized - Subject: 'Quarterly Meeting Schedule' | Body: 685 chars",
-      "timestamp": "2025-07-20T13:01:31.043176",
+      "timestamp": "2025-07-20T13:04:16.367630",
       "response_data": null
     },
     {
       "test": "LinkedIn Content Synchronization",
       "success": true,
       "details": "LinkedIn content properly synchronized. \u2705 LinkedIn content synchronized - 1585 chars",
-      "timestamp": "2025-07-20T13:01:36.400018",
+      "timestamp": "2025-07-20T13:04:18.991981",
       "response_data": null
     },
     {
       "test": "Creative Writing Content Synchronization",
       "success": false,
-      "details": "Missing content field",
-      "timestamp": "2025-07-20T13:01:40.103919",
+      "details": "Wrong intent detected: linkedin_post",
+      "timestamp": "2025-07-20T13:04:21.310778",
       "response_data": {
-        "intent": "creative_writing",
-        "message": "Write a creative post about teamwork and collaboration"
+        "id": "39c53f09-1402-4e0c-9279-58192ed8b875",
+        "message": "Write a creative post about teamwork and collaboration",
+        "response": "\ud83d\udcf1 Here's an engaging LinkedIn post for you:\n\n**The Power of Teamwork: When Individuals Unite to Achieve the Impossible**\n\n\"Alone we can do so little; together we can do so much.\" - Helen Keller\n\nIn today's fast-paced and ever-changing business landscape, the ability to work together seamlessly is more crucial than ever. When individuals from diverse backgrounds and skill sets come together, sharing their unique perspectives and expertise, the results can be nothing short of remarkable.\n\nAt its core, teamwork is about trust, communication, and mutual respect. It's about understanding that each person brings a vital piece to the puzzle, and that together, you can create something truly extraordinary.\n\nSo, what are some key takeaways from the power of teamwork?\n\n\ud83d\udd39 **Diverse perspectives lead to innovative solutions**: When individuals from different walks of life come together, they bring fresh ideas and approaches to the table.\n\n\ud83d\udd39 **Communication is key**: Clear and open communication is essential for building trust and ensuring that everyone is on the same page.\n\n\ud83d\udd39 **Embracing each other's strengths and weaknesses**: Recognizing and leveraging each other's strengths, while also acknowledging and supporting each other's weaknesses, is crucial for success.\n\n\ud83d\udd39 **Collaboration breeds creativity**: When individuals work together, they can tap into each other's creative energies, leading to innovative and groundbreaking ideas.\n\nSo, the next time you're working on a project or tackling a challenging task, remember the power of teamwork. By coming together and supporting each other, you can achieve far more than you ever could alone.\n\n#Teamwork #Collaboration #Innovation #Communication #Trust #Respect #Success #Business #Leadership #Motivation",
+        "intent_data": {
+          "intent": "linkedin_post",
+          "topic": "The Power of Teamwork",
+          "post_content": "**The Power of Teamwork: When Individuals Unite to Achieve the Impossible**\n\n\"Alone we can do so little; together we can do so much.\" - Helen Keller\n\nIn today's fast-paced and ever-changing business landscape, the ability to work together seamlessly is more crucial than ever. When individuals from diverse backgrounds and skill sets come together, sharing their unique perspectives and expertise, the results can be nothing short of remarkable.\n\nAt its core, teamwork is about trust, communication, and mutual respect. It's about understanding that each person brings a vital piece to the puzzle, and that together, you can create something truly extraordinary.\n\nSo, what are some key takeaways from the power of teamwork?\n\n\ud83d\udd39 **Diverse perspectives lead to innovative solutions**: When individuals from different walks of life come together, they bring fresh ideas and approaches to the table.\n\n\ud83d\udd39 **Communication is key**: Clear and open communication is essential for building trust and ensuring that everyone is on the same page.\n\n\ud83d\udd39 **Embracing each other's strengths and weaknesses**: Recognizing and leveraging each other's strengths, while also acknowledging and supporting each other's weaknesses, is crucial for success.\n\n\ud83d\udd39 **Collaboration breeds creativity**: When individuals work together, they can tap into each other's creative energies, leading to innovative and groundbreaking ideas.\n\nSo, the next time you're working on a project or tackling a challenging task, remember the power of teamwork. By coming together and supporting each other, you can achieve far more than you ever could alone.\n\n#Teamwork #Collaboration #Innovation #Communication #Trust #Respect #Success #Business #Leadership #Motivation"
+        },
+        "needs_approval": true,
+        "timestamp": "2025-07-20T13:04:21.305585"
       }
     },
     {
       "test": "Content Extraction Patterns",
       "success": true,
       "details": "Successfully extracted LinkedIn content with 4/4 expected keywords",
-      "timestamp": "2025-07-20T13:01:41.104585",
+      "timestamp": "2025-07-20T13:04:22.311393",
       "response_data": null
     }
   ]
