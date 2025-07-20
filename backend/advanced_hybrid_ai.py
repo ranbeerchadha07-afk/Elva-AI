@@ -324,21 +324,143 @@ Examples:
             return "⚠️ I'm experiencing technical difficulties with my reasoning engine. Please try again."
 
     async def _execute_sequential_routing(self, user_input: str, classification: TaskClassification, session_id: str) -> Tuple[dict, str]:
-        """Execute sequential routing: Groq → Claude"""
-        logger.info("🔄 Sequential Routing: Groq → Claude")
+        """Execute sequential routing: Groq → Claude with content synchronization"""
+        logger.info("🔄 Sequential Routing: Groq → Claude (Content Synchronized)")
         
-        # Step 1: Groq for intent detection and structure
+        # Step 1: Groq for intent detection and basic structure
         intent_data = await self._groq_intent_detection(user_input)
         
-        # Step 2: Claude for friendly, contextual response
+        # Step 2: Claude for content generation with explicit content extraction
         enhanced_prompt = user_input
         if classification.context_dependency != "none":
             enhanced_prompt = await self._get_context_enhanced_prompt(user_input, session_id)
         
-        system_message = self._generate_claude_system_message(classification, intent_data)
-        response_text = await self._get_claude_response(enhanced_prompt, system_message)
+        # Generate Claude response with content extraction instructions
+        system_message = self._generate_claude_system_message_with_extraction(classification, intent_data)
+        claude_response = await self._get_claude_response(enhanced_prompt, system_message)
         
-        return intent_data, response_text
+        # Step 3: Extract the actual content from Claude's response and synchronize with intent_data
+        synchronized_intent_data = await self._synchronize_content_fields(intent_data, claude_response, classification)
+        
+        return synchronized_intent_data, claude_response
+
+    def _generate_claude_system_message_with_extraction(self, classification: TaskClassification, intent_data: dict) -> str:
+        """Generate system message for Claude with content extraction requirements"""
+        base_message = "You are Elva AI – a sophisticated AI assistant."
+        
+        # Add personality based on classification
+        if classification.emotional_complexity == "high":
+            base_message += " You are particularly empathetic and emotionally intelligent."
+        
+        if classification.professional_tone_required:
+            base_message += " Maintain a professional yet warm tone in your responses."
+        
+        if classification.creative_requirement in ["medium", "high"]:
+            base_message += " Feel free to be creative and engaging in your responses."
+        
+        # Add intent-specific guidance with content extraction
+        intent = intent_data.get("intent", "general_chat")
+        if intent == "send_email":
+            base_message += """ When drafting emails, structure your response as:
+✉️ Here's a draft email for [recipient]:
+
+Subject: [exact subject line]
+Body: [exact email content]
+
+The content you generate for Subject and Body will be used exactly as written in the approval modal."""
+            
+        elif intent == "linkedin_post":
+            base_message += """ When creating LinkedIn posts, structure your response as:
+📱 Here's an engaging LinkedIn post for you:
+
+[exact post content including hashtags and formatting]
+
+The post content you generate will be used exactly as written in the approval modal."""
+            
+        elif intent == "creative_writing":
+            base_message += """ When creating creative content, provide the exact content that will be used.
+Structure your response clearly so the main content can be extracted for approval."""
+            
+        elif intent in ["add_todo", "set_reminder"]:
+            base_message += " Be encouraging and supportive when helping with task management."
+        
+        return base_message
+
+    async def _synchronize_content_fields(self, intent_data: dict, claude_response: str, classification: TaskClassification) -> dict:
+        """Synchronize content fields between Claude response and intent data"""
+        intent = intent_data.get("intent", "general_chat")
+        
+        try:
+            if intent == "send_email":
+                # Extract subject and body from Claude's response
+                subject_match = re.search(r'Subject:\s*(.+)', claude_response)
+                body_match = re.search(r'Body:\s*(.*?)(?:\n\n|$)', claude_response, re.DOTALL)
+                
+                if subject_match:
+                    intent_data["subject"] = subject_match.group(1).strip()
+                if body_match:
+                    intent_data["body"] = body_match.group(1).strip()
+                    
+            elif intent == "linkedin_post" or intent == "creative_writing":
+                # Extract the main content between markdown/formatting
+                # Look for content after emoji indicators like 📱 or between quotes
+                content_patterns = [
+                    r'📱[^:]*:\s*\n\n"([^"]+)"',  # Quoted content after 📱
+                    r'📱[^:]*:\s*\n\n([^"]+?)(?:\n\n|This should|Feel free|$)',  # Unquoted content after 📱
+                    r'Here\'s[^:]*:\s*\n\n"([^"]+)"',  # Quoted content after "Here's"
+                    r'Here\'s[^:]*:\s*\n\n([^"]+?)(?:\n\n|This|Feel free|$)',  # Unquoted content after "Here's"
+                    r'"([^"]+?)"',  # Any quoted content
+                    r'post[^:]*:\s*\n\n([^"]+?)(?:\n\n|$)'  # Content after "post:"
+                ]
+                
+                extracted_content = None
+                for pattern in content_patterns:
+                    match = re.search(pattern, claude_response, re.DOTALL | re.IGNORECASE)
+                    if match:
+                        extracted_content = match.group(1).strip()
+                        break
+                
+                # If no pattern matches, extract content after first line break
+                if not extracted_content:
+                    lines = claude_response.split('\n')
+                    if len(lines) > 2:
+                        # Skip the first intro line, get the main content
+                        content_start = 1
+                        while content_start < len(lines) and not lines[content_start].strip():
+                            content_start += 1
+                        if content_start < len(lines):
+                            extracted_content = '\n'.join(lines[content_start:]).strip()
+                            # Remove trailing explanatory text
+                            if "This should" in extracted_content:
+                                extracted_content = extracted_content.split("This should")[0].strip()
+                            if "Feel free" in extracted_content:
+                                extracted_content = extracted_content.split("Feel free")[0].strip()
+                
+                if extracted_content:
+                    if intent == "linkedin_post":
+                        intent_data["post_content"] = extracted_content
+                    elif intent == "creative_writing":
+                        intent_data["content"] = extracted_content
+                        
+            elif intent == "set_reminder":
+                # Extract reminder details
+                reminder_match = re.search(r'remind you[^"]*"([^"]+)"', claude_response, re.IGNORECASE)
+                if reminder_match:
+                    intent_data["reminder_text"] = reminder_match.group(1).strip()
+                    
+            elif intent == "add_todo":
+                # Extract task details
+                task_match = re.search(r'task[^"]*"([^"]+)"', claude_response, re.IGNORECASE)
+                if task_match:
+                    intent_data["task"] = task_match.group(1).strip()
+            
+            logger.info(f"🔗 Content Synchronized: {intent} - Extracted fields from Claude response")
+            return intent_data
+            
+        except Exception as e:
+            logger.error(f"Content synchronization error: {e}")
+            # Return original intent data if synchronization fails
+            return intent_data
 
     def _generate_claude_system_message(self, classification: TaskClassification, intent_data: dict) -> str:
         """Generate contextual system message for Claude based on classification"""
