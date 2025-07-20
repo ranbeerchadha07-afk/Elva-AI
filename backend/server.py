@@ -214,7 +214,23 @@ async def clear_chat_history(session_id: str):
         logger.error(f"Clear history error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@api_router.get("/")
+@api_router.get("/routing-stats/{session_id}")
+async def get_routing_stats(session_id: str):
+    try:
+        stats = advanced_hybrid_ai.get_routing_stats(session_id)
+        return {
+            "session_id": session_id,
+            "routing_statistics": stats,
+            "advanced_features": {
+                "task_classification": "multi-dimensional analysis",
+                "routing_logic": "context-aware with fallback",
+                "conversation_history": "last 10 messages tracked",
+                "supported_routing": ["sequential", "claude_primary", "groq_primary", "context_enhanced"]
+            }
+        }
+    except Exception as e:
+        logger.error(f"Routing stats error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 async def root():
     return {"message": "Elva AI Backend is running! 🤖✨", "version": "1.0"}
 
