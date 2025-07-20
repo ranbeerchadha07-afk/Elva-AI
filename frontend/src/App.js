@@ -335,7 +335,11 @@ function App() {
                 <div className={`px-4 py-3 rounded-2xl ${
                   msg.isUser 
                     ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white shadow-lg ml-3' 
-                    : 'bg-black/30 border border-blue-500/20 backdrop-blur-sm shadow-lg'
+                    : msg.isEdit
+                      ? 'bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-400/40 backdrop-blur-sm shadow-lg'
+                      : msg.isSystem
+                        ? 'bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border-2 border-cyan-400/40 backdrop-blur-sm shadow-lg'
+                        : 'bg-black/30 border border-blue-500/20 backdrop-blur-sm shadow-lg'
                 } ${msg.isWelcome ? 'border-2 border-blue-400/40 bg-gradient-to-r from-blue-900/40 to-purple-900/40' : ''}`}>
                   <div className="text-sm leading-relaxed">
                     {msg.isUser ? msg.message : msg.response}
@@ -345,8 +349,20 @@ function App() {
                         <span className="ml-1">Ready to help you!</span>
                       </div>
                     )}
+                    {msg.isEdit && (
+                      <div className="mt-2 text-xs text-green-300 flex items-center">
+                        <span>📝</span>
+                        <span className="ml-1">Your customizations</span>
+                      </div>
+                    )}
+                    {msg.isSystem && (
+                      <div className="mt-2 text-xs text-cyan-300 flex items-center">
+                        <span>🔗</span>
+                        <span className="ml-1">System Response</span>
+                      </div>
+                    )}
                   </div>
-                  {!msg.isUser && renderIntentData(msg.intent_data)}
+                  {!msg.isUser && !msg.isEdit && !msg.isSystem && renderIntentData(msg.intent_data)}
                 </div>
               </div>
             </div>
