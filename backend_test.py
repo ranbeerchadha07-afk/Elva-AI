@@ -170,10 +170,10 @@ class ElvaBackendTester:
             return False
 
     def test_intent_detection_create_event(self):
-        """Test 4: Intent detection for create_event"""
+        """Test 4: Intent detection for create_event with pre-filled data"""
         try:
             payload = {
-                "message": "Schedule a meeting with the team tomorrow at 2 PM in the conference room",
+                "message": "Create a meeting with the team for tomorrow at 2pm",
                 "session_id": self.session_id,
                 "user_id": "test_user"
             }
@@ -194,8 +194,8 @@ class ElvaBackendTester:
                     self.log_test("Intent Detection - Create Event", False, "Event intent should need approval", data)
                     return False
                 
-                # Check intent data structure
-                expected_fields = ["event_title", "date", "time", "location"]
+                # Check intent data structure and pre-filled content
+                expected_fields = ["event_title", "date", "time", "participants"]
                 intent_fields = list(intent_data.keys())
                 missing_fields = [field for field in expected_fields if field not in intent_fields]
                 
@@ -203,8 +203,26 @@ class ElvaBackendTester:
                     self.log_test("Intent Detection - Create Event", False, f"Missing intent fields: {missing_fields}", intent_data)
                     return False
                 
+                # Check if event_title was populated with meaningful content
+                event_title = intent_data.get("event_title", "")
+                if not event_title or event_title.strip() == "":
+                    self.log_test("Intent Detection - Create Event", False, "event_title field is empty", intent_data)
+                    return False
+                
+                # Check if date was populated
+                date = intent_data.get("date", "")
+                if not date or date.strip() == "":
+                    self.log_test("Intent Detection - Create Event", False, "date field is empty", intent_data)
+                    return False
+                
+                # Check if time was populated
+                time = intent_data.get("time", "")
+                if not time or time.strip() == "":
+                    self.log_test("Intent Detection - Create Event", False, "time field is empty", intent_data)
+                    return False
+                
                 self.message_ids.append(data["id"])
-                self.log_test("Intent Detection - Create Event", True, f"Correctly classified as create_event")
+                self.log_test("Intent Detection - Create Event", True, f"Correctly classified as create_event with pre-filled data: title='{event_title}', date='{date}', time='{time}'")
                 return True
             else:
                 self.log_test("Intent Detection - Create Event", False, f"HTTP {response.status_code}", response.text)
