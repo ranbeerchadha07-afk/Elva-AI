@@ -283,6 +283,57 @@ class ElvaBackendTester:
             self.log_test("Intent Detection - Add Todo", False, f"Error: {str(e)}")
             return False
 
+    def test_intent_detection_set_reminder(self):
+        """Test 6: Intent detection for set_reminder with pre-filled data"""
+        try:
+            payload = {
+                "message": "Set a reminder to call mom at 5 PM today",
+                "session_id": self.session_id,
+                "user_id": "test_user"
+            }
+            
+            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=15)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check intent classification
+                intent_data = data.get("intent_data", {})
+                if intent_data.get("intent") != "set_reminder":
+                    self.log_test("Intent Detection - Set Reminder", False, f"Wrong intent: {intent_data.get('intent')}", data)
+                    return False
+                
+                # Check needs_approval is True
+                if data.get("needs_approval") != True:
+                    self.log_test("Intent Detection - Set Reminder", False, "Reminder intent should need approval", data)
+                    return False
+                
+                # Check intent data structure and pre-filled content
+                expected_fields = ["reminder_text"]
+                intent_fields = list(intent_data.keys())
+                missing_fields = [field for field in expected_fields if field not in intent_fields]
+                
+                if missing_fields:
+                    self.log_test("Intent Detection - Set Reminder", False, f"Missing intent fields: {missing_fields}", intent_data)
+                    return False
+                
+                # Check if reminder_text was populated with meaningful content
+                reminder_text = intent_data.get("reminder_text", "")
+                if not reminder_text or reminder_text.strip() == "":
+                    self.log_test("Intent Detection - Set Reminder", False, "reminder_text field is empty", intent_data)
+                    return False
+                
+                self.message_ids.append(data["id"])
+                self.log_test("Intent Detection - Set Reminder", True, f"Correctly classified as set_reminder with pre-filled data: reminder_text='{reminder_text}'")
+                return True
+            else:
+                self.log_test("Intent Detection - Set Reminder", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Intent Detection - Set Reminder", False, f"Error: {str(e)}")
+            return False
+
     def test_approval_workflow_approved(self):
         """Test 6: Approval workflow - approved action"""
         if not self.message_ids:
