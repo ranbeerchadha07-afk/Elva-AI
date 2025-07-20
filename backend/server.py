@@ -94,15 +94,16 @@ def convert_objectid_to_str(doc):
 @api_router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        logger.info(f"Received chat request: {request.message}")
+        logger.info(f"🚀 Hybrid AI Chat Request: {request.message}")
         
-        # Detect intent using our separate module
-        intent_data = detect_intent(request.message)
-        logger.info(f"Detected intent: {intent_data}")
+        # Detect intent using Groq (fast logical reasoning)
+        intent_data = await detect_intent(request.message)
+        logger.info(f"🧠 Intent Detection (Groq): {intent_data}")
         
-        # Handle general chat directly
+        # Handle general chat using Claude (emotional intelligence)
         if intent_data.get("intent") == "general_chat":
-            response_text = handle_general_chat(request.message)
+            response_text = await handle_general_chat(request.message)
+            logger.info(f"💬 General Chat Response (Claude): Generated")
             
             # Save to database
             chat_msg = ChatMessage(
@@ -123,9 +124,9 @@ async def chat(request: ChatRequest):
                 timestamp=chat_msg.timestamp
             )
         
-        # Generate friendly draft for other intents
-        draft_response = generate_friendly_draft(intent_data)
-        logger.info(f"Generated draft: {draft_response}")
+        # Generate friendly draft using Claude (emotional intelligence + professional tone)
+        draft_response = await generate_friendly_draft(intent_data)
+        logger.info(f"💝 Friendly Draft (Claude): Generated for {intent_data.get('intent')}")
         
         # Save to database
         chat_msg = ChatMessage(
@@ -147,7 +148,7 @@ async def chat(request: ChatRequest):
         )
         
     except Exception as e:
-        logger.error(f"Chat error: {e}")
+        logger.error(f"💥 Hybrid Chat Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/approve")
