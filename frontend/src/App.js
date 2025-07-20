@@ -343,16 +343,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900/30 to-purple-900/40 text-white">
-      {/* Header */}
-      <div className="bg-black/40 backdrop-blur-xl border-b border-blue-500/20 shadow-lg">
+    <div className="min-h-screen chat-background text-white">
+      {/* Premium Glassy Header */}
+      <div className="glassy-header shadow-lg">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-xl border-2 border-blue-400/20">
               <span className="text-2xl font-bold">E</span>
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+              <h1 className="text-2xl premium-title" data-text="Elva AI">
                 Elva AI
               </h1>
               <p className="text-xs text-gray-400 font-medium">Your personal smart assistant</p>
@@ -361,17 +361,17 @@ function App() {
           
           <button
             onClick={startNewChat}
-            className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 px-6 py-2.5 rounded-full flex items-center space-x-2 transition-all duration-300 shadow-lg hover:shadow-xl border border-blue-500/20 hover:border-blue-400/40"
+            className="premium-new-chat-btn px-6 py-2.5 rounded-full flex items-center space-x-2 shadow-lg"
             title="Start New Chat"
           >
-            <span className="text-xl">+</span>
+            <span className="text-xl premium-plus-icon">+</span>
             <span className="text-sm font-medium">New Chat</span>
           </button>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col h-screen">
+      {/* Chat Area with Premium Container */}
+      <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col h-screen premium-chat-container">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto space-y-4 mb-6 scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
           {messages.length === 0 && (
@@ -379,7 +379,7 @@ function App() {
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl">
                 <span className="text-3xl">🤖</span>
               </div>
-              <h2 className="text-2xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold mb-3 premium-title" data-text="Welcome to Elva AI!">
                 Welcome to Elva AI!
               </h2>
               <p className="text-gray-400 text-lg">Your personal smart assistant</p>
@@ -445,8 +445,8 @@ function App() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
-        <div className="bg-black/30 backdrop-blur-xl rounded-2xl border border-blue-500/20 p-4 shadow-xl">
+        {/* Premium Input Area */}
+        <div className="premium-input-area rounded-2xl p-4 shadow-xl">
           <div className="flex space-x-4">
             <input
               type="text"
