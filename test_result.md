@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Build Elva AI - Smart assistant chat interface with intent detection using LangChain + Groq API, n8n workflow integration, and draft approval modals for automated actions"
+user_problem_statement: "Build Elva AI - Smart assistant chat interface with HYBRID MODEL ARCHITECTURE combining Claude Sonnet + Groq integration for optimal performance: Claude for emotional intelligence & friendly responses, Groq for fast intent detection & logical reasoning. Includes intent detection using LangChain + Groq API, n8n workflow integration, and draft approval modals for automated actions"
 
 backend:
   - task: "Backend Server Setup"
