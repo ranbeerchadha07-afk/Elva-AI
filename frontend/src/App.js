@@ -96,6 +96,28 @@ function App() {
       return;
     }
 
+    // If user says approval keywords but there's no pending approval, provide helpful message
+    if (!pendingApproval && approvalKeywords.some(keyword => message.includes(keyword))) {
+      const userMessage = {
+        id: Date.now(),
+        message: inputMessage,
+        isUser: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, userMessage]);
+      setInputMessage('');
+      
+      const helpMessage = {
+        id: Date.now() + 1,
+        response: "🤔 I don't see any pending actions to approve. Try asking me to do something first, like 'Send an email to John about the meeting' or 'Create a reminder for tomorrow'!",
+        isUser: false,
+        isSystem: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, helpMessage]);
+      return;
+    }
+
     const userMessage = {
       id: Date.now(),
       message: inputMessage,
