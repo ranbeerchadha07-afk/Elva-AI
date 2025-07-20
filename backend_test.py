@@ -573,6 +573,51 @@ class ElvaBackendTester:
             self.log_test("Error Handling - Invalid Message ID", False, f"Error: {str(e)}")
             return False
 
+    def test_health_endpoint(self):
+        """Test 13: Health endpoint functionality"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check required fields
+                required_fields = ["status", "mongodb", "groq_api_key", "n8n_webhook"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test("Health Endpoint", False, f"Missing fields: {missing_fields}", data)
+                    return False
+                
+                # Check status is healthy
+                if data.get("status") != "healthy":
+                    self.log_test("Health Endpoint", False, f"Status not healthy: {data.get('status')}", data)
+                    return False
+                
+                # Check MongoDB connection
+                if data.get("mongodb") != "connected":
+                    self.log_test("Health Endpoint", False, f"MongoDB not connected: {data.get('mongodb')}", data)
+                    return False
+                
+                # Check API keys are configured
+                if data.get("groq_api_key") != "configured":
+                    self.log_test("Health Endpoint", False, "Groq API key not configured", data)
+                    return False
+                
+                if data.get("n8n_webhook") != "configured":
+                    self.log_test("Health Endpoint", False, "N8N webhook not configured", data)
+                    return False
+                
+                self.log_test("Health Endpoint", True, "All services healthy and configured")
+                return True
+            else:
+                self.log_test("Health Endpoint", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Health Endpoint", False, f"Error: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Elva AI Backend Testing")
