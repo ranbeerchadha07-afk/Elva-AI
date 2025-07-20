@@ -10,8 +10,8 @@ from typing import List, Optional
 import uuid
 from datetime import datetime
 
-# Import our custom modules
-from intent_detection import detect_intent, generate_friendly_draft, handle_general_chat
+# Import our custom modules - using new hybrid system
+from hybrid_intent_detection import detect_intent, generate_friendly_draft, handle_general_chat
 from webhook_handler import send_approved_action
 
 ROOT_DIR = Path(__file__).parent
