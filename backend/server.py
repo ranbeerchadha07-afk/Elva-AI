@@ -357,6 +357,9 @@ async def approve_action(request: ApprovalRequest):
             "n8n_response": n8n_response
         }
         
+    except HTTPException:
+        # Re-raise HTTPException to preserve status code
+        raise
     except Exception as e:
         logger.error(f"Approval error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
