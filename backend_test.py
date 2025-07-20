@@ -335,7 +335,7 @@ class ElvaBackendTester:
             return False
 
     def test_approval_workflow_approved(self):
-        """Test 6: Approval workflow - approved action"""
+        """Test 7: Approval workflow - approved action"""
         if not self.message_ids:
             self.log_test("Approval Workflow - Approved", False, "No message IDs available for approval test")
             return False
