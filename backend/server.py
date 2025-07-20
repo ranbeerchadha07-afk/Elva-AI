@@ -128,12 +128,12 @@ Return plain text.
 
 Examples:
 
-Input: {"intent": "send_email", "recipient_name": "Priya", "subject": "AI Update", "body": "Here's the latest..."}
+Input: {{"intent": "send_email", "recipient_name": "Priya", "subject": "AI Update", "body": "Here's the latest..."}}
 Output: ✉️ Here's a draft email to Priya:
 Subject: AI Update
 Body: Here's the latest...
 
-Input: {"intent": "set_reminder", "reminder_text": "Meeting with HR", "reminder_time": "10 AM", "reminder_date": "tomorrow"}
+Input: {{"intent": "set_reminder", "reminder_text": "Meeting with HR", "reminder_time": "10 AM", "reminder_date": "tomorrow"}}
 Output: ⏰ I'll remind you about "Meeting with HR" at 10 AM tomorrow.
 """),
     ("user", "{input_json}")
