@@ -14,6 +14,8 @@ function App() {
   const [pendingApproval, setPendingApproval] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editedData, setEditedData] = useState(null);
+  const [lastIntentData, setLastIntentData] = useState(null); // Store parsed intent data
+  const [currentMessageId, setCurrentMessageId] = useState(null); // Track current message for approval
   const messagesEndRef = useRef(null);
 
   function generateSessionId() {
@@ -87,22 +89,31 @@ function App() {
         user_id: 'default_user'
       });
 
+      const data = response.data;
+
+      // Store parsed intent data for modal use
+      if (data.intent_data) {
+        setLastIntentData(data.intent_data);
+        setCurrentMessageId(data.id);
+      }
+
       const aiMessage = {
-        id: response.data.id,
+        id: data.id,
         message: inputMessage,
-        response: response.data.response,
-        intent_data: response.data.intent_data,
-        needs_approval: response.data.needs_approval,
+        response: data.response,
+        intent_data: data.intent_data,
+        needs_approval: data.needs_approval,
         isUser: false,
-        timestamp: new Date(response.data.timestamp)
+        timestamp: new Date(data.timestamp)
       };
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // Show approval modal if needed
-      if (response.data.needs_approval) {
+      // Show approval modal immediately if needed with pre-filled data
+      if (data.needs_approval && data.intent_data) {
         setPendingApproval(aiMessage);
-        setEditedData(response.data.intent_data);
+        setEditedData(data.intent_data); // Pre-fill with AI-generated data
+        setEditMode(true); // Start in edit mode so user can see and modify fields
         setShowApprovalModal(true);
       }
 
@@ -124,11 +135,25 @@ function App() {
     if (!pendingApproval) return;
 
     try {
+      let finalData = editedData;
+      
+      // If user made edits, show the edited data in chat
+      if (editMode && editedData) {
+        const editSummary = {
+          id: Date.now(),
+          response: `📝 Updated details:\n${JSON.stringify(editedData, null, 2)}`,
+          isUser: false,
+          isEdit: true,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, editSummary]);
+      }
+
       const response = await axios.post(`${API}/approve`, {
         session_id: sessionId,
-        message_id: pendingApproval.id,
+        message_id: currentMessageId || pendingApproval.id,
         approved: approved,
-        edited_data: editMode ? editedData : null
+        edited_data: editMode ? finalData : null
       });
 
       const statusMessage = {
@@ -141,6 +166,18 @@ function App() {
       };
 
       setMessages(prev => [...prev, statusMessage]);
+
+      // If successful and approved, show n8n response details
+      if (approved && response.data.n8n_response) {
+        const n8nMessage = {
+          id: Date.now() + 1,
+          response: `🔗 Automation Response: ${JSON.stringify(response.data.n8n_response, null, 2)}`,
+          isUser: false,
+          isSystem: true,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, n8nMessage]);
+      }
 
     } catch (error) {
       console.error('Error handling approval:', error);
@@ -156,6 +193,8 @@ function App() {
       setPendingApproval(null);
       setEditMode(false);
       setEditedData(null);
+      setLastIntentData(null);
+      setCurrentMessageId(null);
     }
   };
 
