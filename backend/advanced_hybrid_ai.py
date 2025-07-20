@@ -361,28 +361,41 @@ Examples:
         # Add intent-specific guidance with content extraction
         intent = intent_data.get("intent", "general_chat")
         if intent == "send_email":
-            base_message += """ When drafting emails, structure your response as:
+            base_message += """ 
+            
+CRITICAL: When drafting emails, structure your response EXACTLY as follows:
+
 ✉️ Here's a draft email for [recipient]:
 
 Subject: [exact subject line]
-Body: [exact email content]
+Body: [exact email content that will be used]
 
-The content you generate for Subject and Body will be used exactly as written in the approval modal."""
+The content you write for Subject and Body will be used EXACTLY as written in the approval modal. Make sure the body is complete and ready to send."""
             
         elif intent == "linkedin_post":
-            base_message += """ When creating LinkedIn posts, structure your response as:
+            base_message += """ 
+            
+CRITICAL: When creating LinkedIn posts, structure your response EXACTLY as follows:
+
 📱 Here's an engaging LinkedIn post for you:
 
-[exact post content including hashtags and formatting]
+[exact post content including hashtags and formatting - this exact text will be used]
 
-The post content you generate will be used exactly as written in the approval modal."""
+The post content you generate will be used EXACTLY as written in the approval modal. Make it complete and ready to post."""
             
         elif intent == "creative_writing":
-            base_message += """ When creating creative content, provide the exact content that will be used.
-Structure your response clearly so the main content can be extracted for approval."""
+            base_message += """ 
+            
+CRITICAL: When creating creative content, provide the exact content that will be used.
+
+✨ Here's your creative content:
+
+[exact content that will be used - make it complete and ready to use]
+
+The content you generate will be used EXACTLY as written in the approval modal."""
             
         elif intent in ["add_todo", "set_reminder"]:
-            base_message += " Be encouraging and supportive when helping with task management."
+            base_message += " Be encouraging and supportive when helping with task management. Provide clear, actionable descriptions."
         
         return base_message
 
