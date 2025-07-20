@@ -151,7 +151,41 @@ backend:
     status_history:
         -working: "NA"
         -agent: "main"
-        -comment: "Added N8N_WEBHOOK_URL to .env file: https://kumararpit9468.app.n8n.cloud/webhook/elva-entry"
+  - task: "Chat API Endpoints"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Clean server.py with proper imports from intent_detection and webhook_handler modules. /api/chat endpoint with intent detection"
+
+  - task: "Approval Workflow API"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "/api/approve endpoint uses webhook_handler module for n8n integration. Supports approval/rejection and edited data"
+
+  - task: "Chat History Management"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "MongoDB-based session history with /api/history endpoints and proper ObjectId serialization"
 
 frontend:
   - task: "Dark Neon Chat Interface"
