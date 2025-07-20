@@ -140,6 +140,18 @@ function App() {
         setEditedData(data.intent_data); // Pre-fill with AI-generated data
         setEditMode(true); // Start in edit mode so user can see and modify fields
         setShowApprovalModal(true);
+        
+        // Add a helpful message about the modal
+        const modalHelpMessage = {
+          id: Date.now() + 1,
+          response: "📋 I've opened the approval modal with pre-filled details. You can review and edit the information above, then click 'Approve' or just type 'Send it' to execute! Type 'Cancel' to abort.",
+          isUser: false,
+          isSystem: true,
+          timestamp: new Date()
+        };
+        setTimeout(() => {
+          setMessages(prev => [...prev, modalHelpMessage]);
+        }, 500);
       }
 
     } catch (error) {
