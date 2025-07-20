@@ -1,6 +1,6 @@
 {
-  "total_tests": 11,
-  "passed": 11,
+  "total_tests": 13,
+  "passed": 13,
   "failed": 0,
   "success_rate": 100.0,
   "results": [
@@ -8,77 +8,91 @@
       "test": "Server Connectivity",
       "success": true,
       "details": "Backend server is running and accessible",
-      "timestamp": "2025-07-20T05:48:50.547618",
+      "timestamp": "2025-07-20T09:09:26.426587",
       "response_data": null
     },
     {
       "test": "Intent Detection - General Chat",
       "success": true,
       "details": "Correctly classified as general_chat, response: Hello there! I'm Elva AI, and I'm doing great, thanks for asking! I'm always happy to help with any ...",
-      "timestamp": "2025-07-20T05:48:51.655854",
+      "timestamp": "2025-07-20T09:09:27.566492",
       "response_data": null
     },
     {
       "test": "Intent Detection - Send Email",
       "success": true,
-      "details": "Correctly classified as send_email with extracted data",
-      "timestamp": "2025-07-20T05:48:52.485110",
+      "details": "Correctly classified as send_email with pre-filled data: recipient_name='Sarah', subject='Quarterly Report Update...', body populated",
+      "timestamp": "2025-07-20T09:09:28.744941",
       "response_data": null
     },
     {
       "test": "Intent Detection - Create Event",
       "success": true,
-      "details": "Correctly classified as create_event",
-      "timestamp": "2025-07-20T05:48:53.475454",
+      "details": "Correctly classified as create_event with pre-filled data: title='Team Meeting', date='tomorrow', time='2:00 PM'",
+      "timestamp": "2025-07-20T09:09:29.619954",
       "response_data": null
     },
     {
       "test": "Intent Detection - Add Todo",
       "success": true,
-      "details": "Correctly classified as add_todo",
-      "timestamp": "2025-07-20T05:48:54.308026",
+      "details": "Correctly classified as add_todo with pre-filled data: task='Finish the project'",
+      "timestamp": "2025-07-20T09:09:30.572696",
+      "response_data": null
+    },
+    {
+      "test": "Intent Detection - Set Reminder",
+      "success": true,
+      "details": "Correctly classified as set_reminder with pre-filled data: reminder_text='Call mom'",
+      "timestamp": "2025-07-20T09:09:31.605374",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Approved",
       "success": true,
       "details": "Action approved and sent to n8n webhook",
-      "timestamp": "2025-07-20T05:48:58.660080",
+      "timestamp": "2025-07-20T09:09:36.104313",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Rejected",
       "success": true,
       "details": "Action correctly rejected",
-      "timestamp": "2025-07-20T05:48:59.783835",
+      "timestamp": "2025-07-20T09:09:36.966835",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Edited Data",
       "success": true,
       "details": "Action approved with edited data",
-      "timestamp": "2025-07-20T05:49:02.529607",
+      "timestamp": "2025-07-20T09:09:40.117895",
       "response_data": null
     },
     {
       "test": "Chat History - Retrieval",
       "success": true,
-      "details": "Retrieved 6 messages from history",
-      "timestamp": "2025-07-20T05:49:03.053347",
+      "details": "Retrieved 7 messages from history",
+      "timestamp": "2025-07-20T09:09:40.643166",
       "response_data": null
     },
     {
       "test": "Chat History - Clearing",
       "success": true,
       "details": "Chat history successfully cleared",
-      "timestamp": "2025-07-20T05:49:03.591019",
+      "timestamp": "2025-07-20T09:09:41.181697",
       "response_data": null
     },
     {
       "test": "Error Handling - Invalid Message ID",
       "success": true,
       "details": "Correctly returned 404 for invalid message ID",
-      "timestamp": "2025-07-20T05:49:04.112501",
+      "timestamp": "2025-07-20T09:09:41.701562",
+      "response_data": null
+    },
+    {
+      "test": "Health Endpoint",
+      "success": true,
+      "details": "All services healthy and configured",
+      "timestamp": "2025-07-20T09:09:42.219457",
       "response_data": null
     }
   ]
