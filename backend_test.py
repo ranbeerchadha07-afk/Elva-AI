@@ -635,7 +635,8 @@ class ElvaBackendTester:
             self.test_approval_workflow_edited_data,
             self.test_chat_history_retrieval,
             self.test_chat_history_clearing,
-            self.test_error_handling
+            self.test_error_handling,
+            self.test_health_endpoint
         ]
         
         passed = 0
