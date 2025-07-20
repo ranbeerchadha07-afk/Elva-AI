@@ -275,7 +275,7 @@ class ContentSynchronizationTester:
         """Test 3: Creative writing intent content synchronization"""
         try:
             payload = {
-                "message": "Write a creative post about teamwork and collaboration",
+                "message": "Write creative content about teamwork and collaboration for my website",
                 "session_id": self.session_id,
                 "user_id": "test_user"
             }
