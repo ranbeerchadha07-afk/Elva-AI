@@ -245,14 +245,15 @@ metadata:
 test_plan:
   current_focus:
     - "Backend Server Setup"
-    - "Groq API Integration with LangChain" 
+    - "Intent Detection Module (intent_detection.py)"
+    - "Webhook Handler Module (webhook_handler.py)" 
+    - "Environment Configuration"
     - "Chat API Endpoints"
     - "Approval Workflow API"
-    - "N8N Webhook Integration"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
     -agent: "main"
-    -message: "Implemented complete Elva AI system with beautiful dark neon UI (confirmed working via screenshot). Backend includes LangChain+Groq intent detection, n8n webhook integration, and approval workflow. Frontend has chat interface with approval modals. Ready for backend testing - please test all API endpoints including intent detection, chat flow, and n8n integration."
+    -message: "IMPORTANT: Refactored code structure as requested! Created separate intent_detection.py and webhook_handler.py files. Added N8N_WEBHOOK_URL to .env. Server.py now cleanly imports from these modules. All functionality preserved but with better organization. Ready for testing with proper file structure."
