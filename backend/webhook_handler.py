@@ -119,7 +119,7 @@ async def send_approved_action(intent_data: dict, user_id: str, session_id: str)
     Returns:
         dict: Result of webhook call
     """
-    from intent_detection import format_intent_for_webhook
+    from hybrid_intent_detection import format_intent_for_webhook
     
     # Format data for webhook
     webhook_data = format_intent_for_webhook(intent_data, user_id, session_id)
