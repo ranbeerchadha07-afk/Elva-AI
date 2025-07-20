@@ -136,33 +136,30 @@ def detect_intent(user_input: str) -> dict:
         if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
             json_str = content[start_idx:end_idx + 1]
             
-            # Clean up common JSON issues
-            json_str = json_str.replace('\n', '\\n')  # Escape newlines
-            json_str = json_str.replace('\r', '\\r')  # Escape carriage returns
-            json_str = json_str.replace('\t', '\\t')  # Escape tabs
-            json_str = json_str.replace('\b', '\\b')  # Escape backspaces
-            json_str = json_str.replace('\f', '\\f')  # Escape form feeds
-            
             try:
                 return json.loads(json_str)
             except json.JSONDecodeError as json_err:
                 logger.error(f"JSON decode error: {json_err}")
                 logger.error(f"Problematic JSON: {json_str}")
                 
-                # Try to fix common issues and retry
-                # Remove any remaining control characters
-                import re
-                json_str = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', json_str)
-                
+                # Try to fix escaped newlines and other issues
                 try:
-                    return json.loads(json_str)
-                except json.JSONDecodeError:
-                    # If still failing, treat as general chat
-                    return {
-                        "intent": "general_chat",
-                        "message": user_input,
-                        "error": f"JSON parsing failed: {str(json_err)}"
-                    }
+                    # The JSON might have properly escaped newlines like \\n that need to be double-escaped for JSON parsing
+                    # Let's try parsing as-is first, then try fixes
+                    import ast
+                    # Try using ast.literal_eval for more robust parsing
+                    result = ast.literal_eval(json_str)
+                    if isinstance(result, dict):
+                        return result
+                except:
+                    pass
+                
+                # If still failing, treat as general chat but return a better error
+                return {
+                    "intent": "general_chat", 
+                    "message": user_input,
+                    "error": f"JSON parsing failed: {str(json_err)}"
+                }
         else:
             # If no JSON found, treat as general chat
             return {
