@@ -557,7 +557,7 @@ CRITICAL INSTRUCTIONS:
 - All JSON must be complete and properly formatted  
 - For all intents except general_chat, populate ALL fields with realistic content
 
-Intent types: send_email, create_event, add_todo, set_reminder, linkedin_post, general_chat
+Intent types: send_email, create_event, add_todo, set_reminder, linkedin_post, creative_writing, general_chat
 
 Example JSON responses:
 
