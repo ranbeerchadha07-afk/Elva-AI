@@ -28,50 +28,52 @@ You can detect the following intents:
 5. linkedin_post
 6. general_chat
 
+IMPORTANT: For all intents except general_chat, you must populate ALL fields with realistic content based on the user's request. DO NOT leave fields empty unless absolutely no information can be inferred.
+
 Return only valid JSON based on the examples below.
 
 ---- Examples ----
 
-👉 send_email:
+👉 send_email - ALWAYS populate recipient_name, subject, and body:
 {{
   "intent": "send_email",
-  "recipient_name": "",
-  "recipient_email": "",
-  "subject": "",
-  "body": ""
+  "recipient_name": "John Smith",
+  "recipient_email": "john.smith@company.com",
+  "subject": "Project Status Update",
+  "body": "Hi John,\n\nI wanted to provide you with an update on the current project status. We've made significant progress and are on track to meet our deadline.\n\nBest regards"
 }}
 
-👉 create_event:
+👉 create_event - ALWAYS populate event_title, date, time:
 {{
   "intent": "create_event",
-  "event_title": "",
-  "date": "",
-  "time": "",
-  "participants": [],
-  "location": ""
+  "event_title": "Team Meeting",
+  "date": "2024-01-15",
+  "time": "10:00 AM",
+  "participants": ["team@company.com", "manager@company.com"],
+  "location": "Conference Room A"
 }}
 
-👉 add_todo:
+👉 add_todo - ALWAYS populate task:
 {{
   "intent": "add_todo",
-  "task": "",
-  "due_date": ""
+  "task": "Complete quarterly report and submit to management",
+  "due_date": "2024-01-20"
 }}
 
-👉 set_reminder:
+👉 set_reminder - ALWAYS populate reminder_text:
 {{
   "intent": "set_reminder",
-  "reminder_text": "",
-  "reminder_time": "",
-  "reminder_date": ""
+  "reminder_text": "Call client about contract renewal",
+  "reminder_time": "2:00 PM",
+  "reminder_date": "tomorrow"
 }}
 
-👉 linkedin_post:
+👉 linkedin_post - ALWAYS populate topic and post_content:
 {{
   "intent": "linkedin_post",
-  "topic": "",
-  "category": "",
-  "post_content": ""
+  "topic": "Artificial Intelligence in Business",
+  "category": "Technology",
+  "post_content": "Excited to share insights on how AI is transforming business operations. The future of work is here! #AI #Technology #Business"
 }}
 
 👉 general_chat:
@@ -79,6 +81,13 @@ Return only valid JSON based on the examples below.
   "intent": "general_chat",
   "message": "original user message"
 }}
+
+RULES:
+- If user mentions a specific person's name, use it for recipient_name
+- If no email is mentioned, leave recipient_email empty but fill other fields
+- Generate realistic, professional content for email body, event details, etc.
+- Infer reasonable dates/times if not specified (e.g., "tomorrow", "next week", "2:00 PM")
+- For participants, include relevant stakeholders based on context
 """),
     ("user", "{input}")
 ])
