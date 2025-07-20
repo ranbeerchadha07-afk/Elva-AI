@@ -8,77 +8,77 @@
       "test": "Server Connectivity",
       "success": true,
       "details": "Backend server is running and accessible",
-      "timestamp": "2025-07-20T05:43:47.045286",
+      "timestamp": "2025-07-20T05:48:50.547618",
       "response_data": null
     },
     {
       "test": "Intent Detection - General Chat",
       "success": true,
       "details": "Correctly classified as general_chat, response: Hello there! I'm Elva AI, and I'm doing great, thanks for asking! I'm always happy to help with any ...",
-      "timestamp": "2025-07-20T05:43:48.022155",
+      "timestamp": "2025-07-20T05:48:51.655854",
       "response_data": null
     },
     {
       "test": "Intent Detection - Send Email",
       "success": true,
       "details": "Correctly classified as send_email with extracted data",
-      "timestamp": "2025-07-20T05:43:49.049971",
+      "timestamp": "2025-07-20T05:48:52.485110",
       "response_data": null
     },
     {
       "test": "Intent Detection - Create Event",
       "success": true,
       "details": "Correctly classified as create_event",
-      "timestamp": "2025-07-20T05:43:50.017670",
+      "timestamp": "2025-07-20T05:48:53.475454",
       "response_data": null
     },
     {
       "test": "Intent Detection - Add Todo",
       "success": true,
       "details": "Correctly classified as add_todo",
-      "timestamp": "2025-07-20T05:43:50.833644",
+      "timestamp": "2025-07-20T05:48:54.308026",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Approved",
       "success": true,
       "details": "Action approved and sent to n8n webhook",
-      "timestamp": "2025-07-20T05:43:55.185979",
+      "timestamp": "2025-07-20T05:48:58.660080",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Rejected",
       "success": true,
       "details": "Action correctly rejected",
-      "timestamp": "2025-07-20T05:43:56.033991",
+      "timestamp": "2025-07-20T05:48:59.783835",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Edited Data",
       "success": true,
       "details": "Action approved with edited data",
-      "timestamp": "2025-07-20T05:43:58.333989",
+      "timestamp": "2025-07-20T05:49:02.529607",
       "response_data": null
     },
     {
       "test": "Chat History - Retrieval",
       "success": true,
       "details": "Retrieved 6 messages from history",
-      "timestamp": "2025-07-20T05:43:58.855767",
+      "timestamp": "2025-07-20T05:49:03.053347",
       "response_data": null
     },
     {
       "test": "Chat History - Clearing",
       "success": true,
       "details": "Chat history successfully cleared",
-      "timestamp": "2025-07-20T05:43:59.396775",
+      "timestamp": "2025-07-20T05:49:03.591019",
       "response_data": null
     },
     {
       "test": "Error Handling - Invalid Message ID",
       "success": true,
       "details": "Correctly returned 404 for invalid message ID",
-      "timestamp": "2025-07-20T05:43:59.923347",
+      "timestamp": "2025-07-20T05:49:04.112501",
       "response_data": null
     }
   ]
