@@ -352,7 +352,7 @@ function App() {
               <span className="text-2xl font-bold">E</span>
             </div>
             <div>
-              <h1 className="text-2xl premium-title" data-text="Elva AI">
+              <h1 className="text-2xl smooth-glow-title">
                 Elva AI
               </h1>
               <p className="text-xs text-gray-400 font-medium">Your personal smart assistant</p>
