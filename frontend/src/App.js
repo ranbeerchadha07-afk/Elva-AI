@@ -430,7 +430,13 @@ function App() {
               <h2 className="text-2xl font-bold mb-3 smooth-glow-title">
                 Welcome to Elva AI!
               </h2>
-              <p className="text-gray-400 text-lg">Your personal smart assistant</p>
+              <TypewriterTagline 
+                text="Your personal smart assistant" 
+                className="text-lg mb-2"
+                speed={100}
+                pauseDuration={2500}
+                eraseSpeed={70}
+              />
               <p className="text-gray-500 text-sm mt-2">I can help you with emails, calendar events, reminders, todos, LinkedIn posts, and general conversation.</p>
             </div>
           )}
