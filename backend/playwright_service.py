@@ -349,14 +349,13 @@ class PlaywrightService:
             if page:
                 await page.close()
 
-    async def automate_email_interaction(self, email_provider: str, email: str, password: str, action: str, **kwargs) -> AutomationResult:
+    async def automate_email_interaction(self, email_provider: str, user_email: str, action: str, **kwargs) -> AutomationResult:
         """
-        Automate email interactions for non-API providers
+        Automate email interactions using saved cookies (no password required)
         
         Args:
             email_provider: Provider (outlook, yahoo, gmail)
-            email: Email address
-            password: Email password
+            user_email: Email address (used to identify saved cookies)
             action: Action to perform (check_inbox, send_email, mark_read)
             **kwargs: Additional parameters based on action
         """
@@ -364,29 +363,38 @@ class PlaywrightService:
         page = None
         
         try:
-            logger.info(f"📩 Automating {email_provider} email: {action}")
-            page = await self._create_page()
+            logger.info(f"📩 Automating {email_provider} email: {action} using saved cookies")
             
-            # Provider-specific login URLs
-            login_urls = {
-                'outlook': 'https://outlook.live.com/owa/',
+            # Create page with saved cookies
+            page = await self._create_page(email_provider, user_email)
+            
+            # Provider-specific URLs
+            provider_urls = {
+                'outlook': 'https://outlook.live.com/mail/',
                 'yahoo': 'https://mail.yahoo.com/',
-                'gmail': 'https://mail.google.com/'
+                'gmail': 'https://mail.google.com/mail/u/0/#inbox'
             }
             
-            if email_provider not in login_urls:
+            if email_provider not in provider_urls:
                 raise ValueError(f"Unsupported email provider: {email_provider}")
             
-            # Navigate to email provider
-            await page.goto(login_urls[email_provider], wait_until='networkidle')
+            # Navigate to email provider (should be auto-logged in with cookies)
+            await page.goto(provider_urls[email_provider], wait_until='networkidle')
             
-            # Provider-specific login flows
-            if email_provider == 'outlook':
-                await self._login_outlook(page, email, password)
-            elif email_provider == 'yahoo':
-                await self._login_yahoo(page, email, password)
-            elif email_provider == 'gmail':
-                await self._login_gmail(page, email, password)
+            # Check if we're logged in (provider-specific checks)
+            logged_in = await self._check_email_login_status(page, email_provider)
+            
+            if not logged_in:
+                logger.error("❌ Email login failed - cookies may be expired or invalid")
+                return AutomationResult(
+                    success=False,
+                    data={},
+                    message=f"Login failed for {email_provider} - please recapture cookies",
+                    execution_time=time.time() - start_time,
+                    errors=["Authentication failed with saved cookies"]
+                )
+                
+            logger.info(f"✅ Successfully logged into {email_provider} with saved cookies")
             
             # Perform requested action
             result_data = {}
@@ -397,13 +405,15 @@ class PlaywrightService:
                 result_data = await self._send_email(page, email_provider, kwargs)
             elif action == "mark_read":
                 result_data = await self._mark_emails_read(page, email_provider, kwargs.get('email_ids', []))
+            elif action == "get_unread_count":
+                result_data = await self._get_unread_count(page, email_provider)
             
             execution_time = time.time() - start_time
             
             return AutomationResult(
                 success=True,
                 data=result_data,
-                message=f"Successfully automated {email_provider} {action}",
+                message=f"Successfully automated {email_provider} {action} using saved cookies",
                 execution_time=execution_time
             )
             
@@ -421,6 +431,28 @@ class PlaywrightService:
         finally:
             if page:
                 await page.close()
+    
+    async def _check_email_login_status(self, page: Page, provider: str) -> bool:
+        """Check if user is successfully logged into email provider"""
+        try:
+            if provider == 'gmail':
+                # Look for Gmail-specific elements that indicate login
+                await page.wait_for_selector('[data-testid="gmail-logo"], .nZ.aiq, .gb_C', timeout=10000)
+                return True
+            elif provider == 'outlook':
+                # Look for Outlook-specific elements
+                await page.wait_for_selector('[aria-label="Outlook"], .ms-Nav, ._2wUgT81Yh2C3S6tGYy9e-H', timeout=10000)
+                return True
+            elif provider == 'yahoo':
+                # Look for Yahoo Mail specific elements
+                await page.wait_for_selector('[data-test-id="app-nav"], .js-app-container', timeout=10000)
+                return True
+                
+        except Exception as e:
+            logger.warning(f"Login status check failed for {provider}: {e}")
+            return False
+            
+        return False
 
     async def monitor_ecommerce_price(self, product_url: str, price_selector: str, product_name: str = None) -> AutomationResult:
         """
