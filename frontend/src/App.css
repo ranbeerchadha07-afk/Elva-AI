@@ -264,9 +264,9 @@ button:active:not(:disabled) {
 
 /* Premium Elva AI Styles */
 
-/* Chat Background Image */
+/* Chat Background with Panther Image */
 .chat-background {
-  background-image: url('https://images.unsplash.com/photo-1597733336794-12d05021d510?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHx0ZWNoJTIwYmFja2dyb3VuZHxlbnwwfHx8Ymx1ZXwxNzUzMDE3NzkyfDA&ixlib=rb-4.1.0&q=85');
+  background-image: url('https://images.unsplash.com/photo-1517825738774-7de9363ef735?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHxibGFjayUyMHBhbnRoZXJ8ZW58MHx8fGJsYWNrfDE3NTMwNjUzMjN8MA&ixlib=rb-4.1.0&q=85');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -280,7 +280,7 @@ button:active:not(:disabled) {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 0;
 }
 
@@ -303,32 +303,37 @@ button:active:not(:disabled) {
     0 0 40px rgba(59, 130, 246, 0.15);
 }
 
-/* Premium Elva AI Text with Neon Gradient */
-.premium-title {
-  background: linear-gradient(135deg, #00d4ff 0%, #ff6b35 50%, #1a1a1a 100%);
+/* Smooth Glowing "Elva AI" Text - No Deep Embossing */
+.smooth-glow-title {
+  background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #1a1a1a 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 
-    0 0 20px rgba(0, 212, 255, 0.5),
-    0 4px 8px rgba(0, 0, 0, 0.8),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
-  font-weight: 900;
-  letter-spacing: -0.02em;
+    0 0 20px rgba(0, 212, 255, 0.6),
+    0 0 40px rgba(139, 92, 246, 0.4),
+    0 0 60px rgba(0, 212, 255, 0.3);
+  filter: 
+    drop-shadow(0 0 10px rgba(0, 212, 255, 0.5))
+    drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+  font-weight: 700;
+  letter-spacing: -0.01em;
   position: relative;
+  animation: gentle-glow 3s ease-in-out infinite alternate;
 }
 
-.premium-title::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  z-index: -1;
+@keyframes gentle-glow {
+  0% {
+    filter: 
+      drop-shadow(0 0 10px rgba(0, 212, 255, 0.5))
+      drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+  }
+  100% {
+    filter: 
+      drop-shadow(0 0 15px rgba(0, 212, 255, 0.7))
+      drop-shadow(0 0 30px rgba(139, 92, 246, 0.5))
+      drop-shadow(0 0 45px rgba(0, 212, 255, 0.3));
+  }
 }
 
 /* Premium New Chat Button with Glassy Neon Effect */
@@ -408,16 +413,55 @@ button:active:not(:disabled) {
   -webkit-backdrop-filter: blur(5px);
 }
 
-/* Enhanced Input Area */
-.premium-input-area {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 2px solid rgba(59, 130, 246, 0.2);
+/* Glassy Input Area with Subtle Deep-Edged Border */
+.glassy-input-area {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 0 30px rgba(59, 130, 246, 0.1);
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.glassy-input-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  z-index: 1;
+}
+
+/* Clean Input Field - No Strong Blue Outlines */
+.clean-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 1.125rem;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.clean-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s ease;
+}
+
+.clean-input:focus::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.clean-input:focus {
+  color: rgba(255, 255, 255, 0.95);
 }
 
 /* Animation enhancements */
