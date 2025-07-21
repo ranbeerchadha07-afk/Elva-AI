@@ -1,183 +1,306 @@
 {
-  "total_tests": 25,
-  "passed": 4,
-  "failed": 21,
-  "success_rate": 16.0,
+  "total_tests": 36,
+  "passed": 8,
+  "failed": 28,
+  "success_rate": 22.22222222222222,
   "results": [
     {
       "test": "Server Connectivity",
-      "success": false,
-      "details": "Connection error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-21T04:32:06.453596",
+      "success": true,
+      "details": "Backend server is running and accessible",
+      "timestamp": "2025-07-21T05:55:33.743086",
       "response_data": null
     },
     {
       "test": "Intent Detection - General Chat",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:32:21.974933",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:55:49.261107",
       "response_data": null
     },
     {
       "test": "Intent Detection - Send Email",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:32:37.494157",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:56:04.783482",
       "response_data": null
     },
     {
       "test": "Intent Detection - Create Event",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:32:53.051476",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:56:20.328235",
       "response_data": null
     },
     {
       "test": "Intent Detection - Add Todo",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:33:08.572588",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:56:35.881490",
       "response_data": null
     },
     {
       "test": "Intent Detection - Set Reminder",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:33:24.114950",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:56:51.421144",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Approved",
       "success": false,
       "details": "No message IDs available for approval test",
-      "timestamp": "2025-07-21T04:33:24.615154",
+      "timestamp": "2025-07-21T05:56:51.921352",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Rejected",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:33:40.175919",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:57:07.480873",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Edited Data",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:33:55.717008",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T05:57:23.027104",
       "response_data": null
     },
     {
       "test": "Chat History - Retrieval",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-21T04:34:06.264143",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T05:57:33.581947",
       "response_data": null
     },
     {
       "test": "Chat History - Clearing",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-21T04:34:16.803496",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T05:57:44.124530",
       "response_data": null
     },
     {
       "test": "Error Handling - Invalid Message ID",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-21T04:34:27.345586",
+      "details": "Error: HTTPSConnectionPool(host='567483b4-7c4c-4a1c-b64c-fda264e1cb15.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T05:57:54.659089",
       "response_data": null
     },
     {
       "test": "Health Endpoint - Enhanced System",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-21T04:34:37.933423",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:57:57.693167",
+      "response_data": ""
     },
     {
       "test": "Web Automation Intent Detection",
       "success": false,
-      "details": "\u274c Web scraping intent: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)\n    \u274c LinkedIn insights intent: Expected linkedin_insights, got check_linkedin_notifications\n    \u2705 Email automation intent: email_automation\n    \u2705 Price monitoring intent: price_monitoring\n    \u274c Data extraction intent: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-21T04:35:46.958512",
+      "details": "\u274c Web scraping intent: HTTP 502\n    \u274c LinkedIn insights intent: HTTP 502\n    \u274c Email automation intent: HTTP 502\n    \u274c Price monitoring intent: HTTP 502\n    \u274c Data extraction intent: HTTP 502",
+      "timestamp": "2025-07-21T05:57:58.287395",
       "response_data": null
     },
     {
       "test": "Web Automation - Data Extraction",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)",
-      "timestamp": "2025-07-21T04:36:17.526718",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:57:58.808762",
+      "response_data": ""
     },
     {
       "test": "Web Automation - Price Monitoring",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)",
-      "timestamp": "2025-07-21T04:36:48.131733",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:57:59.352955",
+      "response_data": ""
     },
     {
       "test": "Web Automation - LinkedIn Insights",
-      "success": true,
-      "details": "LinkedIn insights endpoint working. Success: False, Message: Failed to scrape LinkedIn: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 24.01s",
-      "timestamp": "2025-07-21T04:37:13.011344",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:57:59.868929",
+      "response_data": ""
     },
     {
       "test": "Web Automation - Email Automation",
-      "success": true,
-      "details": "Email automation endpoint working. Success: False, Message: Failed to automate email: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 0.42s",
-      "timestamp": "2025-07-21T04:37:13.975100",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:58:00.462937",
+      "response_data": ""
     },
     {
       "test": "Web Automation Error Handling",
-      "success": true,
-      "details": "\u2705 Missing URL for web scraping: Correctly returned 400\n    \u2705 Missing credentials for LinkedIn: Correctly returned 400\n    \u2705 Invalid automation type: Correctly returned 400",
-      "timestamp": "2025-07-21T04:37:14.584368",
+      "success": false,
+      "details": "\u274c Missing URL for web scraping: Expected 400, got 502\n    \u274c Missing credentials for LinkedIn: Expected 400, got 502\n    \u274c Invalid automation type: Expected 400, got 502",
+      "timestamp": "2025-07-21T05:58:01.239722",
       "response_data": null
     },
     {
       "test": "Automation History",
-      "success": true,
-      "details": "Retrieved 4 automation records from history",
-      "timestamp": "2025-07-21T04:37:15.111352",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:58:01.758331",
+      "response_data": ""
     },
     {
       "test": "Direct Web Scraping Execution",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)",
-      "timestamp": "2025-07-21T04:37:45.646508",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:58:02.276660",
+      "response_data": ""
     },
     {
       "test": "Direct Automation Intents",
       "success": false,
-      "details": "\u2705 LinkedIn notifications check: Direct automation working - check_linkedin_notifications\n    \u274c Price scraping: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)\n    \u274c Product listings scraping: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)\n    \u274c LinkedIn job alerts: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)\n    \u274c Website updates monitoring: HTTP 502\n    \u274c Competitor monitoring: HTTP 502\n    \u274c News articles scraping: HTTP 502",
-      "timestamp": "2025-07-21T04:39:17.775871",
+      "details": "\u274c LinkedIn notifications check: HTTP 502\n    \u274c Price scraping: HTTP 502\n    \u274c Product listings scraping: HTTP 502\n    \u274c LinkedIn job alerts: HTTP 502\n    \u274c Website updates monitoring: HTTP 502\n    \u274c Competitor monitoring: HTTP 502\n    \u274c News articles scraping: HTTP 502",
+      "timestamp": "2025-07-21T05:58:03.139672",
       "response_data": null
     },
     {
       "test": "Automation Status Endpoint",
       "success": false,
       "details": "\u274c check_linkedin_notifications: HTTP 502\n    \u274c scrape_price: HTTP 502\n    \u274c scrape_product_listings: HTTP 502\n    \u274c linkedin_job_alerts: HTTP 502\n    \u274c check_website_updates: HTTP 502\n    \u274c monitor_competitors: HTTP 502\n    \u274c scrape_news_articles: HTTP 502",
-      "timestamp": "2025-07-21T04:39:18.426272",
+      "timestamp": "2025-07-21T05:58:03.862423",
       "response_data": null
     },
     {
       "test": "Direct Automation Response Format",
       "success": false,
       "details": "HTTP 502",
-      "timestamp": "2025-07-21T04:39:18.968394",
+      "timestamp": "2025-07-21T05:58:04.378988",
       "response_data": ""
     },
     {
       "test": "Traditional vs Direct Automation",
       "success": false,
       "details": "Traditional automation request failed",
-      "timestamp": "2025-07-21T04:39:19.490012",
+      "timestamp": "2025-07-21T05:58:04.894687",
       "response_data": null
+    },
+    {
+      "test": "Cookie Sessions - List",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:58:05.426950",
+      "response_data": ""
+    },
+    {
+      "test": "Cookie Session Status Check",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T05:58:05.953183",
+      "response_data": ""
+    },
+    {
+      "test": "Cookie Session Delete - Non-existent",
+      "success": true,
+      "details": "Correctly handled deletion of non-existent cookies for gmail user nonexistent@example.com",
+      "timestamp": "2025-07-21T05:58:06.470571",
+      "response_data": null
+    },
+    {
+      "test": "Cookie Cleanup - Expired",
+      "success": true,
+      "details": "Successfully cleaned up 0 expired cookie sessions",
+      "timestamp": "2025-07-21T05:58:06.990726",
+      "response_data": null
+    },
+    {
+      "test": "Health Endpoint - Cookie Management",
+      "success": true,
+      "details": "Cookie management info present: 0 total sessions, 0 valid, encryption enabled",
+      "timestamp": "2025-07-21T05:58:07.507406",
+      "response_data": null
+    },
+    {
+      "test": "LinkedIn Automation - Missing user_email",
+      "success": true,
+      "details": "Correctly returned 400 error for missing user_email",
+      "timestamp": "2025-07-21T05:58:08.024299",
+      "response_data": null
+    },
+    {
+      "test": "LinkedIn Automation - No Cookies",
+      "success": true,
+      "details": "Correctly handled missing LinkedIn cookies with user guidance",
+      "timestamp": "2025-07-21T05:58:08.542983",
+      "response_data": null
+    },
+    {
+      "test": "Email Automation - Missing Parameters",
+      "success": true,
+      "details": "Correctly returned 400 error for missing parameters",
+      "timestamp": "2025-07-21T05:58:09.065294",
+      "response_data": null
+    },
+    {
+      "test": "Email Automation - No Cookies",
+      "success": true,
+      "details": "Correctly handled missing email cookies with user guidance",
+      "timestamp": "2025-07-21T05:58:09.583031",
+      "response_data": null
+    },
+    {
+      "test": "Chat LinkedIn Automation Integration",
+      "success": false,
+      "details": "Expected linkedin_insights intent, got check_linkedin_notifications",
+      "timestamp": "2025-07-21T05:58:11.031035",
+      "response_data": {
+        "id": "e248cad6-f3ce-499c-be48-5f953384a773",
+        "message": "Check my LinkedIn notifications for user sarah@company.com",
+        "response": "\ud83d\udd14 **LinkedIn Notifications** (3 new)\n\u2022 **John Doe** wants to connect\n\u2022 **Sarah Smith** sent you a message\n\u2022 **Mike Johnson** liked your post",
+        "intent_data": {
+          "intent": "check_linkedin_notifications",
+          "account_type": "personal",
+          "email": "sarah@company.com",
+          "automation_result": {
+            "count": 3,
+            "notifications": [
+              {
+                "type": "connection",
+                "name": "John Doe",
+                "message": "wants to connect"
+              },
+              {
+                "type": "message",
+                "name": "Sarah Smith",
+                "message": "sent you a message"
+              },
+              {
+                "type": "post_like",
+                "name": "Mike Johnson",
+                "message": "liked your post"
+              }
+            ]
+          },
+          "automation_success": true,
+          "execution_time": 7e-06,
+          "direct_automation": true
+        },
+        "needs_approval": false,
+        "timestamp": "2025-07-21T05:58:11.026183"
+      }
+    },
+    {
+      "test": "Chat Email Automation Integration",
+      "success": false,
+      "details": "Expected email_automation intent, got check_inbox",
+      "timestamp": "2025-07-21T05:58:22.415805",
+      "response_data": {
+        "id": "f2e56c32-e7ae-4f5a-9863-666c54396848",
+        "message": "Check my Gmail inbox for user john@company.com",
+        "response": "I'd be happy to help you with that! As Elva AI, I can access your Gmail inbox and provide you with an update on the latest emails from user john@company.com.\n\nPlease note that I'll need your permission to access your Gmail account. If you're comfortable with that, I can proceed with checking your inbox.\n\nOnce I've accessed your inbox, I'll provide you with a summary of the emails from john@company.com, including the subject lines, senders, and any relevant details.\n\nPlease confirm if you'd like me to proceed with checking your inbox.",
+        "intent_data": {
+          "intent": "check_inbox",
+          "provider": "gmail",
+          "email": "john@company.com",
+          "password": "password"
+        },
+        "needs_approval": true,
+        "timestamp": "2025-07-21T05:58:22.409826"
+      }
     }
   ]
 }
