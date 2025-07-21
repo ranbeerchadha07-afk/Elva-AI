@@ -10,6 +10,7 @@ from playwright_stealth import stealth_async
 from bs4 import BeautifulSoup
 import time
 from dataclasses import dataclass
+from cookie_manager import cookie_manager
 
 logger = logging.getLogger(__name__)
 
