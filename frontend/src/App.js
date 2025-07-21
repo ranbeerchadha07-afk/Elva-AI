@@ -70,6 +70,30 @@ function App() {
     }
   };
 
+  const getAutomationStatusMessage = (message) => {
+    const directAutomationPatterns = {
+      'check.*linkedin.*notification': '🔔 Checking LinkedIn notifications...',
+      'scrape.*price|price.*check|current.*price': '💰 Searching for current prices...',
+      'scrape.*product|product.*listing|find.*product': '🛒 Scraping product listings...',
+      'job.*alert|linkedin.*job|check.*job': '💼 Checking LinkedIn job alerts...',
+      'website.*update|check.*website': '🔍 Monitoring website updates...',
+      'competitor.*monitor|monitor.*competitor': '📊 Analyzing competitor data...',
+      'news.*article|scrape.*news|latest.*news': '📰 Gathering latest news...'
+    };
+
+    const lowerMessage = message.toLowerCase();
+    for (const [pattern, status] of Object.entries(directAutomationPatterns)) {
+      if (new RegExp(pattern).test(lowerMessage)) {
+        return status;
+      }
+    }
+    return null;
+  };
+
+  const isDirectAutomationMessage = (message) => {
+    return getAutomationStatusMessage(message) !== null;
+  };
+
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
 
