@@ -35,8 +35,8 @@ class PlaywrightService:
         self.default_timeout = 30000  # 30 seconds
         self.stealth_mode = True
         
-    async def _get_browser_context(self) -> Tuple[Browser, BrowserContext]:
-        """Get or create browser context with stealth mode"""
+    async def _get_browser_context(self, service_name: str = None, user_identifier: str = None) -> Tuple[Browser, BrowserContext]:
+        """Get or create browser context with stealth mode and optional cookies"""
         if not self.browser or not self.context:
             playwright = await async_playwright().start()
             
@@ -53,15 +53,32 @@ class PlaywrightService:
                     '--disable-gpu',
                     '--disable-background-timer-throttling',
                     '--disable-renderer-backgrounding',
-                    '--disable-backgrounding-occluded-windows'
+                    '--disable-backgrounding-occluded-windows',
+                    '--disable-blink-features=AutomationControlled'
                 ]
             )
             
             # Create context with realistic settings
             self.context = await self.browser.new_context(
                 viewport={'width': 1920, 'height': 1080},
-                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                extra_http_headers={
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.5',
+                    'Accept-Encoding': 'gzip, deflate',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1'
+                }
             )
+            
+            # Load cookies if service and user are provided
+            if service_name and user_identifier:
+                cookies = cookie_manager.load_cookies(service_name, user_identifier)
+                if cookies:
+                    await self.context.add_cookies(cookies)
+                    logger.info(f"🍪 Loaded {len(cookies)} cookies for {service_name} user {user_identifier}")
+                else:
+                    logger.warning(f"⚠️ No valid cookies found for {service_name} user {user_identifier}")
             
         return self.browser, self.context
 
