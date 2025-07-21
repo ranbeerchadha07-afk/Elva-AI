@@ -67,6 +67,11 @@ class ApprovalRequest(BaseModel):
     approved: bool
     edited_data: Optional[dict] = None
 
+class WebAutomationRequest(BaseModel):
+    session_id: str
+    automation_type: str  # "web_scraping", "linkedin_insights", "email_automation", "price_monitoring"
+    parameters: dict
+
 # Helper functions
 def convert_objectid_to_str(doc):
     """Convert MongoDB ObjectId to string for JSON serialization"""
