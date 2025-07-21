@@ -1,0 +1,43 @@
+{
+  "total_tests": 5,
+  "passed": 0,
+  "failed": 5,
+  "success_rate": 0.0,
+  "results": [
+    {
+      "test": "Server Connectivity",
+      "success": false,
+      "details": "Connection error: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=5)",
+      "timestamp": "2025-07-21T04:37:22.168794",
+      "response_data": null
+    },
+    {
+      "test": "Direct Automation Intents",
+      "success": false,
+      "details": "\u2705 LinkedIn notifications check: Direct automation working - check_linkedin_notifications\n    \u2705 Price scraping: Direct automation working - scrape_price\n    \u274c Product listings scraping: Error HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=30)\n    \u274c LinkedIn job alerts: Error HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=30)\n    \u274c Website updates monitoring: Error ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))\n    \u274c Competitor monitoring: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca830c090>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c News articles scraping: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca831da50>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+      "timestamp": "2025-07-21T04:39:17.697131",
+      "response_data": null
+    },
+    {
+      "test": "Automation Status Endpoint",
+      "success": false,
+      "details": "\u274c check_linkedin_notifications: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/check_linkedin_notifications (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca831fd90>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c scrape_price: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/scrape_price (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca8321f50>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c scrape_product_listings: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/scrape_product_listings (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca831fc50>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c linkedin_job_alerts: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/linkedin_job_alerts (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca831dd10>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c check_website_updates: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/check_website_updates (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca8300710>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c monitor_competitors: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/monitor_competitors (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca830e350>: Failed to establish a new connection: [Errno 111] Connection refused'))\n    \u274c scrape_news_articles: Error HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/automation-status/scrape_news_articles (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca8320b10>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+      "timestamp": "2025-07-21T04:39:18.705000",
+      "response_data": null
+    },
+    {
+      "test": "Direct Automation Response Format",
+      "success": false,
+      "details": "Error: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca832c610>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+      "timestamp": "2025-07-21T04:39:19.706528",
+      "response_data": null
+    },
+    {
+      "test": "Traditional vs Direct Automation",
+      "success": false,
+      "details": "Error: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xfc5ca830e750>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+      "timestamp": "2025-07-21T04:39:20.708374",
+      "response_data": null
+    }
+  ]
+}

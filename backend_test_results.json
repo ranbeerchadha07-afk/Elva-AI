@@ -1,168 +1,182 @@
 {
-  "total_tests": 21,
-  "passed": 18,
-  "failed": 3,
-  "success_rate": 85.71428571428571,
+  "total_tests": 25,
+  "passed": 4,
+  "failed": 21,
+  "success_rate": 16.0,
   "results": [
     {
       "test": "Server Connectivity",
       "success": false,
-      "details": "Unexpected response message",
-      "timestamp": "2025-07-21T03:17:20.894848",
-      "response_data": {
-        "message": "Elva AI Backend with Advanced Hybrid Routing! \ud83e\udd16\u2728\ud83e\udde0",
-        "version": "2.0"
-      }
+      "details": "Connection error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T04:32:06.453596",
+      "response_data": null
     },
     {
       "test": "Intent Detection - General Chat",
-      "success": true,
-      "details": "Correctly classified as general_chat, response: I'm just a language model, I don't have emotions or feelings like humans do, so I don't have good or...",
-      "timestamp": "2025-07-21T03:17:22.253300",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:32:21.974933",
       "response_data": null
     },
     {
       "test": "Intent Detection - Send Email",
-      "success": true,
-      "details": "Correctly classified as send_email with pre-filled data: recipient_name='Sarah', subject='Quarterly Report Update...', body populated",
-      "timestamp": "2025-07-21T03:17:23.472202",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:32:37.494157",
       "response_data": null
     },
     {
       "test": "Intent Detection - Create Event",
       "success": false,
-      "details": "Missing intent fields: ['participants']",
-      "timestamp": "2025-07-21T03:17:24.582206",
-      "response_data": {
-        "intent": "create_event",
-        "event_title": "Team Meeting",
-        "date": "tomorrow",
-        "time": "2pm"
-      }
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:32:53.051476",
+      "response_data": null
     },
     {
       "test": "Intent Detection - Add Todo",
-      "success": true,
-      "details": "Correctly classified as add_todo with pre-filled data: task='Finish the project'",
-      "timestamp": "2025-07-21T03:17:25.375899",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:33:08.572588",
       "response_data": null
     },
     {
       "test": "Intent Detection - Set Reminder",
-      "success": true,
-      "details": "Correctly classified as set_reminder with pre-filled data: reminder_text='Call mom'",
-      "timestamp": "2025-07-21T03:17:26.360216",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:33:24.114950",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Approved",
-      "success": true,
-      "details": "Action approved and sent to n8n webhook",
-      "timestamp": "2025-07-21T03:17:31.095530",
+      "success": false,
+      "details": "No message IDs available for approval test",
+      "timestamp": "2025-07-21T04:33:24.615154",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Rejected",
-      "success": true,
-      "details": "Action correctly rejected",
-      "timestamp": "2025-07-21T03:17:32.035684",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:33:40.175919",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Edited Data",
-      "success": true,
-      "details": "Action approved with edited data",
-      "timestamp": "2025-07-21T03:17:39.370444",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:33:55.717008",
       "response_data": null
     },
     {
       "test": "Chat History - Retrieval",
-      "success": true,
-      "details": "Retrieved 7 messages from history",
-      "timestamp": "2025-07-21T03:17:39.895090",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T04:34:06.264143",
       "response_data": null
     },
     {
       "test": "Chat History - Clearing",
-      "success": true,
-      "details": "Chat history successfully cleared",
-      "timestamp": "2025-07-21T03:17:40.436198",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T04:34:16.803496",
       "response_data": null
     },
     {
       "test": "Error Handling - Invalid Message ID",
-      "success": true,
-      "details": "Correctly returned 404 for invalid message ID",
-      "timestamp": "2025-07-21T03:17:40.960090",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T04:34:27.345586",
       "response_data": null
     },
     {
       "test": "Health Endpoint - Enhanced System",
-      "success": true,
-      "details": "Enhanced system healthy: Claude + Groq + Playwright with web automation capabilities: ['web_scraping', 'linkedin_insights', 'email_automation', 'price_monitoring', 'data_extraction']",
-      "timestamp": "2025-07-21T03:17:41.486500",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-21T04:34:37.933423",
       "response_data": null
     },
     {
       "test": "Web Automation Intent Detection",
-      "success": true,
-      "details": "\u2705 Web scraping intent: web_scraping\n    \u2705 LinkedIn insights intent: linkedin_insights\n    \u2705 Email automation intent: email_automation\n    \u2705 Price monitoring intent: price_monitoring\n    \u2705 Data extraction intent: data_extraction",
-      "timestamp": "2025-07-21T03:18:27.145833",
+      "success": false,
+      "details": "\u274c Web scraping intent: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)\n    \u274c LinkedIn insights intent: Expected linkedin_insights, got check_linkedin_notifications\n    \u2705 Email automation intent: email_automation\n    \u2705 Price monitoring intent: price_monitoring\n    \u274c Data extraction intent: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
+      "timestamp": "2025-07-21T04:35:46.958512",
       "response_data": null
     },
     {
       "test": "Web Automation - Data Extraction",
       "success": false,
-      "details": "Automation failed: Failed to extract data: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d",
-      "timestamp": "2025-07-21T03:18:28.107035",
-      "response_data": {
-        "success": false,
-        "data": {},
-        "message": "Failed to extract data: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d",
-        "execution_time": 0.3996601104736328,
-        "automation_id": "04882c5d-be77-4fc7-93f8-44ef49066e2c"
-      }
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)",
+      "timestamp": "2025-07-21T04:36:17.526718",
+      "response_data": null
     },
     {
       "test": "Web Automation - Price Monitoring",
-      "success": true,
-      "details": "Price monitoring endpoint working. Success: False, Message: Failed to monitor price: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 0.38s",
-      "timestamp": "2025-07-21T03:18:29.024393",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)",
+      "timestamp": "2025-07-21T04:36:48.131733",
       "response_data": null
     },
     {
       "test": "Web Automation - LinkedIn Insights",
       "success": true,
-      "details": "LinkedIn insights endpoint working. Success: False, Message: Failed to scrape LinkedIn: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 0.37s",
-      "timestamp": "2025-07-21T03:18:29.919907",
+      "details": "LinkedIn insights endpoint working. Success: False, Message: Failed to scrape LinkedIn: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 24.01s",
+      "timestamp": "2025-07-21T04:37:13.011344",
       "response_data": null
     },
     {
       "test": "Web Automation - Email Automation",
       "success": true,
-      "details": "Email automation endpoint working. Success: False, Message: Failed to automate email: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 0.37s",
-      "timestamp": "2025-07-21T03:18:30.815381",
+      "details": "Email automation endpoint working. Success: False, Message: Failed to automate email: BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1140/chrome-linux/chrome\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d, Execution time: 0.42s",
+      "timestamp": "2025-07-21T04:37:13.975100",
       "response_data": null
     },
     {
       "test": "Web Automation Error Handling",
       "success": true,
       "details": "\u2705 Missing URL for web scraping: Correctly returned 400\n    \u2705 Missing credentials for LinkedIn: Correctly returned 400\n    \u2705 Invalid automation type: Correctly returned 400",
-      "timestamp": "2025-07-21T03:18:31.377269",
+      "timestamp": "2025-07-21T04:37:14.584368",
       "response_data": null
     },
     {
       "test": "Automation History",
       "success": true,
       "details": "Retrieved 4 automation records from history",
-      "timestamp": "2025-07-21T03:18:31.902316",
+      "timestamp": "2025-07-21T04:37:15.111352",
       "response_data": null
     },
     {
       "test": "Direct Web Scraping Execution",
-      "success": true,
-      "details": "Web scraping detected and pending approval. URL: https://httpbin.org/html",
-      "timestamp": "2025-07-21T03:18:37.232901",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)",
+      "timestamp": "2025-07-21T04:37:45.646508",
+      "response_data": null
+    },
+    {
+      "test": "Direct Automation Intents",
+      "success": false,
+      "details": "\u2705 LinkedIn notifications check: Direct automation working - check_linkedin_notifications\n    \u274c Price scraping: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)\n    \u274c Product listings scraping: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)\n    \u274c LinkedIn job alerts: Error HTTPSConnectionPool(host='a2bc2410-b15b-4b37-962a-5e7b97bee38a.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)\n    \u274c Website updates monitoring: HTTP 502\n    \u274c Competitor monitoring: HTTP 502\n    \u274c News articles scraping: HTTP 502",
+      "timestamp": "2025-07-21T04:39:17.775871",
+      "response_data": null
+    },
+    {
+      "test": "Automation Status Endpoint",
+      "success": false,
+      "details": "\u274c check_linkedin_notifications: HTTP 502\n    \u274c scrape_price: HTTP 502\n    \u274c scrape_product_listings: HTTP 502\n    \u274c linkedin_job_alerts: HTTP 502\n    \u274c check_website_updates: HTTP 502\n    \u274c monitor_competitors: HTTP 502\n    \u274c scrape_news_articles: HTTP 502",
+      "timestamp": "2025-07-21T04:39:18.426272",
+      "response_data": null
+    },
+    {
+      "test": "Direct Automation Response Format",
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-21T04:39:18.968394",
+      "response_data": ""
+    },
+    {
+      "test": "Traditional vs Direct Automation",
+      "success": false,
+      "details": "Traditional automation request failed",
+      "timestamp": "2025-07-21T04:39:19.490012",
       "response_data": null
     }
   ]
