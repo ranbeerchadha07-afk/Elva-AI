@@ -659,6 +659,34 @@ class PlaywrightService:
         except Exception as e:
             return {"status": "failed", "error": str(e)}
 
+    async def _get_unread_count(self, page: Page, provider: str) -> Dict[str, Any]:
+        """Get unread email count"""
+        try:
+            unread_count = 0
+            
+            if provider == 'gmail':
+                # Look for Gmail unread count indicator
+                unread_elements = await page.query_selector_all('tr.zE')  # Unread emails have zE class
+                unread_count = len(unread_elements)
+            elif provider == 'outlook':
+                # Look for Outlook unread count
+                unread_elements = await page.query_selector_all('[aria-label*="unread"]')
+                unread_count = len(unread_elements)
+            elif provider == 'yahoo':
+                # Look for Yahoo unread count
+                unread_elements = await page.query_selector_all('.unread')
+                unread_count = len(unread_elements)
+            
+            return {
+                "unread_count": unread_count,
+                "provider": provider,
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            logger.warning(f"Failed to get unread count for {provider}: {e}")
+            return {"unread_count": 0, "error": str(e)}
+
     async def _mark_emails_read(self, page: Page, provider: str, email_ids: List[str]) -> Dict[str, Any]:
         """Mark emails as read"""
         # Implementation would depend on specific requirements and provider capabilities
