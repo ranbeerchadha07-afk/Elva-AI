@@ -295,6 +295,23 @@ async def get_routing_stats(session_id: str):
         logger.error(f"Routing stats error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api_router.get("/automation-status/{intent}")
+async def get_automation_status(intent: str):
+    """Get automation status message for a specific intent"""
+    try:
+        status_message = advanced_hybrid_ai.get_automation_status_message(intent)
+        is_direct = advanced_hybrid_ai.is_direct_automation_intent(intent)
+        
+        return {
+            "intent": intent,
+            "status_message": status_message,
+            "is_direct_automation": is_direct,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    except Exception as e:
+        logger.error(f"Automation status error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.post("/web-automation")
 async def execute_web_automation(request: WebAutomationRequest):
     """
