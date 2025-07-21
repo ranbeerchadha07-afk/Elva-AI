@@ -43,6 +43,7 @@ class PlaywrightService:
             # Launch browser with stealth settings
             self.browser = await playwright.chromium.launch(
                 headless=True,
+                executable_path="/pw-browsers/chromium-1140/chrome-linux/chrome",
                 args=[
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
