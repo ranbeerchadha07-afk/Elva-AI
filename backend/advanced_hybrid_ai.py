@@ -67,6 +67,32 @@ class AdvancedHybridAI:
         # Advanced routing configuration
         self.routing_rules = self._initialize_routing_rules()
         
+    def is_direct_automation_intent(self, intent: str) -> bool:
+        """Check if an intent should bypass AI response generation and go directly to automation"""
+        direct_automation_intents = [
+            "check_linkedin_notifications",
+            "scrape_price", 
+            "scrape_product_listings",
+            "linkedin_job_alerts",
+            "check_website_updates",
+            "monitor_competitors", 
+            "scrape_news_articles"
+        ]
+        return intent in direct_automation_intents
+
+    def get_automation_status_message(self, intent: str) -> str:
+        """Get appropriate status message for automation intent"""
+        status_messages = {
+            "check_linkedin_notifications": "🔔 Checking LinkedIn notifications...",
+            "scrape_price": "💰 Searching for current prices...",
+            "scrape_product_listings": "🛒 Scraping product listings...",
+            "linkedin_job_alerts": "💼 Checking LinkedIn job alerts...",
+            "check_website_updates": "🔍 Monitoring website updates...",
+            "monitor_competitors": "📊 Analyzing competitor data...",
+            "scrape_news_articles": "📰 Gathering latest news..."
+        }
+        return status_messages.get(intent, "🔍 Searching the web...")
+
     def _initialize_routing_rules(self) -> Dict[str, Any]:
         """Initialize sophisticated routing rules"""
         return {
