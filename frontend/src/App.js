@@ -478,13 +478,24 @@ function App() {
 
           {isLoading && (
             <div className="flex justify-start animate-slide-in">
-              <div className="flex">
-                {renderAIAvatar()}
-                <div className="bg-black/30 border border-blue-500/20 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-lg">
-                  <div className="flex space-x-2">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+              <div className="flex flex-col">
+                {/* Show automation status if this is direct automation */}
+                {automationStatus && isDirectAutomation && (
+                  <div className="automation-status mb-3 ml-11">
+                    <div className="shimmer-text">
+                      {automationStatus}
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex">
+                  {renderAIAvatar()}
+                  <div className="bg-black/30 border border-blue-500/20 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-lg">
+                    <div className="flex space-x-2">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
                   </div>
                 </div>
               </div>
