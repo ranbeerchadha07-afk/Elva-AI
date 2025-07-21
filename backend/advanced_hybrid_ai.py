@@ -80,7 +80,13 @@ class AdvancedHybridAI:
                 "set_reminder": {"model": ModelChoice.CLAUDE, "confidence": 0.7},
                 "complex_analysis": {"model": ModelChoice.GROQ, "confidence": 0.8},
                 "creative_writing": {"model": ModelChoice.BOTH_SEQUENTIAL, "confidence": 0.9},
-                "technical_explanation": {"model": ModelChoice.GROQ, "confidence": 0.8}
+                "technical_explanation": {"model": ModelChoice.GROQ, "confidence": 0.8},
+                # New web automation intents
+                "web_scraping": {"model": ModelChoice.GROQ, "confidence": 0.9},
+                "linkedin_insights": {"model": ModelChoice.GROQ, "confidence": 0.85},
+                "email_automation": {"model": ModelChoice.GROQ, "confidence": 0.8},
+                "price_monitoring": {"model": ModelChoice.GROQ, "confidence": 0.8},
+                "data_extraction": {"model": ModelChoice.GROQ, "confidence": 0.85}
             },
             
             # Emotional complexity routing
