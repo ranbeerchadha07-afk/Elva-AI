@@ -19,6 +19,16 @@ class DirectAutomationHandler:
                 "error_template": "❌ Unable to check LinkedIn notifications: {error}",
                 "automation_type": "linkedin_insights"
             },
+            "check_gmail_inbox": {
+                "success_template": "📧 **Gmail Inbox** ({count} emails)\n{emails}",
+                "error_template": "❌ Unable to check Gmail inbox: {error}",
+                "automation_type": "gmail_automation"
+            },
+            "check_gmail_unread": {
+                "success_template": "📧 **Gmail Unread** ({count} unread emails)\n{emails}",
+                "error_template": "❌ Unable to check Gmail unread emails: {error}",
+                "automation_type": "gmail_automation"
+            },
             "scrape_price": {
                 "success_template": "💰 **Price Check Results**\n🏷️ **{product}**: {price}\n📊 Platform: {platform}",
                 "error_template": "❌ Unable to find price for {product}: {error}",
