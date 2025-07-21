@@ -379,7 +379,7 @@ function App() {
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl">
                 <span className="text-3xl">🤖</span>
               </div>
-              <h2 className="text-2xl font-bold mb-3 premium-title" data-text="Welcome to Elva AI!">
+              <h2 className="text-2xl font-bold mb-3 smooth-glow-title">
                 Welcome to Elva AI!
               </h2>
               <p className="text-gray-400 text-lg">Your personal smart assistant</p>
