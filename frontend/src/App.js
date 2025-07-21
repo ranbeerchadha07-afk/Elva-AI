@@ -463,6 +463,12 @@ function App() {
                         <span className="ml-1">System Response</span>
                       </div>
                     )}
+                    {msg.isDirectAutomation && (
+                      <div className="mt-2 text-xs text-orange-300 flex items-center">
+                        <span>⚡</span>
+                        <span className="ml-1">Direct automation result</span>
+                      </div>
+                    )}
                   </div>
                   {!msg.isUser && !msg.isEdit && !msg.isSystem && renderIntentData(msg.intent_data)}
                 </div>
