@@ -90,10 +90,17 @@
   animation: bounce 1.4s infinite ease-in-out both;
 }
 
-/* Enhanced focus states with blue theme */
+/* Enhanced focus states with blue theme - DISABLED for clean input */
 input:focus, textarea:focus, button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.2);
+  /* Removed box-shadow to eliminate blue focus ring */
+}
+
+/* Chat input specific focus - no blue outline */
+.clean-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 /* Button hover effects */
