@@ -397,7 +397,13 @@ function App() {
               <h1 className="text-2xl smooth-glow-title">
                 Elva AI
               </h1>
-              <p className="text-xs text-gray-400 font-medium">Your personal smart assistant</p>
+              <TypewriterTagline 
+                text="Your personal smart assistant" 
+                className="text-xs font-medium"
+                speed={120}
+                pauseDuration={3000}
+                eraseSpeed={80}
+              />
             </div>
           </div>
           
