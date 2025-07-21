@@ -314,7 +314,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Enhanced Direct Automation Flow"
+    - "Cookie-Based Authentication System"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
