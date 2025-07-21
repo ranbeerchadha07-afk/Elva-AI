@@ -152,8 +152,56 @@ async def chat(request: ChatRequest):
             
             # For web automation intents, check if we have required credentials
             if intent_data.get("intent") in web_automation_intents:
-                # Check if this is a web automation request that can be executed directly
-                if intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
+        # If this is a web automation request that can be executed directly
+                if intent_data.get("intent") in web_automation_intents:
+                    # Check if we have cookies saved for the user
+                    if intent_data.get("intent") == "linkedin_insights":
+                        # For LinkedIn, we need user email to load cookies
+                        user_email = intent_data.get("user_email")
+                        if user_email:
+                            try:
+                                automation_result = await playwright_service.scrape_linkedin_insights(
+                                    user_email, intent_data.get("insight_type", "notifications")
+                                )
+                                
+                                if automation_result.success:
+                                    response_text += f"\n\n🔍 **LinkedIn Insights:**\n{json.dumps(automation_result.data, indent=2)}"
+                                    intent_data["automation_result"] = automation_result.data
+                                    intent_data["automation_success"] = True
+                                    needs_approval = False
+                                else:
+                                    response_text += f"\n\n⚠️ **LinkedIn Error:** {automation_result.message}"
+                                    intent_data["automation_error"] = automation_result.message
+                                    
+                            except Exception as e:
+                                logger.error(f"Direct LinkedIn automation error: {e}")
+                                response_text += f"\n\n❌ **Automation Error:** {str(e)}"
+                    
+                    elif intent_data.get("intent") == "email_automation":
+                        # For email automation, we need provider and user email
+                        provider = intent_data.get("email_provider")
+                        user_email = intent_data.get("user_email")
+                        if provider and user_email:
+                            try:
+                                automation_result = await playwright_service.automate_email_interaction(
+                                    provider, user_email, intent_data.get("action", "check_inbox")
+                                )
+                                
+                                if automation_result.success:
+                                    response_text += f"\n\n📧 **Email Automation Results:**\n{json.dumps(automation_result.data, indent=2)}"
+                                    intent_data["automation_result"] = automation_result.data
+                                    intent_data["automation_success"] = True
+                                    needs_approval = False
+                                else:
+                                    response_text += f"\n\n⚠️ **Email Error:** {automation_result.message}"
+                                    intent_data["automation_error"] = automation_result.message
+                                    
+                            except Exception as e:
+                                logger.error(f"Direct email automation error: {e}")
+                                response_text += f"\n\n❌ **Automation Error:** {str(e)}"
+                                
+                # Check if this is a web scraping request that can be executed directly
+                elif intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
                     # Execute web scraping directly if we have URL and selectors
                     try:
                         automation_result = await playwright_service.extract_dynamic_data(
