@@ -138,6 +138,59 @@ class DirectAutomationHandler:
                 "automation_intent": intent
             }
     
+    async def _handle_gmail_automation(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle Gmail automation using saved cookies"""
+        try:
+            user_email = intent_data.get("user_email", "brainlyarpit8649@gmail.com")
+            
+            if intent in ["check_gmail_inbox", "check_gmail_unread"]:
+                # Use real Gmail automation with saved cookies
+                try:
+                    automation_result = await playwright_service.automate_email_interaction(
+                        provider="gmail", 
+                        user_email=user_email,
+                        action="check_inbox"
+                    )
+                    
+                    if automation_result.success:
+                        emails_data = automation_result.data.get("emails", [])
+                        
+                        # Filter for unread if needed
+                        if intent == "check_gmail_unread":
+                            emails_data = [email for email in emails_data if email.get("unread", False)]
+                        
+                        return {
+                            "success": True,
+                            "data": {
+                                "count": len(emails_data),
+                                "emails": emails_data,
+                                "user_email": user_email,
+                                "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            },
+                            "message": f"Gmail {intent.split('_')[-1]} retrieved successfully"
+                        }
+                    else:
+                        # If Gmail automation fails, provide helpful error message
+                        return {
+                            "success": False,
+                            "data": {},
+                            "message": f"Unable to access Gmail - cookies may need refresh. Error: {automation_result.message}"
+                        }
+                        
+                except Exception as automation_error:
+                    logger.error(f"Gmail automation error: {automation_error}")
+                    return {
+                        "success": False,
+                        "data": {},
+                        "message": f"Gmail automation failed: {str(automation_error)}"
+                    }
+            
+            return {"success": False, "data": {}, "message": "Gmail automation not implemented"}
+            
+        except Exception as e:
+            logger.error(f"Gmail automation handler error: {e}")
+            return {"success": False, "data": {}, "message": str(e)}
+
     async def _handle_linkedin_automation(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
         """Handle LinkedIn-related automation"""
         try:
