@@ -618,9 +618,19 @@ async def health_check():
         # Test MongoDB connection
         await db.command("ping")
         
+        # Get cookie sessions info
+        cookie_sessions = cookie_manager.list_saved_sessions()
+        valid_sessions = [s for s in cookie_sessions if s['status'] == 'valid']
+        
         health_status = {
             "status": "healthy",
             "mongodb": "connected",
+            "cookie_management": {
+                "total_sessions": len(cookie_sessions),
+                "valid_sessions": len(valid_sessions),
+                "services_with_cookies": list(set([s['service'] for s in valid_sessions])),
+                "encryption": "enabled"
+            },
             "advanced_hybrid_ai_system": {
                 "version": "2.0",
                 "groq_api_key": "configured" if os.getenv("GROQ_API_KEY") else "missing",
