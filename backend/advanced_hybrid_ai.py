@@ -86,7 +86,16 @@ class AdvancedHybridAI:
                 "linkedin_insights": {"model": ModelChoice.GROQ, "confidence": 0.85},
                 "email_automation": {"model": ModelChoice.GROQ, "confidence": 0.8},
                 "price_monitoring": {"model": ModelChoice.GROQ, "confidence": 0.8},
-                "data_extraction": {"model": ModelChoice.GROQ, "confidence": 0.85}
+                "data_extraction": {"model": ModelChoice.GROQ, "confidence": 0.85},
+                
+                # Direct automation intents (bypass AI response/approval)
+                "check_linkedin_notifications": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
+                "scrape_price": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
+                "scrape_product_listings": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
+                "linkedin_job_alerts": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
+                "check_website_updates": {"model": ModelChoice.GROQ, "confidence": 0.8, "direct_automation": True},
+                "monitor_competitors": {"model": ModelChoice.GROQ, "confidence": 0.8, "direct_automation": True},
+                "scrape_news_articles": {"model": ModelChoice.GROQ, "confidence": 0.8, "direct_automation": True}
             },
             
             # Emotional complexity routing
