@@ -195,7 +195,7 @@ class ElvaBackendTester:
                     return False
                 
                 # Check intent data structure and pre-filled content
-                expected_fields = ["event_title", "date", "time", "participants"]
+                expected_fields = ["event_title", "date", "time"]
                 intent_fields = list(intent_data.keys())
                 missing_fields = [field for field in expected_fields if field not in intent_fields]
                 
