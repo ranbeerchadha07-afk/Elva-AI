@@ -86,6 +86,8 @@ class AdvancedHybridAI:
         """Get appropriate status message for automation intent"""
         status_messages = {
             "check_linkedin_notifications": "🔔 Checking LinkedIn notifications...",
+            "check_gmail_inbox": "📧 Checking Gmail inbox...",
+            "check_gmail_unread": "📧 Checking Gmail unread emails...",
             "scrape_price": "💰 Searching for current prices...",
             "scrape_product_listings": "🛒 Scraping product listings...",
             "linkedin_job_alerts": "💼 Checking LinkedIn job alerts...",
