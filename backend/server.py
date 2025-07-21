@@ -113,7 +113,34 @@ async def chat(request: ChatRequest):
         logger.info(f"💡 Routing Logic: {routing_decision.reasoning}")
         
         # Determine if approval is needed
+        web_automation_intents = ["web_scraping", "linkedin_insights", "email_automation", "price_monitoring", "data_extraction"]
         needs_approval = intent_data.get("intent") not in ["general_chat"]
+        
+        # For web automation intents, check if we have required credentials
+        if intent_data.get("intent") in web_automation_intents:
+            # Check if this is a web automation request that can be executed directly
+            if intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
+                # Execute web scraping directly if we have URL and selectors
+                try:
+                    automation_result = await playwright_service.extract_dynamic_data(
+                        intent_data.get("url"),
+                        intent_data.get("selectors", {}),
+                        intent_data.get("wait_for_element")
+                    )
+                    
+                    # Update response with automation results
+                    if automation_result.success:
+                        response_text += f"\n\n🔍 **Web Scraping Results:**\n{json.dumps(automation_result.data, indent=2)}"
+                        intent_data["automation_result"] = automation_result.data
+                        intent_data["automation_success"] = True
+                        needs_approval = False  # No approval needed for successful scraping
+                    else:
+                        response_text += f"\n\n⚠️ **Scraping Error:** {automation_result.message}"
+                        intent_data["automation_error"] = automation_result.message
+                        
+                except Exception as e:
+                    logger.error(f"Direct web scraping error: {e}")
+                    response_text += f"\n\n❌ **Automation Error:** {str(e)}"
         
         # Save to database
         chat_msg = ChatMessage(
