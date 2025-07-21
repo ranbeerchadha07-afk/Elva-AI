@@ -113,35 +113,63 @@ async def chat(request: ChatRequest):
         logger.info(f"🧠 Advanced Routing: {routing_decision.primary_model.value} (confidence: {routing_decision.confidence:.2f})")
         logger.info(f"💡 Routing Logic: {routing_decision.reasoning}")
         
-        # Determine if approval is needed
-        web_automation_intents = ["web_scraping", "linkedin_insights", "email_automation", "price_monitoring", "data_extraction"]
-        needs_approval = intent_data.get("intent") not in ["general_chat"]
+        # Check if this is a direct automation intent
+        intent = intent_data.get("intent", "general_chat")
+        is_direct_automation = advanced_hybrid_ai.is_direct_automation_intent(intent)
         
-        # For web automation intents, check if we have required credentials
-        if intent_data.get("intent") in web_automation_intents:
-            # Check if this is a web automation request that can be executed directly
-            if intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
-                # Execute web scraping directly if we have URL and selectors
-                try:
-                    automation_result = await playwright_service.extract_dynamic_data(
-                        intent_data.get("url"),
-                        intent_data.get("selectors", {}),
-                        intent_data.get("wait_for_element")
-                    )
-                    
-                    # Update response with automation results
-                    if automation_result.success:
-                        response_text += f"\n\n🔍 **Web Scraping Results:**\n{json.dumps(automation_result.data, indent=2)}"
-                        intent_data["automation_result"] = automation_result.data
-                        intent_data["automation_success"] = True
-                        needs_approval = False  # No approval needed for successful scraping
-                    else:
-                        response_text += f"\n\n⚠️ **Scraping Error:** {automation_result.message}"
-                        intent_data["automation_error"] = automation_result.message
+        if is_direct_automation:
+            # Handle direct automation - bypass AI response generation and approval modal
+            logger.info(f"🔄 Direct automation detected: {intent}")
+            
+            # Process the automation directly
+            automation_result = await direct_automation_handler.process_direct_automation(intent_data)
+            
+            # Set response text to the automation result
+            response_text = automation_result["message"]
+            
+            # Update intent data with automation results
+            intent_data.update({
+                "automation_result": automation_result["data"],
+                "automation_success": automation_result["success"],
+                "execution_time": automation_result["execution_time"],
+                "direct_automation": True
+            })
+            
+            # No approval needed for direct automation
+            needs_approval = False
+            
+            logger.info(f"✅ Direct automation completed: {intent} - Success: {automation_result['success']}")
+            
+        else:
+            # Traditional flow for non-direct automation intents
+            web_automation_intents = ["web_scraping", "linkedin_insights", "email_automation", "price_monitoring", "data_extraction"]
+            needs_approval = intent_data.get("intent") not in ["general_chat"]
+            
+            # For web automation intents, check if we have required credentials
+            if intent_data.get("intent") in web_automation_intents:
+                # Check if this is a web automation request that can be executed directly
+                if intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
+                    # Execute web scraping directly if we have URL and selectors
+                    try:
+                        automation_result = await playwright_service.extract_dynamic_data(
+                            intent_data.get("url"),
+                            intent_data.get("selectors", {}),
+                            intent_data.get("wait_for_element")
+                        )
                         
-                except Exception as e:
-                    logger.error(f"Direct web scraping error: {e}")
-                    response_text += f"\n\n❌ **Automation Error:** {str(e)}"
+                        # Update response with automation results
+                        if automation_result.success:
+                            response_text += f"\n\n🔍 **Web Scraping Results:**\n{json.dumps(automation_result.data, indent=2)}"
+                            intent_data["automation_result"] = automation_result.data
+                            intent_data["automation_success"] = True
+                            needs_approval = False  # No approval needed for successful scraping
+                        else:
+                            response_text += f"\n\n⚠️ **Scraping Error:** {automation_result.message}"
+                            intent_data["automation_error"] = automation_result.message
+                            
+                    except Exception as e:
+                        logger.error(f"Direct web scraping error: {e}")
+                        response_text += f"\n\n❌ **Automation Error:** {str(e)}"
         
         # Save to database
         chat_msg = ChatMessage(
