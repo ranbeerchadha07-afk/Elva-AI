@@ -392,7 +392,7 @@ function App() {
           <div className="flex items-center space-x-4">
             <div className="logo-container">
               <img 
-                src="/logo.png" 
+                src="/logo.svg" 
                 alt="Elva AI Logo" 
                 className="elva-logo"
                 onError={(e) => {
