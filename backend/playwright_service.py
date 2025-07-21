@@ -82,9 +82,9 @@ class PlaywrightService:
             
         return self.browser, self.context
 
-    async def _create_page(self) -> Page:
-        """Create a new page with stealth mode enabled"""
-        browser, context = await self._get_browser_context()
+    async def _create_page(self, service_name: str = None, user_identifier: str = None) -> Page:
+        """Create a new page with stealth mode enabled and optional cookies"""
+        browser, context = await self._get_browser_context(service_name, user_identifier)
         page = await context.new_page()
         
         if self.stealth_mode:
