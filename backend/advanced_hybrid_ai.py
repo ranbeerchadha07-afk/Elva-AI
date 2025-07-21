@@ -120,6 +120,8 @@ class AdvancedHybridAI:
                 
                 # Direct automation intents (bypass AI response/approval)
                 "check_linkedin_notifications": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
+                "check_gmail_inbox": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
+                "check_gmail_unread": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
                 "scrape_price": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
                 "scrape_product_listings": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
                 "linkedin_job_alerts": {"model": ModelChoice.GROQ, "confidence": 0.9, "direct_automation": True},
