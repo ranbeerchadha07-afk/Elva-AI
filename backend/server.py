@@ -15,6 +15,7 @@ import json
 from advanced_hybrid_ai import detect_intent, generate_friendly_draft, handle_general_chat, advanced_hybrid_ai
 from webhook_handler import send_approved_action
 from playwright_service import playwright_service, AutomationResult
+from direct_automation_handler import direct_automation_handler
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
