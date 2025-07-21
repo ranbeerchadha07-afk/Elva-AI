@@ -1891,7 +1891,19 @@ class ElvaBackendTester:
             self.test_direct_automation_intents,
             self.test_automation_status_endpoint,
             self.test_direct_automation_response_format,
-            self.test_traditional_vs_direct_automation
+            self.test_traditional_vs_direct_automation,
+            # Cookie-based authentication system tests
+            self.test_cookie_sessions_list,
+            self.test_cookie_session_status_check,
+            self.test_cookie_session_delete_non_existent,
+            self.test_cookie_cleanup_expired,
+            self.test_health_endpoint_cookie_management,
+            self.test_linkedin_automation_missing_user_email,
+            self.test_linkedin_automation_no_cookies,
+            self.test_email_automation_missing_parameters,
+            self.test_email_automation_no_cookies,
+            self.test_chat_endpoint_linkedin_automation_integration,
+            self.test_chat_endpoint_email_automation_integration
         ]
         
         passed = 0
