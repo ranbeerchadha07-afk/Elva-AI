@@ -439,7 +439,9 @@ function App() {
                       ? 'bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-400/40 backdrop-blur-sm shadow-lg'
                       : msg.isSystem
                         ? 'bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border-2 border-cyan-400/40 backdrop-blur-sm shadow-lg'
-                        : 'bg-black/30 border border-blue-500/20 backdrop-blur-sm shadow-lg'
+                        : msg.isDirectAutomation
+                          ? 'bg-gradient-to-r from-orange-900/40 to-red-900/40 border-2 border-orange-400/40 backdrop-blur-sm shadow-lg'
+                          : 'bg-black/30 border border-blue-500/20 backdrop-blur-sm shadow-lg'
                 } ${msg.isWelcome ? 'border-2 border-blue-400/40 bg-gradient-to-r from-blue-900/40 to-purple-900/40' : ''}`}>
                   <div className="text-sm leading-relaxed">
                     {msg.isUser ? msg.message : msg.response}
