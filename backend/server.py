@@ -413,10 +413,19 @@ async def health_check():
                 "routing_models": {
                     "claude_tasks": ["high_emotional", "creative_content", "conversational", "professional_warm"],
                     "groq_tasks": ["logical_reasoning", "structured_analysis", "technical_complex", "intent_detection"],
-                    "sequential_tasks": ["professional_emails", "linkedin_posts", "complex_creative"]
+                    "sequential_tasks": ["professional_emails", "linkedin_posts", "complex_creative"],
+                    "web_automation_tasks": ["web_scraping", "linkedin_insights", "email_automation", "price_monitoring", "data_extraction"]
                 }
             },
-            "n8n_webhook": "configured" if os.getenv("N8N_WEBHOOK_URL") else "missing"
+            "n8n_webhook": "configured" if os.getenv("N8N_WEBHOOK_URL") else "missing",
+            "playwright_service": {
+                "status": "available",
+                "browser": "chromium",
+                "capabilities": [
+                    "dynamic_data_extraction", "linkedin_insights_scraping", 
+                    "email_automation", "price_monitoring", "stealth_mode"
+                ]
+            }
         }
         
         return health_status
