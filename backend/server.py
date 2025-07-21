@@ -75,6 +75,10 @@ class WebAutomationRequest(BaseModel):
     automation_type: str  # "web_scraping", "linkedin_insights", "email_automation", "price_monitoring"
     parameters: dict
 
+class CookieSessionRequest(BaseModel):
+    service_name: str  # "linkedin", "gmail", "outlook", "yahoo"
+    user_identifier: str  # email or username
+
 # Helper functions
 def convert_objectid_to_str(doc):
     """Convert MongoDB ObjectId to string for JSON serialization"""
