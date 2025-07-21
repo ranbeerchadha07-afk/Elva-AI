@@ -147,7 +147,7 @@ class DirectAutomationHandler:
                 # Use real Gmail automation with saved cookies
                 try:
                     automation_result = await playwright_service.automate_email_interaction(
-                        provider="gmail", 
+                        email_provider="gmail", 
                         user_email=user_email,
                         action="check_inbox"
                     )
