@@ -1407,11 +1407,16 @@ class ElvaBackendTester:
             # Small delay between tests
             time.sleep(0.5)
         
-        print("=" * 50)
-        print(f"🏁 Testing Complete!")
+        print("=" * 70)
+        print(f"🏁 Enhanced Automation Testing Complete!")
         print(f"✅ Passed: {passed}")
         print(f"❌ Failed: {failed}")
         print(f"📊 Success Rate: {(passed/(passed+failed)*100):.1f}%")
+        
+        if failed == 0:
+            print("🎉 ALL TESTS PASSED! Enhanced Elva AI Backend with Direct Automation is working perfectly!")
+        else:
+            print(f"⚠️  {failed} tests failed. Please check the details above.")
         
         return {
             "total_tests": len(test_methods),
