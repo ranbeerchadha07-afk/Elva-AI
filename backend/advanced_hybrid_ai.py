@@ -598,7 +598,7 @@ CRITICAL INSTRUCTIONS:
 - All JSON must be complete and properly formatted  
 - For all intents except general_chat, populate ALL fields with realistic content
 
-Intent types: send_email, create_event, add_todo, set_reminder, linkedin_post, creative_writing, web_scraping, linkedin_insights, email_automation, price_monitoring, data_extraction, general_chat
+Intent types: send_email, create_event, add_todo, set_reminder, linkedin_post, creative_writing, web_scraping, linkedin_insights, email_automation, price_monitoring, data_extraction, check_linkedin_notifications, scrape_price, scrape_product_listings, linkedin_job_alerts, check_website_updates, monitor_competitors, scrape_news_articles, general_chat
 
 Example JSON responses:
 
@@ -608,11 +608,23 @@ Add todo: {{"intent": "add_todo", "task": "Task description", "due_date": "Date"
 Set reminder: {{"intent": "set_reminder", "reminder_text": "Text", "reminder_date": "Date"}}
 LinkedIn post: {{"intent": "linkedin_post", "topic": "Topic", "post_content": "Content"}}
 Creative writing: {{"intent": "creative_writing", "content": "Creative content", "topic": "Topic"}}
+
+Web automation (traditional): 
 Web scraping: {{"intent": "web_scraping", "url": "target URL", "data_type": "type of data to extract", "selectors": {{"field": "css_selector"}}}}
 LinkedIn insights: {{"intent": "linkedin_insights", "insight_type": "notifications/profile_views/connections", "email": "linkedin_email", "password": "password"}}
 Email automation: {{"intent": "email_automation", "provider": "outlook/yahoo/gmail", "email": "email", "password": "password", "action": "check_inbox/send_email"}}
 Price monitoring: {{"intent": "price_monitoring", "product_url": "URL", "product_name": "Name", "price_selector": "CSS selector"}}
 Data extraction: {{"intent": "data_extraction", "url": "URL", "data_fields": ["field1", "field2"], "selectors": {{"field": "selector"}}}}
+
+Direct automation (no approval needed):
+Check LinkedIn notifications: {{"intent": "check_linkedin_notifications", "account_type": "personal/business"}}
+Scrape price: {{"intent": "scrape_price", "product": "product name", "platform": "amazon/flipkart/ebay", "search_query": "search terms"}}
+Scrape product listings: {{"intent": "scrape_product_listings", "category": "category", "platform": "website", "filters": {{"price_range": "range", "brand": "brand"}}}}
+LinkedIn job alerts: {{"intent": "linkedin_job_alerts", "job_title": "title", "location": "location"}}
+Check website updates: {{"intent": "check_website_updates", "website": "website_name", "section": "section to monitor"}}
+Monitor competitors: {{"intent": "monitor_competitors", "company": "company_name", "data_type": "pricing/products/news"}}
+Scrape news articles: {{"intent": "scrape_news_articles", "topic": "news topic", "source": "news source"}}
+
 General chat: {{"intent": "general_chat", "message": "original message"}}
 
 Return ONLY the JSON object."""
