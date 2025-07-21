@@ -419,6 +419,19 @@ class DirectAutomationHandler:
                     notifications=notifications_text
                 )
             
+            elif intent in ["check_gmail_inbox", "check_gmail_unread"]:
+                emails_text = "\n".join([
+                    f"• **{email.get('sender', 'Unknown')}**: {email.get('subject', 'No Subject')} {('🔴' if email.get('unread', False) else '')}"
+                    for email in data.get("emails", [])
+                ])
+                if not emails_text:
+                    emails_text = "No emails found" if intent == "check_gmail_inbox" else "No unread emails"
+                    
+                return template_info["success_template"].format(
+                    count=data.get("count", 0),
+                    emails=emails_text
+                )
+            
             elif intent == "scrape_price":
                 return template_info["success_template"].format(**data)
             
