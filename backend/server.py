@@ -237,6 +237,113 @@ async def get_routing_stats(session_id: str):
     except Exception as e:
         logger.error(f"Routing stats error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/web-automation")
+async def execute_web_automation(request: WebAutomationRequest):
+    """
+    Execute web automation tasks using Playwright
+    """
+    try:
+        logger.info(f"🌐 Web Automation Request: {request.automation_type}")
+        
+        result = None
+        
+        if request.automation_type == "web_scraping" or request.automation_type == "data_extraction":
+            # Extract dynamic data from websites
+            url = request.parameters.get("url")
+            selectors = request.parameters.get("selectors", {})
+            wait_for_element = request.parameters.get("wait_for_element")
+            
+            if not url or not selectors:
+                raise HTTPException(status_code=400, detail="URL and selectors are required for web scraping")
+            
+            result = await playwright_service.extract_dynamic_data(url, selectors, wait_for_element)
+            
+        elif request.automation_type == "linkedin_insights":
+            # Scrape LinkedIn insights
+            email = request.parameters.get("email")
+            password = request.parameters.get("password")
+            insight_type = request.parameters.get("insight_type", "notifications")
+            
+            if not email or not password:
+                raise HTTPException(status_code=400, detail="LinkedIn email and password are required")
+            
+            result = await playwright_service.scrape_linkedin_insights(email, password, insight_type)
+            
+        elif request.automation_type == "email_automation":
+            # Automate email interactions
+            provider = request.parameters.get("provider")
+            email = request.parameters.get("email")
+            password = request.parameters.get("password")
+            action = request.parameters.get("action", "check_inbox")
+            
+            if not all([provider, email, password]):
+                raise HTTPException(status_code=400, detail="Provider, email, and password are required")
+            
+            result = await playwright_service.automate_email_interaction(
+                provider, email, password, action, **request.parameters.get("action_params", {})
+            )
+            
+        elif request.automation_type == "price_monitoring":
+            # Monitor e-commerce prices
+            product_url = request.parameters.get("product_url")
+            price_selector = request.parameters.get("price_selector")
+            product_name = request.parameters.get("product_name")
+            
+            if not product_url or not price_selector:
+                raise HTTPException(status_code=400, detail="Product URL and price selector are required")
+            
+            result = await playwright_service.monitor_ecommerce_price(product_url, price_selector, product_name)
+            
+        else:
+            raise HTTPException(status_code=400, detail=f"Unsupported automation type: {request.automation_type}")
+        
+        # Save automation result to database
+        automation_record = {
+            "id": str(uuid.uuid4()),
+            "session_id": request.session_id,
+            "automation_type": request.automation_type,
+            "parameters": request.parameters,
+            "result": result.data if result else {},
+            "success": result.success if result else False,
+            "message": result.message if result else "Unknown error",
+            "execution_time": result.execution_time if result else 0,
+            "timestamp": datetime.utcnow()
+        }
+        
+        await db.automation_logs.insert_one(automation_record)
+        
+        return {
+            "success": result.success if result else False,
+            "data": result.data if result else {},
+            "message": result.message if result else "Automation failed",
+            "execution_time": result.execution_time if result else 0,
+            "automation_id": automation_record["id"]
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Web automation error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/automation-history/{session_id}")
+async def get_automation_history(session_id: str):
+    """Get automation history for a session"""
+    try:
+        logger.info(f"Getting automation history for session: {session_id}")
+        
+        automation_logs = await db.automation_logs.find(
+            {"session_id": session_id}
+        ).sort("timestamp", -1).to_list(50)  # Get latest 50 records
+        
+        # Convert ObjectIds to strings for JSON serialization
+        serializable_logs = [convert_objectid_to_str(log) for log in automation_logs]
+        
+        return {"automation_history": serializable_logs}
+    except Exception as e:
+        logger.error(f"Automation history error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 async def root():
     return {"message": "Elva AI Backend is running! 🤖✨", "version": "1.0"}
 
