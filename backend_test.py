@@ -1117,7 +1117,15 @@ class ElvaBackendTester:
             self.test_chat_history_retrieval,
             self.test_chat_history_clearing,
             self.test_error_handling,
-            self.test_health_endpoint
+            self.test_health_endpoint,
+            self.test_web_automation_intent_detection,
+            self.test_web_automation_endpoint_data_extraction,
+            self.test_web_automation_endpoint_price_monitoring,
+            self.test_web_automation_endpoint_linkedin_insights,
+            self.test_web_automation_endpoint_email_automation,
+            self.test_web_automation_error_handling,
+            self.test_automation_history_endpoint,
+            self.test_direct_web_scraping_execution
         ]
         
         passed = 0
