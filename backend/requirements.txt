@@ -27,3 +27,7 @@ langchain>=0.1.0
 langchain-openai>=0.1.0
 httpx>=0.27.0
 emergentintegrations
+playwright==1.48.0
+playwright-stealth==1.0.6
+beautifulsoup4==4.12.3
+selenium-stealth==1.0.6
