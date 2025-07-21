@@ -144,6 +144,18 @@ function App() {
       return;
     }
 
+    // Check if this is a direct automation request
+    const statusMessage = getAutomationStatusMessage(inputMessage);
+    const isDirect = isDirectAutomationMessage(inputMessage);
+    
+    if (isDirect) {
+      setIsDirectAutomation(true);
+      setAutomationStatus(statusMessage);
+    } else {
+      setIsDirectAutomation(false);
+      setAutomationStatus(null);
+    }
+
     const userMessage = {
       id: Date.now(),
       message: inputMessage,
@@ -177,13 +189,14 @@ function App() {
         intent_data: data.intent_data,
         needs_approval: data.needs_approval,
         isUser: false,
-        timestamp: new Date(data.timestamp)
+        timestamp: new Date(data.timestamp),
+        isDirectAutomation: isDirect
       };
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // Show approval modal immediately if needed with pre-filled data
-      if (data.needs_approval && data.intent_data) {
+      // Show approval modal immediately if needed with pre-filled data (but not for direct automation)
+      if (data.needs_approval && data.intent_data && !isDirect) {
         setPendingApproval(aiMessage);
         setEditedData(data.intent_data); // Pre-fill with AI-generated data
         setEditMode(true); // Start in edit mode so user can see and modify fields
@@ -213,6 +226,8 @@ function App() {
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
+      setAutomationStatus(null);
+      setIsDirectAutomation(false);
     }
   };
 
