@@ -1862,8 +1862,8 @@ class ElvaBackendTester:
 
     def run_all_tests(self):
         """Run all backend tests"""
-        print("🚀 Starting Enhanced Elva AI Backend Testing with Direct Automation")
-        print("=" * 70)
+        print("🚀 Starting Comprehensive Elva AI Backend Testing with Cookie-Based Authentication")
+        print("=" * 80)
         
         test_methods = [
             self.test_server_connectivity,
