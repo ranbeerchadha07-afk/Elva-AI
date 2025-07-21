@@ -137,6 +137,123 @@ button:active:not(:disabled) {
     0 0 20px rgba(139, 92, 246, 0.1);
 }
 
+/* Typewriter and Shimmer Gradient Effects */
+
+/* Shimmer gradient animation for tagline */
+@keyframes shimmerGradient {
+  0% {
+    background-position: -200% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.shimmer-gradient-text {
+  background: linear-gradient(
+    90deg,
+    #00d4ff 0%,
+    #8b5cf6 25%,
+    #ff6b35 50%,
+    #00d4ff 75%,
+    #8b5cf6 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerGradient 3s ease-in-out infinite;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Typewriter cursor */
+.typewriter-cursor {
+  color: #00d4ff;
+  font-weight: 300;
+  margin-left: 1px;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.typewriter-cursor.visible {
+  opacity: 1;
+}
+
+.typewriter-cursor.invisible {
+  opacity: 0;
+}
+
+/* Typewriter container */
+.typewriter-container {
+  display: inline-block;
+  min-height: 1.2em;
+  position: relative;
+}
+
+/* Enhanced "Made by Arpit" styling */
+.modern-arpit-badge {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 9999 !important;
+  
+  /* Pure white background */
+  background: #ffffff !important;
+  
+  /* Subtle shadow for depth */
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08) !important,
+    0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  
+  /* Modern rounded corners */
+  border-radius: 12px !important;
+  border: none !important;
+  
+  /* Padding for breathing room */
+  padding: 12px 20px !important;
+  
+  /* Remove default link styling */
+  text-decoration: none !important;
+  cursor: default !important;
+}
+
+.modern-arpit-text {
+  /* Solid black text */
+  color: #000000 !important;
+  
+  /* Modern font stack - prioritizing Inter, then Poppins, then fallbacks */
+  font-family: 'Inter', 'Poppins', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  
+  /* Font styling */
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  
+  /* Subtle letter spacing for modern look */
+  letter-spacing: 0.025em !important;
+  
+  /* Soft shadow for depth */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  
+  /* Remove default margins */
+  margin: 0 !important;
+  
+  /* Ensure proper alignment */
+  line-height: 1.2 !important;
+}
+
+/* Hover effect for subtle interactivity */
+.modern-arpit-badge:hover {
+  transform: translateX(-50%) translateY(-1px) !important;
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.1) !important,
+    0 2px 4px rgba(0, 0, 0, 0.12) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Import Google Fonts for modern typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap');
+
 /* Shimmer animation for automation status */
 @keyframes shimmer {
   0% {
