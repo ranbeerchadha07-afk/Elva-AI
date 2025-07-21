@@ -91,6 +91,8 @@ class DirectAutomationHandler:
             
             if automation_type == "linkedin_insights":
                 result = await self._handle_linkedin_automation(intent, intent_data)
+            elif automation_type == "gmail_automation":
+                result = await self._handle_gmail_automation(intent, intent_data)
             elif automation_type == "price_monitoring":
                 result = await self._handle_price_automation(intent, intent_data)
             elif automation_type == "data_extraction":
