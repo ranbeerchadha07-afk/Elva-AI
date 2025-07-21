@@ -181,39 +181,46 @@ class PlaywrightService:
             if page:
                 await page.close()
 
-    async def scrape_linkedin_insights(self, email: str, password: str, insight_type: str = "notifications") -> AutomationResult:
+    async def scrape_linkedin_insights(self, user_email: str, insight_type: str = "notifications") -> AutomationResult:
         """
-        Scrape LinkedIn for notifications, profile views, connection requests
+        Scrape LinkedIn for notifications, profile views, connection requests using saved cookies
         
         Args:
-            email: LinkedIn email
-            password: LinkedIn password  
+            user_email: LinkedIn email (used to identify saved cookies)
             insight_type: Type of insights to gather (notifications, profile_views, connections)
         """
         start_time = time.time()
         page = None
         
         try:
-            logger.info(f"🛎️ Scraping LinkedIn {insight_type}")
-            page = await self._create_page()
+            logger.info(f"🛎️ Scraping LinkedIn {insight_type} using saved cookies")
             
-            # Navigate to LinkedIn login
-            await page.goto('https://www.linkedin.com/login', wait_until='networkidle')
+            # Create page with saved cookies
+            page = await self._create_page("linkedin", user_email)
             
-            # Login
-            await page.fill('#username', email)
-            await page.fill('#password', password)
-            await page.click('button[type="submit"]')
+            # Navigate to LinkedIn (should be auto-logged in with cookies)
+            await page.goto('https://www.linkedin.com/feed/', wait_until='networkidle')
             
-            # Wait for dashboard to load
-            await page.wait_for_selector('.global-nav', timeout=30000)
+            # Check if we're logged in by looking for the navigation
+            try:
+                await page.wait_for_selector('.global-nav', timeout=10000)
+                logger.info("✅ Successfully logged in with saved cookies")
+            except:
+                logger.error("❌ Login failed - cookies may be expired or invalid")
+                return AutomationResult(
+                    success=False,
+                    data={},
+                    message="Login failed - please recapture cookies using manual_cookie_capture.py",
+                    execution_time=time.time() - start_time,
+                    errors=["Authentication failed with saved cookies"]
+                )
             
             insights_data = {}
             
             if insight_type == "notifications":
                 # Navigate to notifications
                 await page.click('[data-test-id="nav-notifications"]')
-                await page.wait_for_selector('.notifications-list', timeout=10000)
+                await page.wait_for_selector('.notifications-list', timeout=15000)
                 
                 # Extract notifications
                 notifications = await page.query_selector_all('.notification-card')
@@ -289,13 +296,41 @@ class PlaywrightService:
                         logger.warning(f"Failed to parse connection request: {e}")
                 
                 insights_data["connection_requests"] = requests_list
+                
+            elif insight_type == "messages":
+                # Navigate to messages
+                await page.goto('https://www.linkedin.com/messaging/', wait_until='networkidle')
+                
+                # Extract unread messages
+                message_threads = await page.query_selector_all('.msg-conversation-listitem')
+                messages_list = []
+                
+                for thread in message_threads[:10]:
+                    try:
+                        name_elem = await thread.query_selector('.msg-conversation-listitem__participant-names')
+                        preview_elem = await thread.query_selector('.msg-conversation-listitem__summary')
+                        time_elem = await thread.query_selector('.msg-conversation-listitem__time-stamp')
+                        
+                        name = await name_elem.text_content() if name_elem else "Unknown"
+                        preview = await preview_elem.text_content() if preview_elem else "No preview"
+                        timestamp = await time_elem.text_content() if time_elem else "Unknown"
+                        
+                        messages_list.append({
+                            "from": name.strip(),
+                            "preview": preview.strip(),
+                            "timestamp": timestamp.strip()
+                        })
+                    except Exception as e:
+                        logger.warning(f"Failed to parse message thread: {e}")
+                
+                insights_data["recent_messages"] = messages_list
             
             execution_time = time.time() - start_time
             
             return AutomationResult(
                 success=True,
                 data=insights_data,
-                message=f"Successfully scraped LinkedIn {insight_type}",
+                message=f"Successfully scraped LinkedIn {insight_type} using saved cookies",
                 execution_time=execution_time
             )
             
