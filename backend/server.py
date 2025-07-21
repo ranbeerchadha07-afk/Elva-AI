@@ -471,6 +471,139 @@ async def get_automation_history(session_id: str):
     except Exception as e:
         logger.error(f"Automation history error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/cookie-sessions")
+async def list_cookie_sessions():
+    """List all saved cookie sessions"""
+    try:
+        sessions = cookie_manager.list_saved_sessions()
+        return {
+            "sessions": sessions,
+            "total": len(sessions)
+        }
+    except Exception as e:
+        logger.error(f"Failed to list cookie sessions: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.delete("/cookie-sessions/{service_name}/{user_identifier}")
+async def delete_cookie_session(service_name: str, user_identifier: str):
+    """Delete a specific cookie session"""
+    try:
+        success = cookie_manager.delete_cookies(service_name, user_identifier)
+        if success:
+            return {"success": True, "message": f"Deleted cookies for {service_name} user {user_identifier}"}
+        else:
+            return {"success": False, "message": "Cookies not found"}
+    except Exception as e:
+        logger.error(f"Failed to delete cookie session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/cookie-sessions/cleanup")
+async def cleanup_expired_cookies():
+    """Clean up all expired cookie sessions"""
+    try:
+        cleaned_count = cookie_manager.cleanup_expired_cookies()
+        return {
+            "success": True,
+            "message": f"Cleaned up {cleaned_count} expired cookie sessions",
+            "cleaned_count": cleaned_count
+        }
+    except Exception as e:
+        logger.error(f"Failed to cleanup cookies: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/cookie-sessions/{service_name}/{user_identifier}/status")
+async def check_cookie_session_status(service_name: str, user_identifier: str):
+    """Check if valid cookies exist for a service and user"""
+    try:
+        cookies = cookie_manager.load_cookies(service_name, user_identifier)
+        if cookies:
+            return {
+                "has_valid_cookies": True,
+                "cookie_count": len(cookies),
+                "message": f"Valid cookies found for {service_name} user {user_identifier}"
+            }
+        else:
+            return {
+                "has_valid_cookies": False,
+                "cookie_count": 0,
+                "message": f"No valid cookies found for {service_name} user {user_identifier}"
+            }
+    except Exception as e:
+        logger.error(f"Failed to check cookie status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/automation/linkedin-insights")
+async def get_linkedin_insights(request: dict):
+    """Get LinkedIn insights using saved cookies"""
+    try:
+        user_email = request.get("user_email")
+        insight_type = request.get("insight_type", "notifications")
+        
+        if not user_email:
+            raise HTTPException(status_code=400, detail="user_email is required")
+        
+        # Check if cookies exist
+        cookies = cookie_manager.load_cookies("linkedin", user_email)
+        if not cookies:
+            return {
+                "success": False,
+                "message": f"No valid LinkedIn cookies found for {user_email}. Please run manual cookie capture.",
+                "needs_login": True
+            }
+        
+        # Execute LinkedIn automation
+        result = await playwright_service.scrape_linkedin_insights(user_email, insight_type)
+        
+        return {
+            "success": result.success,
+            "data": result.data,
+            "message": result.message,
+            "execution_time": result.execution_time
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"LinkedIn insights error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/automation/email-check")
+async def check_email_with_cookies(request: dict):
+    """Check email using saved cookies"""
+    try:
+        user_email = request.get("user_email")
+        provider = request.get("provider")  # gmail, outlook, yahoo
+        action = request.get("action", "check_inbox")
+        
+        if not user_email or not provider:
+            raise HTTPException(status_code=400, detail="user_email and provider are required")
+        
+        # Check if cookies exist
+        cookies = cookie_manager.load_cookies(provider, user_email)
+        if not cookies:
+            return {
+                "success": False,
+                "message": f"No valid {provider} cookies found for {user_email}. Please run manual cookie capture.",
+                "needs_login": True
+            }
+        
+        # Execute email automation
+        result = await playwright_service.automate_email_interaction(provider, user_email, action)
+        
+        return {
+            "success": result.success,
+            "data": result.data,
+            "message": result.message,
+            "execution_time": result.execution_time
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Email automation error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 async def root():
     return {"message": "Elva AI Backend is running! 🤖✨", "version": "1.0"}
 
