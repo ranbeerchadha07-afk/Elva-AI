@@ -604,7 +604,7 @@ CRITICAL INSTRUCTIONS:
 - All JSON must be complete and properly formatted  
 - For all intents except general_chat, populate ALL fields with realistic content
 
-Intent types: send_email, create_event, add_todo, set_reminder, linkedin_post, creative_writing, web_scraping, linkedin_insights, email_automation, price_monitoring, data_extraction, check_linkedin_notifications, scrape_price, scrape_product_listings, linkedin_job_alerts, check_website_updates, monitor_competitors, scrape_news_articles, general_chat
+Intent types: send_email, create_event, add_todo, set_reminder, linkedin_post, creative_writing, web_scraping, linkedin_insights, email_automation, price_monitoring, data_extraction, check_linkedin_notifications, check_gmail_inbox, check_gmail_unread, scrape_price, scrape_product_listings, linkedin_job_alerts, check_website_updates, monitor_competitors, scrape_news_articles, general_chat
 
 Example JSON responses:
 
