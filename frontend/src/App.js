@@ -445,8 +445,8 @@ function App() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Premium Input Area */}
-        <div className="premium-input-area rounded-2xl p-4 shadow-xl">
+        {/* Glassy Input Area */}
+        <div className="glassy-input-area rounded-2xl p-4 shadow-xl">
           <div className="flex space-x-4">
             <input
               type="text"
@@ -454,7 +454,7 @@ function App() {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               placeholder="Ask me anything... ✨"
-              className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none text-lg"
+              className="flex-1 clean-input"
               disabled={isLoading}
             />
             <button
