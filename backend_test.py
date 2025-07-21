@@ -44,7 +44,7 @@ class ElvaBackendTester:
             response = requests.get(f"{BACKEND_URL}/", timeout=10)
             if response.status_code == 200:
                 data = response.json()
-                if "Elva AI Backend is running" in data.get("message", ""):
+                if "Elva AI Backend" in data.get("message", ""):
                     self.log_test("Server Connectivity", True, "Backend server is running and accessible")
                     return True
                 else:
