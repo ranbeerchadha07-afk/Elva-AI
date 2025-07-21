@@ -390,11 +390,11 @@ function App() {
       <div className="glassy-header shadow-lg">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 flex items-center justify-center">
+            <div className="logo-container">
               <img 
                 src="/logo.png" 
                 alt="Elva AI Logo" 
-                className="w-full h-full object-contain rounded-lg"
+                className="elva-logo"
                 onError={(e) => {
                   // Fallback to gradient logo if image fails to load
                   e.target.style.display = 'none';
