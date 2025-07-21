@@ -501,29 +501,48 @@ button:active:not(:disabled) {
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Clean Input Field - No Strong Blue Outlines */
+/* Clean Input Field - Modern Frosted Glass Style with NO Focus Ring */
 .clean-input {
   background: transparent;
   border: none;
-  outline: none;
+  outline: none !important;
   color: white;
   font-size: 1.125rem;
-  transition: all 0.2s ease;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 2;
+  
+  /* Ensure no focus ring appears */
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .clean-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-  transition: color 0.2s ease;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 300;
+  transition: all 0.3s ease;
 }
 
 .clean-input:focus::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.25);
+  transform: translateX(4px);
 }
 
 .clean-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
   color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Remove any browser-default focus styles */
+.clean-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Animation enhancements */
