@@ -44,14 +44,23 @@ function App() {
     checkGmailAuthStatus();
   }, [sessionId]);
 
-  // Handle Gmail OAuth callback
+  // Handle Gmail OAuth redirect response
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const state = urlParams.get('state');
+    const auth = urlParams.get('auth');
+    const service = urlParams.get('service');
+    const message = urlParams.get('message');
     
-    if (code && window.location.pathname === '/auth/gmail/callback') {
-      handleGmailCallback(code);
+    if (auth === 'success' && service === 'gmail') {
+      // Gmail authentication successful
+      handleGmailAuthSuccess();
+      // Clear URL parameters
+      window.history.replaceState({}, document.title, '/');
+    } else if (auth === 'error') {
+      // Gmail authentication failed
+      handleGmailAuthError(message);
+      // Clear URL parameters
+      window.history.replaceState({}, document.title, '/');
     }
   }, []);
 
