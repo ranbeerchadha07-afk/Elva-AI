@@ -138,15 +138,16 @@ class DirectAutomationHandler:
                 "automation_intent": intent
             }
     
-    async def _handle_gmail_automation(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def _handle_gmail_automation(self, intent: str, intent_data: Dict[str, Any], session_id: str = None) -> Dict[str, Any]:
         """Handle Gmail automation using Gmail API"""
-        # Import Gmail OAuth service
-        from gmail_oauth_service import gmail_oauth_service
+        # Import Gmail OAuth service from server.py global instance
+        from server import gmail_oauth_service
         
         try:
             # Get the user email from intent_data, fallback to known email
             user_email = intent_data.get("user_email", "brainlyarpit8649@gmail.com")
-            logger.info(f"🔍 Gmail API automation for user: {user_email}")
+            session_id = session_id or intent_data.get("session_id", "default_session")
+            logger.info(f"🔍 Gmail API automation for user: {user_email}, session: {session_id}")
             logger.info(f"🔍 Intent data: {intent_data}")
             
             if intent in ["check_gmail_inbox", "check_gmail_unread", "email_inbox_check"]:
@@ -156,7 +157,8 @@ class DirectAutomationHandler:
                     query = 'is:unread' if intent in ["check_gmail_unread", "email_inbox_check"] else 'in:inbox'
                     max_results = intent_data.get("max_results", 10)
                     
-                    gmail_result = gmail_oauth_service.check_inbox(
+                    gmail_result = await gmail_oauth_service.check_inbox(
+                        session_id=session_id,
                         max_results=max_results,
                         query=query
                     )
