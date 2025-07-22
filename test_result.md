@@ -314,7 +314,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Cookie-Based Authentication System"
+    - "Gmail API OAuth2 Integration"
+    - "Cleanup Verification - Cookie-Based Code Removal"
+    - "System Health & Integration Verification"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
