@@ -1394,51 +1394,50 @@ class ElvaBackendTester:
             self.log_test("Gmail OAuth - Auth URL", False, f"Error: {str(e)}")
             return False
 
-    def test_cookie_session_status_check(self):
-        """Test 27: Cookie session status check for non-existent user"""
+    def test_gmail_oauth_status_endpoint(self):
+        """Test 27: Gmail OAuth2 authentication status"""
         try:
-            service_name = "linkedin"
-            user_identifier = "test@example.com"
-            
-            response = requests.get(f"{BACKEND_URL}/cookie-sessions/{service_name}/{user_identifier}/status", timeout=10)
+            response = requests.get(f"{BACKEND_URL}/gmail/status", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 
-                # Check response structure
-                required_fields = ["has_valid_cookies", "cookie_count", "message"]
+                # Check required fields
+                required_fields = ["credentials_configured", "token_exists", "authenticated", "redirect_uri", "scopes"]
                 missing_fields = [field for field in required_fields if field not in data]
                 
                 if missing_fields:
-                    self.log_test("Cookie Session Status Check", False, f"Missing fields: {missing_fields}", data)
+                    self.log_test("Gmail OAuth - Status", False, f"Missing status fields: {missing_fields}", data)
                     return False
                 
-                # For non-existent user, should return False
-                has_valid_cookies = data.get("has_valid_cookies")
-                if has_valid_cookies != False:
-                    self.log_test("Cookie Session Status Check", False, f"Expected has_valid_cookies=False for non-existent user, got {has_valid_cookies}", data)
+                # Check credentials are configured (credentials.json exists)
+                if not data.get("credentials_configured"):
+                    self.log_test("Gmail OAuth - Status", False, "Gmail credentials.json not configured", data)
                     return False
                 
-                # Cookie count should be 0
-                cookie_count = data.get("cookie_count", -1)
-                if cookie_count != 0:
-                    self.log_test("Cookie Session Status Check", False, f"Expected cookie_count=0 for non-existent user, got {cookie_count}", data)
+                # Check redirect URI is set correctly
+                redirect_uri = data.get("redirect_uri", "")
+                if not redirect_uri or "gmail/callback" not in redirect_uri:
+                    self.log_test("Gmail OAuth - Status", False, f"Invalid redirect_uri: {redirect_uri}", data)
                     return False
                 
-                # Message should indicate no cookies found
-                message = data.get("message", "")
-                if "No valid cookies found" not in message:
-                    self.log_test("Cookie Session Status Check", False, f"Message doesn't indicate no cookies found: {message}", data)
+                # Check scopes are configured
+                scopes = data.get("scopes", [])
+                required_scopes = ["gmail.readonly", "gmail.send", "gmail.compose", "gmail.modify"]
+                missing_scopes = [scope for scope in required_scopes if not any(scope in s for s in scopes)]
+                
+                if missing_scopes:
+                    self.log_test("Gmail OAuth - Status", False, f"Missing Gmail scopes: {missing_scopes}", data)
                     return False
                 
-                self.log_test("Cookie Session Status Check", True, f"Correctly returned no cookies for {service_name} user {user_identifier}")
+                self.log_test("Gmail OAuth - Status", True, f"Gmail OAuth2 status configured correctly. Authenticated: {data.get('authenticated')}, Token exists: {data.get('token_exists')}")
                 return True
             else:
-                self.log_test("Cookie Session Status Check", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Gmail OAuth - Status", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Cookie Session Status Check", False, f"Error: {str(e)}")
+            self.log_test("Gmail OAuth - Status", False, f"Error: {str(e)}")
             return False
 
     def test_cookie_session_delete_non_existent(self):
