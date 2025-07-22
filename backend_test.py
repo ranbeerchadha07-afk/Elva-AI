@@ -1357,42 +1357,41 @@ class ElvaBackendTester:
             self.log_test("Traditional vs Direct Automation", False, f"Error: {str(e)}")
             return False
 
-    def test_cookie_sessions_list(self):
-        """Test 26: Cookie sessions list endpoint"""
+    def test_gmail_oauth_auth_endpoint(self):
+        """Test 26: Gmail OAuth2 authentication URL generation"""
         try:
-            response = requests.get(f"{BACKEND_URL}/cookie-sessions", timeout=10)
+            response = requests.get(f"{BACKEND_URL}/gmail/auth", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 
                 # Check response structure
-                required_fields = ["sessions", "total"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("Cookie Sessions - List", False, f"Missing fields: {missing_fields}", data)
+                if not data.get("success"):
+                    self.log_test("Gmail OAuth - Auth URL", False, f"Auth URL generation failed: {data.get('message')}", data)
                     return False
                 
-                # Check sessions is a list
-                sessions = data.get("sessions", [])
-                if not isinstance(sessions, list):
-                    self.log_test("Cookie Sessions - List", False, "Sessions is not a list", data)
+                # Check if auth_url is present and valid
+                auth_url = data.get("auth_url", "")
+                if not auth_url or "accounts.google.com" not in auth_url:
+                    self.log_test("Gmail OAuth - Auth URL", False, "Invalid or missing auth_url", data)
                     return False
                 
-                # Check total count matches sessions length
-                total = data.get("total", 0)
-                if total != len(sessions):
-                    self.log_test("Cookie Sessions - List", False, f"Total count {total} doesn't match sessions length {len(sessions)}", data)
+                # Check if OAuth2 parameters are present
+                required_params = ["client_id", "redirect_uri", "scope", "response_type"]
+                missing_params = [param for param in required_params if param not in auth_url]
+                
+                if missing_params:
+                    self.log_test("Gmail OAuth - Auth URL", False, f"Missing OAuth2 parameters: {missing_params}", data)
                     return False
                 
-                self.log_test("Cookie Sessions - List", True, f"Retrieved {total} cookie sessions")
+                self.log_test("Gmail OAuth - Auth URL", True, f"OAuth2 auth URL generated successfully with all required parameters")
                 return True
             else:
-                self.log_test("Cookie Sessions - List", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Gmail OAuth - Auth URL", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Cookie Sessions - List", False, f"Error: {str(e)}")
+            self.log_test("Gmail OAuth - Auth URL", False, f"Error: {str(e)}")
             return False
 
     def test_cookie_session_status_check(self):
