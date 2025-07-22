@@ -170,22 +170,17 @@ function App() {
       // Update auth status
       await checkGmailAuthStatus(); // Re-check the actual status
       
-      // Add success message to chat
+      // Add success message to chat with special formatting
       const successMessage = {
         id: 'gmail_auth_success_' + Date.now(),
         session_id: sessionId,
         user_id: 'system',
         message: '✅ Gmail OAuth2 Flow Completed!',
-        response: '🎉 **Gmail Authentication Successful!** \n\n' +
-                 'Your Gmail account has been securely connected using OAuth2. I can now help you with:\n\n' +
-                 '• 📧 Check your Gmail inbox\n' +
-                 '• ✉️ Send emails\n' +
-                 '• 📨 Read specific emails\n' +
-                 '• 🔍 Search your messages\n\n' +
-                 'Try saying: "*Check my Gmail inbox*" or "*Send an email to [someone]*"',
+        response: '', // Will be handled by special rendering
         timestamp: new Date().toISOString(),
         intent_data: null,
-        needs_approval: false
+        needs_approval: false,
+        isGmailSuccess: true // Special flag for custom rendering
       };
       
       setMessages(prev => [...prev, successMessage]);
