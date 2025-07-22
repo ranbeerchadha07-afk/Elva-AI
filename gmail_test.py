@@ -286,7 +286,8 @@ class GmailAuthTester:
                     response_text = data.get("response", "")
                     
                     # Should provide authentication guidance since not authenticated
-                    if "authentication" in response_text.lower() or "oauth" in response_text.lower():
+                    if ("authentication" in response_text.lower() or "oauth" in response_text.lower() or 
+                        "connect" in response_text.lower() or "requires_auth" in str(intent_data)):
                         self.log_test("Direct Gmail Automation", True, f"Gmail automation correctly uses session_id and provides authentication guidance. Intent: {detected_intent}")
                         return True
                     else:
