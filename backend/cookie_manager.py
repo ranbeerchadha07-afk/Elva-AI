@@ -196,4 +196,4 @@ class CookieManager:
         return cleaned_count
 
 # Global cookie manager instance
-cookie_manager = CookieManager()
+cookie_manager = CookieManager("/app/cookies")
