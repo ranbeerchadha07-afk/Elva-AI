@@ -104,7 +104,7 @@ class GmailOAuthService:
     async def _load_token(self, session_id: str) -> Optional[Credentials]:
         """Load OAuth2 token from MongoDB for specific session"""
         try:
-            if not self.db:
+            if self.db is None:
                 logger.error("❌ No database connection available for token loading")
                 return None
                 
