@@ -430,9 +430,7 @@ class DirectAutomationHandler:
                     emails=emails_text
                 )
             
-            elif intent == "scrape_price":
-                return template_info["success_template"].format(**data)
-            
+
             elif intent == "scrape_product_listings":
                 listings_text = "\n".join([
                     f"• **{listing['name']}** - {listing['price']} ⭐ {listing['rating']} ({listing['reviews']} reviews)"
