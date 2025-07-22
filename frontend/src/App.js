@@ -884,12 +884,14 @@ function App() {
                 
                 {/* Debug Status Indicator */}
                 {gmailAuthStatus.debugInfo && (
-                  <div className="text-xs text-gray-400 flex items-center space-x-1">
+                  <button
+                    onClick={showGmailDebugInfo}
+                    className="text-xs text-gray-400 flex items-center space-x-1 px-3 py-1 rounded-full bg-gray-800/50 hover:bg-gray-700/50 transition-all duration-200"
+                    title="Show detailed Gmail debug information"
+                  >
                     <span>🔧</span>
-                    <span title={JSON.stringify(gmailAuthStatus.debugInfo, null, 2)}>
-                      Debug
-                    </span>
-                  </div>
+                    <span>Debug Info</span>
+                  </button>
                 )}
               </div>
             )}
