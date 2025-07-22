@@ -1440,143 +1440,114 @@ class ElvaBackendTester:
             self.log_test("Gmail OAuth - Status", False, f"Error: {str(e)}")
             return False
 
-    def test_cookie_session_delete_non_existent(self):
-        """Test 28: Delete non-existent cookie session"""
+    def test_gmail_oauth_callback_structure(self):
+        """Test 28: Gmail OAuth2 callback endpoint structure (without actual OAuth flow)"""
         try:
-            service_name = "gmail"
-            user_identifier = "nonexistent@example.com"
+            # Test callback endpoint with missing authorization code
+            payload = {}
             
-            response = requests.delete(f"{BACKEND_URL}/cookie-sessions/{service_name}/{user_identifier}", timeout=10)
+            response = requests.post(f"{BACKEND_URL}/gmail/callback", json=payload, timeout=10)
             
-            if response.status_code == 200:
+            if response.status_code == 400:
                 data = response.json()
-                
-                # Check response structure
-                required_fields = ["success", "message"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("Cookie Session Delete - Non-existent", False, f"Missing fields: {missing_fields}", data)
+                if "Authorization code required" in data.get("detail", ""):
+                    self.log_test("Gmail OAuth - Callback Structure", True, "Callback endpoint correctly validates authorization code requirement")
+                    return True
+                else:
+                    self.log_test("Gmail OAuth - Callback Structure", False, f"Unexpected error message: {data.get('detail')}", data)
                     return False
-                
-                # Should return success=False for non-existent cookies
-                success = data.get("success")
-                if success != False:
-                    self.log_test("Cookie Session Delete - Non-existent", False, f"Expected success=False for non-existent cookies, got {success}", data)
-                    return False
-                
-                # Message should indicate cookies not found
-                message = data.get("message", "")
-                if "not found" not in message.lower():
-                    self.log_test("Cookie Session Delete - Non-existent", False, f"Message doesn't indicate cookies not found: {message}", data)
-                    return False
-                
-                self.log_test("Cookie Session Delete - Non-existent", True, f"Correctly handled deletion of non-existent cookies for {service_name} user {user_identifier}")
-                return True
             else:
-                self.log_test("Cookie Session Delete - Non-existent", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Gmail OAuth - Callback Structure", False, f"Expected 400 for missing code, got {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Cookie Session Delete - Non-existent", False, f"Error: {str(e)}")
+            self.log_test("Gmail OAuth - Callback Structure", False, f"Error: {str(e)}")
             return False
 
-    def test_cookie_cleanup_expired(self):
-        """Test 29: Cleanup expired cookies"""
+    def test_gmail_credentials_loading(self):
+        """Test 29: Gmail credentials.json loading and configuration"""
         try:
-            response = requests.post(f"{BACKEND_URL}/cookie-sessions/cleanup", timeout=10)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check response structure
-                required_fields = ["success", "message", "cleaned_count"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("Cookie Cleanup - Expired", False, f"Missing fields: {missing_fields}", data)
-                    return False
-                
-                # Should return success=True
-                success = data.get("success")
-                if success != True:
-                    self.log_test("Cookie Cleanup - Expired", False, f"Expected success=True, got {success}", data)
-                    return False
-                
-                # Cleaned count should be a number
-                cleaned_count = data.get("cleaned_count")
-                if not isinstance(cleaned_count, int) or cleaned_count < 0:
-                    self.log_test("Cookie Cleanup - Expired", False, f"Invalid cleaned_count: {cleaned_count}", data)
-                    return False
-                
-                # Message should contain cleaned count
-                message = data.get("message", "")
-                if str(cleaned_count) not in message:
-                    self.log_test("Cookie Cleanup - Expired", False, f"Message doesn't contain cleaned count: {message}", data)
-                    return False
-                
-                self.log_test("Cookie Cleanup - Expired", True, f"Successfully cleaned up {cleaned_count} expired cookie sessions")
-                return True
-            else:
-                self.log_test("Cookie Cleanup - Expired", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Cookie Cleanup - Expired", False, f"Error: {str(e)}")
-            return False
-
-    def test_health_endpoint_cookie_management(self):
-        """Test 30: Health endpoint includes cookie management info"""
-        try:
+            # Test health endpoint to verify Gmail integration status
             response = requests.get(f"{BACKEND_URL}/health", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 
-                # Check if cookie_management section exists
-                if "cookie_management" not in data:
-                    self.log_test("Health Endpoint - Cookie Management", False, "No cookie_management section in health response", data)
+                # Check Gmail API integration section
+                gmail_integration = data.get("gmail_api_integration", {})
+                
+                if not gmail_integration:
+                    self.log_test("Gmail Credentials Loading", False, "Gmail API integration section missing from health check", data)
                     return False
                 
-                cookie_management = data.get("cookie_management", {})
-                
-                # Check required cookie management fields
-                required_fields = ["total_sessions", "valid_sessions", "services_with_cookies", "encryption"]
-                missing_fields = [field for field in required_fields if field not in cookie_management]
-                
-                if missing_fields:
-                    self.log_test("Health Endpoint - Cookie Management", False, f"Missing cookie management fields: {missing_fields}", cookie_management)
+                # Check credentials are configured
+                if not gmail_integration.get("credentials_configured"):
+                    self.log_test("Gmail Credentials Loading", False, "Gmail credentials not configured", gmail_integration)
                     return False
                 
-                # Check field types
-                total_sessions = cookie_management.get("total_sessions")
-                if not isinstance(total_sessions, int) or total_sessions < 0:
-                    self.log_test("Health Endpoint - Cookie Management", False, f"Invalid total_sessions: {total_sessions}", cookie_management)
+                # Check OAuth2 flow is implemented
+                if gmail_integration.get("oauth2_flow") != "implemented":
+                    self.log_test("Gmail Credentials Loading", False, "OAuth2 flow not implemented", gmail_integration)
                     return False
                 
-                valid_sessions = cookie_management.get("valid_sessions")
-                if not isinstance(valid_sessions, int) or valid_sessions < 0:
-                    self.log_test("Health Endpoint - Cookie Management", False, f"Invalid valid_sessions: {valid_sessions}", cookie_management)
+                # Check scopes are configured
+                scopes = gmail_integration.get("scopes", [])
+                if not scopes or len(scopes) < 4:
+                    self.log_test("Gmail Credentials Loading", False, f"Insufficient Gmail scopes configured: {scopes}", gmail_integration)
                     return False
                 
-                services_with_cookies = cookie_management.get("services_with_cookies")
-                if not isinstance(services_with_cookies, list):
-                    self.log_test("Health Endpoint - Cookie Management", False, f"services_with_cookies is not a list: {services_with_cookies}", cookie_management)
+                # Check endpoints are available
+                endpoints = gmail_integration.get("endpoints", [])
+                required_endpoints = ["/api/gmail/auth", "/api/gmail/callback", "/api/gmail/status", "/api/gmail/inbox", "/api/gmail/send"]
+                missing_endpoints = [ep for ep in required_endpoints if ep not in endpoints]
+                
+                if missing_endpoints:
+                    self.log_test("Gmail Credentials Loading", False, f"Missing Gmail endpoints: {missing_endpoints}", gmail_integration)
                     return False
                 
-                encryption = cookie_management.get("encryption")
-                if encryption != "enabled":
-                    self.log_test("Health Endpoint - Cookie Management", False, f"Expected encryption=enabled, got {encryption}", cookie_management)
-                    return False
-                
-                self.log_test("Health Endpoint - Cookie Management", True, f"Cookie management info present: {total_sessions} total sessions, {valid_sessions} valid, encryption enabled")
+                self.log_test("Gmail Credentials Loading", True, f"Gmail credentials loaded successfully with {len(scopes)} scopes and {len(endpoints)} endpoints")
                 return True
             else:
-                self.log_test("Health Endpoint - Cookie Management", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Gmail Credentials Loading", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Health Endpoint - Cookie Management", False, f"Error: {str(e)}")
+            self.log_test("Gmail Credentials Loading", False, f"Error: {str(e)}")
+            return False
+
+    def test_gmail_service_initialization(self):
+        """Test 30: Gmail API service initialization"""
+        try:
+            # Test Gmail inbox endpoint (should require authentication)
+            response = requests.get(f"{BACKEND_URL}/gmail/inbox", timeout=10)
+            
+            # Should return 500 or structured error about authentication
+            if response.status_code in [200, 500]:
+                try:
+                    data = response.json()
+                    
+                    # If successful, check structure
+                    if response.status_code == 200 and data.get("success"):
+                        self.log_test("Gmail Service Initialization", True, "Gmail service initialized and working")
+                        return True
+                    
+                    # If failed, should be due to authentication
+                    if not data.get("success") and ("authentication" in data.get("message", "").lower() or "oauth" in data.get("message", "").lower()):
+                        self.log_test("Gmail Service Initialization", True, "Gmail service properly requires authentication")
+                        return True
+                    
+                    self.log_test("Gmail Service Initialization", False, f"Unexpected response: {data}", data)
+                    return False
+                    
+                except json.JSONDecodeError:
+                    self.log_test("Gmail Service Initialization", False, "Invalid JSON response", response.text)
+                    return False
+            else:
+                self.log_test("Gmail Service Initialization", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail Service Initialization", False, f"Error: {str(e)}")
             return False
 
     def test_linkedin_automation_missing_user_email(self):
