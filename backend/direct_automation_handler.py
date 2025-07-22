@@ -134,53 +134,76 @@ class DirectAutomationHandler:
             }
     
     async def _handle_gmail_automation(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle Gmail automation using saved cookies"""
+        """Handle Gmail automation using Gmail API"""
+        # Import Gmail OAuth service
+        from gmail_oauth_service import gmail_oauth_service
+        
         try:
             # Get the user email from intent_data, fallback to known email
             user_email = intent_data.get("user_email", "brainlyarpit8649@gmail.com")
-            logger.info(f"🔍 Gmail automation for user: {user_email}")
+            logger.info(f"🔍 Gmail API automation for user: {user_email}")
             logger.info(f"🔍 Intent data: {intent_data}")
             
-            if intent in ["check_gmail_inbox", "check_gmail_unread"]:
-                # Use real Gmail automation with saved cookies
+            if intent in ["check_gmail_inbox", "check_gmail_unread", "email_inbox_check"]:
+                # Use real Gmail API service
                 try:
-                    automation_result = await playwright_service.automate_email_interaction(
-                        email_provider="gmail", 
-                        user_email=user_email,  # Make sure we pass the correct email
-                        action="check_inbox"
+                    # Determine query based on intent
+                    query = 'is:unread' if intent in ["check_gmail_unread", "email_inbox_check"] else 'in:inbox'
+                    max_results = intent_data.get("max_results", 10)
+                    
+                    gmail_result = gmail_oauth_service.check_inbox(
+                        max_results=max_results,
+                        query=query
                     )
                     
-                    if automation_result.success:
-                        emails_data = automation_result.data.get("emails", [])
+                    if gmail_result['success']:
+                        emails_data = gmail_result['data']['emails']
                         
-                        # Filter for unread if needed
-                        if intent == "check_gmail_unread":
-                            emails_data = [email for email in emails_data if email.get("unread", False)]
+                        # Transform Gmail API response to our format
+                        formatted_emails = []
+                        for email in emails_data:
+                            formatted_emails.append({
+                                "id": email.get("id"),
+                                "sender": email.get("from", "Unknown"),
+                                "subject": email.get("subject", "No Subject"),
+                                "snippet": email.get("snippet", ""),
+                                "date": email.get("date", "Unknown Date"),
+                                "unread": True if intent in ["check_gmail_unread", "email_inbox_check"] else 'UNREAD' in email.get("labels", [])
+                            })
                         
                         return {
                             "success": True,
                             "data": {
-                                "count": len(emails_data),
-                                "emails": emails_data,
+                                "count": len(formatted_emails),
+                                "emails": formatted_emails,
                                 "user_email": user_email,
+                                "query_used": query,
                                 "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                             },
-                            "message": f"Gmail {intent.split('_')[-1]} retrieved successfully"
+                            "message": f"Successfully retrieved {len(formatted_emails)} emails from Gmail API"
                         }
                     else:
-                        # If Gmail automation fails, provide helpful error message
-                        return {
-                            "success": False,
-                            "data": {},
-                            "message": f"Unable to access Gmail - cookies may need refresh. Error: {automation_result.message}"
-                        }
+                        # Handle authentication required
+                        if gmail_result.get('requires_auth', False):
+                            return {
+                                "success": False,
+                                "data": {"count": 0, "emails": [], "requires_auth": True},
+                                "message": "🔐 Please connect your Gmail account to let Elva AI access your inbox.\n\n👉 Click the 'Connect Gmail' button to continue."
+                            }
+                        else:
+                            logger.error(f"❌ Gmail API failed: {gmail_result['message']}")
+                            return {
+                                "success": False,
+                                "data": {"count": 0, "emails": []},
+                                "message": f"❌ Gmail API error: {gmail_result['message']}"
+                            }
                         
-                except Exception as automation_error:
-                    logger.error(f"Gmail automation error: {automation_error}")
+                except Exception as e:
+                    logger.error(f"❌ Gmail API automation error: {e}")
                     return {
                         "success": False,
-                        "data": {},
-                        "message": f"Gmail automation failed: {str(automation_error)}"
+                        "data": {"count": 0, "emails": []},
+                        "message": f"❌ Gmail API error: {str(e)}"
                     }
             
             return {"success": False, "data": {}, "message": "Gmail automation not implemented"}
