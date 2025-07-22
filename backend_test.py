@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/api"
+BACKEND_URL = "https://0bc7d408-c640-4ab9-a6f4-59960f846f25.preview.emergentagent.com/api"
 
 class ElvaBackendTester:
     def __init__(self):
