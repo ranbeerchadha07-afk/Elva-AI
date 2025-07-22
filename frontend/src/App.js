@@ -440,8 +440,8 @@ function App() {
     // Handle "no unread emails" message
     if (response.includes('No unread emails') || response.includes('all caught up')) {
       return (
-        <div className="email-display-card">
-          <div className="email-header">
+        <div className="email-display-card premium-gmail-card">
+          <div className="email-header no-emails-header">
             ✅ No unread emails! Your inbox is all caught up.
           </div>
         </div>
