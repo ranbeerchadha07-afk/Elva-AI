@@ -1,370 +1,274 @@
 {
   "total_tests": 38,
-  "passed": 14,
-  "failed": 24,
-  "success_rate": 36.84210526315789,
+  "passed": 0,
+  "failed": 38,
+  "success_rate": 0.0,
   "results": [
     {
       "test": "Server Connectivity",
-      "success": true,
-      "details": "Backend server is running and accessible",
-      "timestamp": "2025-07-22T09:39:56.884338",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:49.193403",
+      "response_data": ""
     },
     {
       "test": "Intent Detection - General Chat",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:40:12.398112",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:49.714656",
+      "response_data": ""
     },
     {
       "test": "Intent Detection - Send Email",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:40:27.923863",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:50.234189",
+      "response_data": ""
     },
     {
       "test": "Intent Detection - Create Event",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:40:43.484491",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:50.750325",
+      "response_data": ""
     },
     {
       "test": "Intent Detection - Add Todo",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:40:59.029296",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:51.275879",
+      "response_data": ""
     },
     {
       "test": "Intent Detection - Set Reminder",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:41:14.579876",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:51.796514",
+      "response_data": ""
     },
     {
       "test": "Approval Workflow - Approved",
       "success": false,
       "details": "No message IDs available for approval test",
-      "timestamp": "2025-07-22T09:41:15.080067",
+      "timestamp": "2025-07-22T12:36:52.296892",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Rejected",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:41:30.628130",
+      "details": "Failed to create reminder for rejection test",
+      "timestamp": "2025-07-22T12:36:52.815341",
       "response_data": null
     },
     {
       "test": "Approval Workflow - Edited Data",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:41:46.195436",
+      "details": "Failed to create email for edit test",
+      "timestamp": "2025-07-22T12:36:53.330761",
       "response_data": null
     },
     {
       "test": "Chat History - Retrieval",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-22T09:41:56.756215",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:53.850298",
+      "response_data": ""
     },
     {
       "test": "Chat History - Clearing",
-      "success": true,
-      "details": "Chat history successfully cleared",
-      "timestamp": "2025-07-22T09:42:01.910309",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:54.386662",
+      "response_data": ""
     },
     {
       "test": "Error Handling - Invalid Message ID",
-      "success": true,
-      "details": "Correctly returned 404 for invalid message ID",
-      "timestamp": "2025-07-22T09:42:02.454402",
+      "success": false,
+      "details": "Expected 404, got 502",
+      "timestamp": "2025-07-22T12:36:54.908291",
       "response_data": null
     },
     {
       "test": "Health Endpoint - Enhanced System",
       "success": false,
-      "details": "Missing web automation intents: ['linkedin_insights', 'email_automation', 'price_monitoring']",
-      "timestamp": "2025-07-22T09:42:02.978550",
-      "response_data": {
-        "status": "healthy",
-        "mongodb": "connected",
-        "gmail_api_integration": {
-          "status": "ready",
-          "oauth2_flow": "implemented",
-          "credentials_configured": true,
-          "authenticated": false,
-          "scopes": [
-            "https://www.googleapis.com/auth/gmail.readonly",
-            "https://www.googleapis.com/auth/gmail.send",
-            "https://www.googleapis.com/auth/gmail.compose",
-            "https://www.googleapis.com/auth/gmail.modify"
-          ],
-          "endpoints": [
-            "/api/gmail/auth",
-            "/api/gmail/callback",
-            "/api/gmail/status",
-            "/api/gmail/inbox",
-            "/api/gmail/send",
-            "/api/gmail/email/{id}"
-          ]
-        },
-        "advanced_hybrid_ai_system": {
-          "version": "2.0",
-          "groq_api_key": "configured",
-          "claude_api_key": "configured",
-          "groq_model": "llama3-8b-8192",
-          "claude_model": "claude-3-5-sonnet-20241022",
-          "sophisticated_features": {
-            "task_classification": [
-              "primary_intent",
-              "emotional_complexity",
-              "professional_tone",
-              "creative_requirement",
-              "technical_complexity",
-              "response_length",
-              "user_engagement_level",
-              "context_dependency",
-              "reasoning_type"
-            ],
-            "routing_strategies": [
-              "intent_based",
-              "emotional_routing",
-              "professional_routing",
-              "creative_routing",
-              "sequential_execution",
-              "context_enhancement"
-            ],
-            "advanced_capabilities": [
-              "conversation_history_tracking",
-              "context_aware_responses",
-              "fallback_mechanisms",
-              "confidence_scoring",
-              "routing_explanation"
-            ]
-          },
-          "routing_models": {
-            "claude_tasks": [
-              "high_emotional",
-              "creative_content",
-              "conversational",
-              "professional_warm"
-            ],
-            "groq_tasks": [
-              "logical_reasoning",
-              "structured_analysis",
-              "technical_complex",
-              "intent_detection"
-            ],
-            "sequential_tasks": [
-              "professional_emails",
-              "linkedin_posts",
-              "complex_creative"
-            ],
-            "web_automation_tasks": [
-              "web_scraping",
-              "data_extraction"
-            ]
-          }
-        },
-        "n8n_webhook": "configured",
-        "playwright_service": {
-          "status": "available",
-          "browser": "chromium",
-          "capabilities": [
-            "dynamic_data_extraction",
-            "web_scraping"
-          ]
-        }
-      }
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:55.427102",
+      "response_data": ""
     },
     {
       "test": "Gmail API Health Integration",
-      "success": true,
-      "details": "Gmail API integration ready with 4 scopes and 6 endpoints",
-      "timestamp": "2025-07-22T09:42:03.505315",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:55.941188",
+      "response_data": ""
     },
     {
       "test": "Gmail OAuth - Status",
-      "success": true,
-      "details": "Gmail OAuth2 status configured correctly. Authenticated: False, Token exists: False",
-      "timestamp": "2025-07-22T09:42:04.025240",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:56.457231",
+      "response_data": ""
     },
     {
       "test": "Gmail OAuth - Auth URL",
-      "success": true,
-      "details": "OAuth2 auth URL generated successfully with all required parameters",
-      "timestamp": "2025-07-22T09:42:04.542081",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:56.975007",
+      "response_data": ""
     },
     {
       "test": "Email Inbox Check Intent Detection",
       "success": false,
-      "details": "\u2705 Simple inbox check: Email functionality recognized in response\n    \u2705 Unread emails query: Email functionality recognized in response\n    \u2705 Show inbox request: Email functionality recognized in response\n    \u274c New emails inquiry: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:42:57.433832",
+      "details": "\u274c Simple inbox check: HTTP 502\n    \u274c Unread emails query: HTTP 502\n    \u274c Show inbox request: HTTP 502\n    \u274c New emails inquiry: HTTP 502",
+      "timestamp": "2025-07-22T12:36:57.533374",
       "response_data": null
     },
     {
       "test": "Gmail Inbox Endpoint Direct",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-22T09:43:07.967243",
-      "response_data": null
+      "details": "Unexpected HTTP 502",
+      "timestamp": "2025-07-22T12:36:58.053536",
+      "response_data": ""
     },
     {
       "test": "Gmail OAuth - Callback Structure",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-22T09:43:18.523926",
-      "response_data": null
+      "details": "Expected 400 for missing code, got 502",
+      "timestamp": "2025-07-22T12:36:58.569692",
+      "response_data": ""
     },
     {
       "test": "Gmail Credentials Loading",
-      "success": true,
-      "details": "Gmail credentials loaded successfully with 4 scopes and 6 endpoints",
-      "timestamp": "2025-07-22T09:43:23.487011",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:59.086229",
+      "response_data": ""
     },
     {
       "test": "Gmail Service Initialization",
-      "success": true,
-      "details": "Gmail service properly requires authentication",
-      "timestamp": "2025-07-22T09:43:24.013729",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:36:59.630608",
+      "response_data": ""
     },
     {
       "test": "Web Automation Intent Detection",
       "success": false,
-      "details": "\u274c Web scraping intent: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)\n    \u274c LinkedIn insights intent: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)\n    \u274c Email automation intent: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)\n    \u274c Price monitoring intent: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)\n    \u274c Data extraction intent: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:44:39.749463",
+      "details": "\u274c Web scraping intent: HTTP 502\n    \u274c LinkedIn insights intent: HTTP 502\n    \u274c Email automation intent: HTTP 502\n    \u274c Price monitoring intent: HTTP 502\n    \u274c Data extraction intent: HTTP 502",
+      "timestamp": "2025-07-22T12:37:00.212843",
       "response_data": null
     },
     {
       "test": "Web Automation - Data Extraction",
       "success": false,
-      "details": "Automation failed: Failed to extract data: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /pw-browsers/chromium-1179/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=ImprovedCookieControls,LazyFrameLoading,GlobalMediaControls,DestroyProfileOnBrowserClose,MediaRouter,DialMediaRouteProvider,AcceptCHFrame,AutoExpandDetailsElement,CertificateTransparencyComponentUpdater,AvoidUnnecessaryBeforeUnloadCheckSync,Translate,HttpsUpgrades,PaintHolding,ThirdPartyStoragePartitioning,LensOverlay,PlzDedicatedWorker --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless=old --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --disable-extensions --no-first-run --disable-default-apps --disable-features=TranslateUI --disable-ipc-flooding-protection --user-data-dir=/tmp/playwright_chromiumdev_profile-brheGO --remote-debugging-pipe --no-startup-window\n<launched> pid=2550\n[pid=2550][err] Old Headless mode has been removed from the Chrome binary. Please use the new Headless mode (https://developer.chrome.com/docs/chromium/new-headless) or the chrome-headless-shell which is a standalone implementation of the old Headless mode (https://developer.chrome.com/blog/chrome-headless-shell).\n[pid=2550][err] \nCall log:\n<launching> /pw-browsers/chromium-1179/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=ImprovedCookieControls,LazyFrameLoading,GlobalMediaControls,DestroyProfileOnBrowserClose,MediaRouter,DialMediaRouteProvider,AcceptCHFrame,AutoExpandDetailsElement,CertificateTransparencyComponentUpdater,AvoidUnnecessaryBeforeUnloadCheckSync,Translate,HttpsUpgrades,PaintHolding,ThirdPartyStoragePartitioning,LensOverlay,PlzDedicatedWorker --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless=old --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --disable-extensions --no-first-run --disable-default-apps --disable-features=TranslateUI --disable-ipc-flooding-protection --user-data-dir=/tmp/playwright_chromiumdev_profile-brheGO --remote-debugging-pipe --no-startup-window\n  - <launched> pid=2550\n  - [pid=2550][err] Old Headless mode has been removed from the Chrome binary. Please use the new Headless mode (https://developer.chrome.com/docs/chromium/new-headless) or the chrome-headless-shell which is a standalone implementation of the old Headless mode (https://developer.chrome.com/blog/chrome-headless-shell).\n  - [pid=2550][err] \n",
-      "timestamp": "2025-07-22T09:44:42.578944",
-      "response_data": {
-        "success": false,
-        "data": {},
-        "message": "Failed to extract data: BrowserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /pw-browsers/chromium-1179/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=ImprovedCookieControls,LazyFrameLoading,GlobalMediaControls,DestroyProfileOnBrowserClose,MediaRouter,DialMediaRouteProvider,AcceptCHFrame,AutoExpandDetailsElement,CertificateTransparencyComponentUpdater,AvoidUnnecessaryBeforeUnloadCheckSync,Translate,HttpsUpgrades,PaintHolding,ThirdPartyStoragePartitioning,LensOverlay,PlzDedicatedWorker --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless=old --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --disable-extensions --no-first-run --disable-default-apps --disable-features=TranslateUI --disable-ipc-flooding-protection --user-data-dir=/tmp/playwright_chromiumdev_profile-brheGO --remote-debugging-pipe --no-startup-window\n<launched> pid=2550\n[pid=2550][err] Old Headless mode has been removed from the Chrome binary. Please use the new Headless mode (https://developer.chrome.com/docs/chromium/new-headless) or the chrome-headless-shell which is a standalone implementation of the old Headless mode (https://developer.chrome.com/blog/chrome-headless-shell).\n[pid=2550][err] \nCall log:\n<launching> /pw-browsers/chromium-1179/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=ImprovedCookieControls,LazyFrameLoading,GlobalMediaControls,DestroyProfileOnBrowserClose,MediaRouter,DialMediaRouteProvider,AcceptCHFrame,AutoExpandDetailsElement,CertificateTransparencyComponentUpdater,AvoidUnnecessaryBeforeUnloadCheckSync,Translate,HttpsUpgrades,PaintHolding,ThirdPartyStoragePartitioning,LensOverlay,PlzDedicatedWorker --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless=old --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --disable-extensions --no-first-run --disable-default-apps --disable-features=TranslateUI --disable-ipc-flooding-protection --user-data-dir=/tmp/playwright_chromiumdev_profile-brheGO --remote-debugging-pipe --no-startup-window\n  - <launched> pid=2550\n  - [pid=2550][err] Old Headless mode has been removed from the Chrome binary. Please use the new Headless mode (https://developer.chrome.com/docs/chromium/new-headless) or the chrome-headless-shell which is a standalone implementation of the old Headless mode (https://developer.chrome.com/blog/chrome-headless-shell).\n  - [pid=2550][err] \n",
-        "execution_time": 0.5183236598968506,
-        "automation_id": "2d87fd3e-41e2-4568-ac91-de6b044e50c5"
-      }
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:00.731551",
+      "response_data": ""
     },
     {
       "test": "Web Automation - Price Monitoring",
       "success": false,
-      "details": "HTTP 400",
-      "timestamp": "2025-07-22T09:44:43.102294",
-      "response_data": "{\"detail\":\"Unsupported automation type: price_monitoring\"}"
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:01.250302",
+      "response_data": ""
     },
     {
       "test": "Web Automation - LinkedIn Insights",
       "success": false,
-      "details": "HTTP 501",
-      "timestamp": "2025-07-22T09:44:43.619604",
-      "response_data": "{\"detail\":\"LinkedIn insights temporarily disabled - Gmail API integration coming soon\"}"
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:01.763862",
+      "response_data": ""
     },
     {
       "test": "Web Automation - Email Automation",
       "success": false,
-      "details": "HTTP 501",
-      "timestamp": "2025-07-22T09:44:44.143222",
-      "response_data": "{\"detail\":\"Email automation temporarily disabled - Gmail API integration coming soon\"}"
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:02.278861",
+      "response_data": ""
     },
     {
       "test": "Web Automation Error Handling",
       "success": false,
-      "details": "\u2705 Missing URL for web scraping: Correctly returned 400\n    \u274c Missing credentials for LinkedIn: Expected 400, got 501\n    \u2705 Invalid automation type: Correctly returned 400",
-      "timestamp": "2025-07-22T09:44:44.698706",
+      "details": "\u274c Missing URL for web scraping: Expected 400, got 502\n    \u274c Missing credentials for LinkedIn: Expected 400, got 502\n    \u274c Invalid automation type: Expected 400, got 502",
+      "timestamp": "2025-07-22T12:37:02.824192",
       "response_data": null
     },
     {
       "test": "Automation History",
-      "success": true,
-      "details": "Retrieved 1 automation records from history",
-      "timestamp": "2025-07-22T09:44:45.219110",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:03.339895",
+      "response_data": ""
     },
     {
       "test": "Direct Web Scraping Execution",
-      "success": true,
-      "details": "Web scraping detected and pending approval. URL: https://httpbin.org/html",
-      "timestamp": "2025-07-22T09:44:55.894407",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:03.860966",
+      "response_data": ""
     },
     {
       "test": "Direct Automation Intents",
       "success": false,
-      "details": "\u2705 LinkedIn notifications check: Direct automation working - check_linkedin_notifications\n    \u2705 Price scraping: Direct automation working - scrape_price\n    \u2705 Product listings scraping: Direct automation working - scrape_product_listings\n    \u2705 LinkedIn job alerts: Direct automation working - linkedin_job_alerts\n    \u2705 Website updates monitoring: Direct automation working - check_website_updates\n    \u2705 Competitor monitoring: Direct automation working - monitor_competitors\n    \u274c News articles scraping: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=20)",
-      "timestamp": "2025-07-22T09:46:36.005021",
+      "details": "\u274c LinkedIn notifications check: HTTP 502\n    \u274c Price scraping: HTTP 502\n    \u274c Product listings scraping: HTTP 502\n    \u274c LinkedIn job alerts: HTTP 502\n    \u274c Website updates monitoring: HTTP 502\n    \u274c Competitor monitoring: HTTP 502\n    \u274c News articles scraping: HTTP 502",
+      "timestamp": "2025-07-22T12:37:04.476596",
       "response_data": null
     },
     {
       "test": "Automation Status Endpoint",
       "success": false,
-      "details": "\u274c check_linkedin_notifications: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)\n    \u274c scrape_price: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)\n    \u274c scrape_product_listings: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)\n    \u274c linkedin_job_alerts: Error HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)\n    \u2705 check_website_updates: Status endpoint working\n    \u2705 monitor_competitors: Status endpoint working\n    \u2705 scrape_news_articles: Status endpoint working",
-      "timestamp": "2025-07-22T09:47:23.549501",
+      "details": "\u274c check_linkedin_notifications: HTTP 502\n    \u274c scrape_price: HTTP 502\n    \u274c scrape_product_listings: HTTP 502\n    \u274c linkedin_job_alerts: HTTP 502\n    \u274c check_website_updates: HTTP 502\n    \u274c monitor_competitors: HTTP 502\n    \u274c scrape_news_articles: HTTP 502",
+      "timestamp": "2025-07-22T12:37:05.110449",
       "response_data": null
     },
     {
       "test": "Direct Automation Response Format",
-      "success": true,
-      "details": "All required fields present, execution_time: 7e-06s, automation_success: True",
-      "timestamp": "2025-07-22T09:47:36.871048",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:05.624613",
+      "response_data": ""
     },
     {
       "test": "Traditional vs Direct Automation",
-      "success": true,
-      "details": "Traditional: needs_approval=True, has_result=False; Direct: needs_approval=False, has_result=True",
-      "timestamp": "2025-07-22T09:48:03.605978",
+      "success": false,
+      "details": "Traditional automation request failed",
+      "timestamp": "2025-07-22T12:37:06.139582",
       "response_data": null
     },
     {
       "test": "Cleanup - Cookie References",
-      "success": true,
-      "details": "No cookie management references found in health endpoint",
-      "timestamp": "2025-07-22T09:48:04.126121",
-      "response_data": null
+      "success": false,
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:06.655514",
+      "response_data": ""
     },
     {
       "test": "Cleanup - Price Monitoring Removal",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:48:19.643324",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:07.169726",
+      "response_data": ""
     },
     {
       "test": "Cleanup - Deprecated Endpoints",
-      "success": true,
-      "details": "\u2705 /cookie-sessions: Correctly removed (connection error)\n    \u2705 /automation/linkedin-insights: Correctly removed (connection error)\n    \u2705 /automation/email-check: Correctly removed (connection error)\n    \u2705 /cookie-sessions/cleanup: Correctly removed (connection error)",
-      "timestamp": "2025-07-22T09:48:40.327234",
+      "success": false,
+      "details": "\u274c /cookie-sessions: Still accessible (502)\n    \u274c /automation/linkedin-insights: Still accessible (502)\n    \u274c /automation/email-check: Still accessible (502)\n    \u274c /cookie-sessions/cleanup: Still accessible (502)",
+      "timestamp": "2025-07-22T12:37:07.740530",
       "response_data": null
     },
     {
       "test": "System Health - Gmail Integration",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-07-22T09:48:50.869488",
-      "response_data": null
+      "details": "HTTP 502",
+      "timestamp": "2025-07-22T12:37:08.258000",
+      "response_data": ""
     },
     {
       "test": "Existing Functionality Preservation",
       "success": false,
-      "details": "Error: HTTPSConnectionPool(host='84cfa8c9-a2ab-4f62-bc28-96c1ba65e66b.preview.emergentagent.com', port=443): Read timed out. (read timeout=15)",
-      "timestamp": "2025-07-22T09:49:06.428577",
-      "response_data": null
+      "details": "Chat functionality broken",
+      "timestamp": "2025-07-22T12:37:08.779170",
+      "response_data": ""
     }
   ]
 }
