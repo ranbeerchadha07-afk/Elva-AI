@@ -392,16 +392,13 @@ async def get_automation_history(session_id: str):
         logger.error(f"Automation history error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# OAuth2 endpoints for Gmail API (Preparation)
+# OAuth2 endpoints for Gmail API
 @api_router.get("/gmail/auth")
 async def gmail_auth_init():
     """Initialize Gmail OAuth2 authentication flow"""
     try:
-        # This will be implemented when Gmail API credentials are provided
-        return {
-            "auth_url": "Will be implemented with Gmail API credentials",
-            "message": "Gmail API OAuth2 flow preparation - credentials needed"
-        }
+        result = gmail_oauth_service.get_auth_url()
+        return result
     except Exception as e:
         logger.error(f"Gmail auth init error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -410,13 +407,68 @@ async def gmail_auth_init():
 async def gmail_auth_callback(request: dict):
     """Handle Gmail OAuth2 callback"""
     try:
-        # This will be implemented when Gmail API credentials are provided
-        return {
-            "success": False,
-            "message": "Gmail API OAuth2 callback - implementation pending credentials"
-        }
+        authorization_code = request.get('code')
+        if not authorization_code:
+            raise HTTPException(status_code=400, detail="Authorization code required")
+        
+        result = gmail_oauth_service.handle_oauth_callback(authorization_code)
+        return result
     except Exception as e:
         logger.error(f"Gmail auth callback error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/gmail/status")
+async def gmail_auth_status():
+    """Get Gmail authentication status"""
+    try:
+        status = gmail_oauth_service.get_auth_status()
+        return status
+    except Exception as e:
+        logger.error(f"Gmail status error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/gmail/inbox")
+async def gmail_check_inbox(max_results: int = 10, query: str = 'is:unread'):
+    """Check Gmail inbox using OAuth2"""
+    try:
+        result = gmail_oauth_service.check_inbox(max_results=max_results, query=query)
+        return result
+    except Exception as e:
+        logger.error(f"Gmail inbox check error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/gmail/send")
+async def gmail_send_email(request: dict):
+    """Send email using Gmail API with OAuth2"""
+    try:
+        to = request.get('to')
+        subject = request.get('subject')
+        body = request.get('body')
+        
+        if not all([to, subject, body]):
+            raise HTTPException(status_code=400, detail="to, subject, and body are required")
+        
+        result = gmail_oauth_service.send_email(
+            to=to,
+            subject=subject,
+            body=body,
+            sender_email=request.get('from'),
+            cc=request.get('cc'),
+            bcc=request.get('bcc')
+        )
+        return result
+    except Exception as e:
+        logger.error(f"Gmail send error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/gmail/email/{message_id}")
+async def gmail_get_email(message_id: str):
+    """Get specific email content using Gmail API"""
+    try:
+        result = gmail_oauth_service.get_email_content(message_id)
+        return result
+    except Exception as e:
+        logger.error(f"Gmail get email error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 async def root():
