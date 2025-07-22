@@ -268,6 +268,51 @@ function App() {
     }
   };
 
+  // Gmail Debug Function
+  const showGmailDebugInfo = async () => {
+    try {
+      const response = await axios.get(`${API}/gmail/debug`);
+      const debugInfo = response.data;
+      
+      const debugMessage = {
+        id: 'gmail_debug_detailed_' + Date.now(),
+        response: '🔧 **Gmail Integration Debug Report**\n\n' +
+                 `📁 **Credentials File**: ${debugInfo.debug_info.gmail_service_status.credentials_file_exists ? 'Found ✅' : 'Missing ❌'}\n` +
+                 `📂 **File Path**: ${debugInfo.debug_info.gmail_service_status.credentials_file_path}\n` +
+                 `🔑 **Client ID Configured**: ${debugInfo.debug_info.gmail_service_status.credentials_content?.client_id_configured ? 'Yes ✅' : 'No ❌'}\n` +
+                 `🔄 **Redirect URI Configured**: ${debugInfo.debug_info.gmail_service_status.credentials_content?.redirect_uri_configured ? 'Yes ✅' : 'No ❌'}\n` +
+                 `🗄️ **Database Connection**: ${debugInfo.debug_info.database_status.connection === 'connected' ? 'Connected ✅' : 'Error ❌'}\n` +
+                 `🎫 **Stored Tokens**: ${debugInfo.debug_info.database_status.gmail_token_count} tokens found\n` +
+                 `🌐 **Environment Variables**: ${debugInfo.debug_info.environment.GMAIL_REDIRECT_URI ? 'Configured ✅' : 'Missing ❌'}\n\n` +
+                 `**🔧 Next Steps:**\n` +
+                 (!debugInfo.debug_info.gmail_service_status.credentials_file_exists ? 
+                   '1. **Missing credentials.json** - You need to add your Google OAuth2 credentials file to `/app/backend/credentials.json`\n' +
+                   '2. See `/app/backend/credentials.json.template` for the required format\n' +
+                   '3. Get credentials from [Google Cloud Console](https://console.cloud.google.com/)\n' : 
+                   debugInfo.debug_info.database_status.connection !== 'connected' ?
+                   '1. **Database Issue** - MongoDB connection problem\n' :
+                   '1. **Setup looks good** - Try the OAuth2 flow again\n'
+                 ),
+        isUser: false,
+        isSystem: true,
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, debugMessage]);
+      
+    } catch (error) {
+      console.error('Failed to get debug info:', error);
+      const errorMessage = {
+        id: 'debug_error_' + Date.now(),
+        response: '❌ **Debug Error**: Failed to retrieve Gmail debug information. Check console for details.',
+        isUser: false,
+        isSystem: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    }
+  };
+
   const addWelcomeMessage = () => {
     const baseMessage = "Hi Buddy 👋 Good to see you! Elva AI at your service. Ask me anything or tell me what to do!";
     const gmailMessage = gmailAuthStatus.authenticated 
