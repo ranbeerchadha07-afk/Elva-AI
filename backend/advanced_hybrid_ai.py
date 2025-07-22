@@ -166,7 +166,7 @@ User Message: "{user_input}"
 
 Classify across these dimensions:
 {{
-  "primary_intent": "one of: general_chat, send_email, create_event, add_todo, set_reminder, linkedin_post, complex_analysis, creative_writing, technical_explanation, web_scraping, linkedin_insights, email_automation, price_monitoring, data_extraction",
+  "primary_intent": "one of: general_chat, send_email, create_event, add_todo, set_reminder, linkedin_post, complex_analysis, creative_writing, technical_explanation, web_scraping, linkedin_insights, email_automation, data_extraction",
   "emotional_complexity": "one of: low, medium, high",
   "professional_tone_required": true or false,
   "creative_requirement": "one of: none, low, medium, high",
