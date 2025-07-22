@@ -422,21 +422,28 @@ async def gmail_auth_init(session_id: str = None):
 async def gmail_auth_callback(code: str = None, state: str = None, error: str = None, session_id: str = None):
     """Handle Gmail OAuth2 callback from Google redirect"""
     try:
+        logger.info(f"🔗 Gmail OAuth callback received - code: {bool(code)}, state: {state}, error: {error}")
+        
         # Extract session_id from state if not provided separately
         if not session_id and state:
-            # State can contain session information
             try:
-                # For now, we'll use a default session if none provided
-                session_id = state.split('_')[0] if '_' in state else 'default_session'
+                # State can contain session information
+                if '_' in state:
+                    session_id = state.split('_')[0]
+                    logger.info(f"📋 Extracted session_id from state: {session_id}")
+                else:
+                    session_id = 'default_session'
             except:
                 session_id = 'default_session'
         
         if not session_id:
             session_id = 'default_session'
             
+        logger.info(f"🎯 Using session_id: {session_id}")
+            
         # Handle OAuth error responses
         if error:
-            logger.warning(f"OAuth callback received error: {error}")
+            logger.warning(f"❌ OAuth callback received error: {error}")
             # Redirect to frontend with error parameter
             return RedirectResponse(
                 url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=error&message={error}&session_id={session_id}',
@@ -445,34 +452,39 @@ async def gmail_auth_callback(code: str = None, state: str = None, error: str = 
         
         # Check for authorization code
         if not code:
-            logger.error("No authorization code received")
+            logger.error("❌ No authorization code received in OAuth callback")
             return RedirectResponse(
                 url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=error&message=no_code&session_id={session_id}',
                 status_code=302
             )
         
+        logger.info(f"✅ Processing OAuth callback with authorization code for session: {session_id}")
+        
         # Handle OAuth callback with authorization code
         result = await gmail_oauth_service.handle_oauth_callback(code, session_id)
         
+        logger.info(f"📊 OAuth callback result: success={result.get('success')}, authenticated={result.get('authenticated')}")
+        
         if result.get("authenticated", False):
-            logger.info(f"Gmail authentication successful for session {session_id} - redirecting to frontend")
+            logger.info(f"🎉 Gmail authentication successful for session {session_id} - redirecting to frontend")
             # Redirect to frontend with success parameter
             return RedirectResponse(
                 url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=success&service=gmail&session_id={session_id}',
                 status_code=302
             )
         else:
-            logger.error(f"Gmail authentication failed for session {session_id}")
+            error_msg = result.get('message', 'Authentication failed')
+            logger.error(f"❌ Gmail authentication failed for session {session_id}: {error_msg}")
             return RedirectResponse(
-                url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=error&message=auth_failed&session_id={session_id}',
+                url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=error&message=auth_failed&details={error_msg}&session_id={session_id}',
                 status_code=302
             )
         
     except Exception as e:
-        logger.error(f"Gmail auth callback error: {e}")
+        logger.error(f"💥 Gmail auth callback exception: {e}")
         # Redirect to frontend with error parameter
         return RedirectResponse(
-            url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=error&message=server_error&session_id={session_id if session_id else "unknown"}',
+            url=f'https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/?auth=error&message=server_error&details={str(e)}&session_id={session_id if session_id else "unknown"}',
             status_code=302
         )
 
