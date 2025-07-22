@@ -19,6 +19,7 @@ function App() {
   const [currentMessageId, setCurrentMessageId] = useState(null); // Track current message for approval
   const [automationStatus, setAutomationStatus] = useState(null); // Track automation status
   const [isDirectAutomation, setIsDirectAutomation] = useState(false); // Track if current request is direct automation
+  const [gmailAuthStatus, setGmailAuthStatus] = useState({ authenticated: false, loading: true }); // Gmail authentication status
   const messagesEndRef = useRef(null);
 
   function generateSessionId() {
