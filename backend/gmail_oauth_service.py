@@ -67,49 +67,70 @@ class GmailOAuthService:
             logger.error(f"❌ Error loading credentials.json: {e}")
             return None
     
-    def _save_token(self, credentials: Credentials):
-        """Save OAuth2 token to file"""
+    async def _save_token(self, credentials: Credentials, session_id: str):
+        """Save OAuth2 token to MongoDB with session association"""
         try:
+            if not self.db:
+                logger.error("❌ No database connection available for token storage")
+                return
+                
             token_data = {
+                'session_id': session_id,
+                'user_id': f'session_{session_id}',  # Use session as user identifier
                 'token': credentials.token,
                 'refresh_token': credentials.refresh_token,
                 'token_uri': credentials.token_uri,
                 'client_id': credentials.client_id,
                 'client_secret': credentials.client_secret,
                 'scopes': credentials.scopes,
-                'expiry': credentials.expiry.isoformat() if credentials.expiry else None
+                'expiry': credentials.expiry.isoformat() if credentials.expiry else None,
+                'created_at': datetime.utcnow().isoformat(),
+                'updated_at': datetime.utcnow().isoformat(),
+                'service': 'gmail'
             }
             
-            with open(self.token_file_path, 'w') as f:
-                json.dump(token_data, f, indent=2)
-                
-            logger.info("✅ Gmail OAuth2 token saved successfully")
+            # Update or insert token data for this session
+            await self.db.oauth_tokens.update_one(
+                {'session_id': session_id, 'service': 'gmail'},
+                {'$set': token_data},
+                upsert=True
+            )
+            
+            logger.info(f"✅ Gmail OAuth2 token saved successfully for session: {session_id}")
             
         except Exception as e:
             logger.error(f"❌ Error saving OAuth2 token: {e}")
     
-    def _load_token(self) -> Optional[Credentials]:
-        """Load OAuth2 token from file"""
+    async def _load_token(self, session_id: str) -> Optional[Credentials]:
+        """Load OAuth2 token from MongoDB for specific session"""
         try:
-            if not self.token_file_path.exists():
+            if not self.db:
+                logger.error("❌ No database connection available for token loading")
                 return None
                 
-            with open(self.token_file_path, 'r') as f:
-                token_data = json.load(f)
+            token_record = await self.db.oauth_tokens.find_one({
+                'session_id': session_id,
+                'service': 'gmail'
+            })
+            
+            if not token_record:
+                logger.info(f"ℹ️ No Gmail token found for session: {session_id}")
+                return None
             
             credentials = Credentials(
-                token=token_data.get('token'),
-                refresh_token=token_data.get('refresh_token'),
-                token_uri=token_data.get('token_uri'),
-                client_id=token_data.get('client_id'),
-                client_secret=token_data.get('client_secret'),
-                scopes=token_data.get('scopes')
+                token=token_record.get('token'),
+                refresh_token=token_record.get('refresh_token'),
+                token_uri=token_record.get('token_uri'),
+                client_id=token_record.get('client_id'),
+                client_secret=token_record.get('client_secret'),
+                scopes=token_record.get('scopes')
             )
             
             # Set expiry if available
-            if token_data.get('expiry'):
-                credentials.expiry = datetime.fromisoformat(token_data['expiry'])
+            if token_record.get('expiry'):
+                credentials.expiry = datetime.fromisoformat(token_record['expiry'])
             
+            logger.info(f"✅ Gmail token loaded successfully for session: {session_id}")
             return credentials
             
         except Exception as e:
