@@ -241,36 +241,7 @@ class DirectAutomationHandler:
         except Exception as e:
             return {"success": False, "data": {}, "message": str(e)}
     
-    async def _handle_price_automation(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle price monitoring automation"""
-        try:
-            product = intent_data.get("product", "Unknown Product")
-            platform = intent_data.get("platform", "amazon")
-            
-            # For demo purposes, simulate price check
-            # In production, this would use playwright_service.monitor_ecommerce_price
-            mock_prices = {
-                "amazon": "$299.99",
-                "flipkart": "₹24,999",
-                "ebay": "$279.95"
-            }
-            
-            price = mock_prices.get(platform.lower(), "$0.00")
-            
-            return {
-                "success": True,
-                "data": {
-                    "product": product,
-                    "price": price,
-                    "platform": platform.title(),
-                    "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                },
-                "message": "Price retrieved successfully"
-            }
-            
-        except Exception as e:
-            return {"success": False, "data": {}, "message": str(e)}
-    
+
     async def _handle_data_extraction(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
         """Handle data extraction automation"""
         try:
