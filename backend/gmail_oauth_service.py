@@ -310,11 +310,17 @@ class GmailOAuthService:
         body: str, 
         sender_email: str = None,
         cc: str = None,
-        bcc: str = None
+        bcc: str = None,
+        session_id: str = None
     ) -> Dict[str, Any]:
         """Send email using Gmail API"""
         try:
-            if not self._authenticate():
+            if not session_id:
+                session_id = self.current_session_id or 'default_session'
+                
+            # Use async authentication check
+            import asyncio
+            if not asyncio.run(self._authenticate(session_id)):
                 return {
                     'success': False,
                     'message': 'Gmail authentication required. Please complete OAuth2 flow.',
