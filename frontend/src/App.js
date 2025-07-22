@@ -187,33 +187,44 @@ function App() {
 
   const handleGmailAuthError = (errorMessage) => {
     try {
-      // Update auth status
-      setGmailAuthStatus({ authenticated: false, loading: false });
+      // Update auth status and re-check
+      checkGmailAuthStatus();
       
       // Map error codes to user-friendly messages
       let userMessage = 'Gmail authentication failed. Please try again.';
+      let debugInfo = '';
+      
       switch(errorMessage) {
         case 'access_denied':
           userMessage = 'Gmail authentication was cancelled. You can try connecting again anytime.';
+          debugInfo = 'User denied access during OAuth2 flow.';
           break;
         case 'no_code':
           userMessage = 'Gmail authentication failed - no authorization received.';
+          debugInfo = 'OAuth2 callback did not receive authorization code.';
           break;
         case 'auth_failed':
           userMessage = 'Gmail authentication failed during token exchange.';
+          debugInfo = 'Token exchange with Google failed.';
           break;
         case 'server_error':
           userMessage = 'Gmail authentication failed due to a server error.';
+          debugInfo = 'Backend server error during OAuth2 processing.';
           break;
+        default:
+          debugInfo = `Unknown error: ${errorMessage}`;
       }
       
-      // Add error message to chat
+      // Add error message to chat with debug info
       const errorMsg = {
         id: 'gmail_auth_error_' + Date.now(),
         session_id: sessionId,
         user_id: 'system', 
         message: '❌ Gmail Authentication Failed',
-        response: userMessage,
+        response: `❌ **Gmail Authentication Error**\n\n${userMessage}\n\n` +
+                 `🔧 **Debug Info**: ${debugInfo}\n` +
+                 `🆔 **Session**: ${sessionId}\n\n` +
+                 `💡 **Next Steps**: Check the "Connect Gmail" button above shows the correct status, or try the authentication flow again.`,
         timestamp: new Date().toISOString(),
         intent_data: null,
         needs_approval: false
@@ -221,7 +232,7 @@ function App() {
       
       setMessages(prev => [...prev, errorMsg]);
       
-      console.error('Gmail authentication error:', errorMessage);
+      console.error('Gmail authentication error:', errorMessage, debugInfo);
     } catch (error) {
       console.error('Error handling Gmail auth error:', error);
     }
