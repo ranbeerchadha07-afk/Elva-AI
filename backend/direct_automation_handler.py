@@ -62,12 +62,13 @@ class DirectAutomationHandler:
             }
         }
     
-    async def process_direct_automation(self, intent_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def process_direct_automation(self, intent_data: Dict[str, Any], session_id: str = None) -> Dict[str, Any]:
         """
         Process direct automation intent and return formatted result
         
         Args:
             intent_data: Intent data from AI detection
+            session_id: Session ID for authentication
             
         Returns:
             Dict containing automation result and formatting info
@@ -83,7 +84,7 @@ class DirectAutomationHandler:
                 "data": {}
             }
         
-        logger.info(f"🤖 Processing direct automation: {intent}")
+        logger.info(f"🤖 Processing direct automation: {intent} for session: {session_id}")
         start_time = datetime.now()
         
         try:
@@ -93,7 +94,7 @@ class DirectAutomationHandler:
             if automation_type == "linkedin_insights":
                 result = await self._handle_linkedin_automation(intent, intent_data)
             elif automation_type == "gmail_automation":
-                result = await self._handle_gmail_automation(intent, intent_data)
+                result = await self._handle_gmail_automation(intent, intent_data, session_id)
 
             elif automation_type == "data_extraction":
                 result = await self._handle_data_extraction(intent, intent_data)
