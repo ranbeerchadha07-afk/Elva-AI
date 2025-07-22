@@ -629,6 +629,7 @@ Direct automation (no approval needed):
 Check LinkedIn notifications: {{"intent": "check_linkedin_notifications", "account_type": "personal/business"}}
 Check Gmail inbox: {{"intent": "check_gmail_inbox", "user_email": "brainlyarpit8649@gmail.com", "include_unread_only": false}}
 Check Gmail unread: {{"intent": "check_gmail_unread", "user_email": "brainlyarpit8649@gmail.com"}}
+Email inbox check: {{"intent": "email_inbox_check", "user_email": "brainlyarpit8649@gmail.com", "check_type": "unread"}}
 Scrape price: {{"intent": "scrape_price", "product": "product name", "platform": "amazon/flipkart/ebay", "search_query": "search terms"}}
 Scrape product listings: {{"intent": "scrape_product_listings", "category": "category", "platform": "website", "filters": {{"price_range": "range", "brand": "brand"}}}}
 LinkedIn job alerts: {{"intent": "linkedin_job_alerts", "job_title": "title", "location": "location"}}
