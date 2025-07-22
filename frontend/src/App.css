@@ -696,6 +696,7 @@ button:active:not(:disabled) {
   cursor: default;
   position: relative;
   overflow: hidden;
+  animation: greenGlow 3s ease-in-out infinite;
 }
 
 .premium-gmail-connected::before {
@@ -720,6 +721,23 @@ button:active:not(:disabled) {
     0 12px 40px rgba(16, 185, 129, 0.4),
     0 0 30px rgba(16, 185, 129, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: none;
+}
+
+/* Green glow animation for connected Gmail button */
+@keyframes greenGlow {
+  0%, 100% {
+    box-shadow: 
+      0 8px 32px rgba(16, 185, 129, 0.3),
+      0 0 20px rgba(16, 185, 129, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 8px 32px rgba(16, 185, 129, 0.4),
+      0 0 30px rgba(16, 185, 129, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
 }
 /* Gmail Error State with Red Gradient */
 .premium-gmail-error {
