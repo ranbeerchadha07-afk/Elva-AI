@@ -168,13 +168,14 @@ class GmailOAuthService:
                 'message': f'Failed to generate auth URL: {str(e)}'
             }
     
-    def handle_oauth_callback(self, authorization_code: str) -> Dict[str, Any]:
+    async def handle_oauth_callback(self, authorization_code: str, session_id: str) -> Dict[str, Any]:
         """Handle OAuth2 callback and exchange code for credentials"""
         try:
             credentials_config = self._load_credentials_config()
             if not credentials_config:
                 return {
                     'success': False,
+                    'authenticated': False,
                     'message': 'Gmail credentials.json not configured'
                 }
             
@@ -188,20 +189,24 @@ class GmailOAuthService:
             flow.fetch_token(code=authorization_code)
             
             self.credentials = flow.credentials
-            self._save_token(self.credentials)
+            self.current_session_id = session_id
+            await self._save_token(self.credentials, session_id)
             
             # Initialize Gmail service
             self.service = build('gmail', 'v1', credentials=self.credentials)
             
             return {
                 'success': True,
-                'message': 'Gmail OAuth2 authentication completed successfully'
+                'authenticated': True,
+                'message': 'Gmail OAuth2 authentication completed successfully',
+                'session_id': session_id
             }
             
         except Exception as e:
             logger.error(f"❌ OAuth2 callback error: {e}")
             return {
                 'success': False,
+                'authenticated': False,
                 'message': f'OAuth2 authentication failed: {str(e)}'
             }
     
