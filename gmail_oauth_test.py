@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://1177f8b3-e76c-450d-ac57-9d136be3218f.preview.emergentagent.com/api"
+BACKEND_URL = "https://eca77eb1-0dd8-41b9-8eaf-1ede33b5a855.preview.emergentagent.com/api"
 
 class GmailOAuth2Tester:
     def __init__(self):
