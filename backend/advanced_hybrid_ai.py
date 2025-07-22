@@ -72,7 +72,8 @@ class AdvancedHybridAI:
         direct_automation_intents = [
             "check_linkedin_notifications",
             "check_gmail_inbox",
-            "check_gmail_unread",
+            "check_gmail_unread", 
+            "email_inbox_check",  # Added new intent for natural language email checking
             "scrape_price", 
             "scrape_product_listings",
             "linkedin_job_alerts",
