@@ -466,10 +466,10 @@ async def gmail_auth_callback(code: str = None, state: str = None, error: str = 
         )
 
 @api_router.get("/gmail/status")
-async def gmail_auth_status():
-    """Get Gmail authentication status"""
+async def gmail_auth_status(session_id: str = None):
+    """Get Gmail authentication status for specific session"""
     try:
-        status = gmail_oauth_service.get_auth_status()
+        status = await gmail_oauth_service.get_auth_status(session_id)
         return status
     except Exception as e:
         logger.error(f"Gmail status error: {e}")
