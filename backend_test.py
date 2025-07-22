@@ -1956,6 +1956,16 @@ class ElvaBackendTester:
             self.test_error_handling,
             self.test_health_endpoint,
             
+            # Gmail API Integration Tests (Priority Focus from Review Request)
+            self.test_gmail_api_health_integration,
+            self.test_gmail_oauth_status_endpoint,
+            self.test_gmail_oauth_auth_endpoint,
+            self.test_email_inbox_check_intent,
+            self.test_gmail_inbox_endpoint_direct,
+            self.test_gmail_oauth_callback_structure,
+            self.test_gmail_credentials_loading,
+            self.test_gmail_service_initialization,
+            
             # Web automation tests
             self.test_web_automation_intent_detection,
             self.test_web_automation_endpoint_data_extraction,
@@ -1971,13 +1981,6 @@ class ElvaBackendTester:
             self.test_automation_status_endpoint,
             self.test_direct_automation_response_format,
             self.test_traditional_vs_direct_automation,
-            
-            # Gmail OAuth2 integration tests
-            self.test_gmail_oauth_auth_endpoint,
-            self.test_gmail_oauth_status_endpoint,
-            self.test_gmail_oauth_callback_structure,
-            self.test_gmail_credentials_loading,
-            self.test_gmail_service_initialization,
             
             # Cleanup verification tests
             self.test_cleanup_verification_cookie_references,
