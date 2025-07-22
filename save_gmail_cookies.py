@@ -6,11 +6,11 @@ sys.path.append('/app/backend')
 
 from cookie_manager import cookie_manager
 
-# Gmail cookies for brainlyarpit8649@gmail.com
+# Updated Gmail cookies for brainlyarpit8649@gmail.com
 gmail_cookies = [
     {
         "domain": ".google.com",
-        "expirationDate": 1787641000.447148,
+        "expirationDate": 1787706652.477026,
         "hostOnly": False,
         "httpOnly": False,
         "name": "SAPISID",
@@ -19,11 +19,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "hv4zoM_HAj5XUFMi/ALZkjF57PaHdoWK-H"
+        "value": "Dre89z9Cy1BJcjmC/A7-it29etLisIaG88"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1787641000.447212,
+        "expirationDate": 1787706652.47825,
         "hostOnly": False,
         "httpOnly": False,
         "name": "__Secure-3PAPISID",
@@ -32,7 +32,7 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "hv4zoM_HAj5XUFMi/ALZkjF57PaHdoWK-H"
+        "value": "Dre89z9Cy1BJcjmC/A7-it29etLisIaG88"
     },
     {
         "domain": "mail.google.com",
@@ -44,11 +44,11 @@ gmail_cookies = [
         "secure": True,
         "session": True,
         "storeId": None,
-        "value": "AF6bupOZmOr5BnEGA0aS6tXucVp-Geg0jQ"
+        "value": "AF6bupNI2yB-nLW_ZtjysOumidrfKAw69w"
     },
     {
         "domain": "mail.google.com",
-        "expirationDate": 1755672640.118824,
+        "expirationDate": 1755699731.207884,
         "hostOnly": True,
         "httpOnly": True,
         "name": "__Host-GMAIL_SCH_GML",
@@ -61,7 +61,7 @@ gmail_cookies = [
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1768890252.446685,
+        "expirationDate": 1768929886.503371,
         "hostOnly": False,
         "httpOnly": True,
         "name": "NID",
@@ -70,11 +70,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "525=KTRQKkP0LQ1bwmYYYb6kHVvG_e6Pkav4BQZTqtkggd1401Zm1MhJ9RDQYQflKmc3C7R2035FnyG-ZE1LVdCB90XNboHyft-56oX0ASQuhIKxf83d-8aiHd8y4q-HL1-EO9jvNR-fAiyJNqZ73BkedndwBDkT3MHfrVvc-F244MKDy2oYMANfCrMNOkLIT2c9NJ-80TUmepvgrHaNIFUvLVm1ZSSrANXU_1M_LeDGvf8_aFZR020Ib1EPhWRiksnnNTA9jQgRp9EeL5vo_uJ2y6HYiVkkR5ZhZrXzKXAb5HYg1J0h-gNllyfT8voG2dvZ06EFIRf0M4ARbjuCM_ogOsPcWCFKAyUHDjNWf92VyNCCFAh_JDwnDNq0kYYHUpka3rcL5-9j7ZsZNKtOUfaLFGn9yFO9D7wwxsgfQvYxMPyM8akXXTG-GcE_JUxSS7-CWSysuAJmc7ds_JfZ6thp3OhCI9ujfDxlQuMWd640-NNmFm_K8yzF2etVEhjRRYaFK-EviXAzORXI0WWKS2OKJq-FtiMnyV2eF0BmRyaX_EZi8BoYW-V2LK2EDZD0-kTteJYLBsqw8e0uUQK3hSnW_O9RT-GuiTA__uYm2COHnnwtidbrw6Pg-MwzWlSqaX02IZWOnOi4UwLcnS3GK026i5soa_Zu197wQtVZ2AdAIHWCVMbUW8rl-HhZ-A"
+        "value": "525=NTjB2KSHmGvQVOYRZCulqSsksGj8UlhWYP17JSg5I_pqcesY1hsq5gompLE86NlSb-RowZ8pJcaNLRu0eeUcxhz042GPRMi7M-lR2JMNk-2Ns002VhcvV9EwkaJ9stRMo-gQXkCfLsUQgvok6bkBKQtxcdun5YtU4yNBbxQFOzKilKF8YDj5wBRq3zX78tq18uryO17z6EO9FyEQUe_X_xpCLpn8laehYTdmGGquDMRicIKuVTd7P4cFo6g9KN3ygqSGX-axv0lrUvR6fu46B8ypUxCWNxInR9dKkGaDDYGpa-fnihSz4NYpSmNUIbPnp8QHKSkEuBSw1CJm2w_4P9D3gcL8cE6KZYmwe_XjUH6mKS_qYPS4-B7xZr77Aki8D9gm9xhJRxbJEdQVdNr7f0tZ0P_Gzl4WV2O9I0QnGl97Nl4_Lxl7EvBaIc8piyQd6zQmdsfDySUHPIO06-YR4xHhTIZw4Duy6SHgmNznhLM-MtBQ5m_pZ2J-ZSj71kuqGm_XyFFVuydATaMm7FylCHCWUo8IHyBMxcEXbuY9xlaGtC1FqR2n48mM4ZGSQlZjl6_cmRFmVrcaPeW5zF21W_YwX3zEhAUXGva06Ac68tiLXvFoARbyUUORryE2LV-J7IyVW-PwvKlwLEeXMyHgxammtYuwTRfTwDHxWNQ2SScp"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1784617031.795325,
+        "expirationDate": 1784682672.198465,
         "hostOnly": False,
         "httpOnly": True,
         "name": "__Secure-1PSIDTS",
@@ -83,11 +83,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "sidts-CjEB5H03P_2UR0lzOIj0OfapEYoJskm1XEZOsxIW029V8VjZ5A0s291wrcNwMdFAPiToEAA"
+        "value": "sidts-CjEB5H03P94zOWi9S3DV17_mf15ucGlAo3HwqHQqAgTtMOBquD1s1yeVw8NGrdjsVlGREAA"
     },
     {
         "domain": "mail.google.com",
-        "expirationDate": 1755672640.118764,
+        "expirationDate": 1755699731.207823,
         "hostOnly": True,
         "httpOnly": True,
         "name": "__Host-GMAIL_SCH_GMS",
@@ -100,7 +100,7 @@ gmail_cookies = [
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1787641000.44718,
+        "expirationDate": 1787706652.477643,
         "hostOnly": False,
         "httpOnly": False,
         "name": "__Secure-1PAPISID",
@@ -109,11 +109,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "hv4zoM_HAj5XUFMi/ALZkjF57PaHdoWK-H"
+        "value": "Dre89z9Cy1BJcjmC/A7-it29etLisIaG88"
     },
     {
         "domain": "mail.google.com",
-        "expirationDate": 1787641015.170342,
+        "expirationDate": 1787706652.978769,
         "hostOnly": True,
         "httpOnly": True,
         "name": "OSID",
@@ -122,11 +122,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "g.a000zQiomjQIIpQx2IDugECxjQx8cFJFfxMG4h60BLQRtT_jdpv4383p5h0j4EYY1raKEIBD4QACgYKAe8SARMSFQHGX2MiUc3Qt3eQLkEX7vGGybAEfhoVAUF8yKppm6FQDSU0_GOWiRVYosxx0076"
+        "value": "g.a000zQiommhugQQNhINz3K2Wnmw_RsTvn13H-kJeYfLeRB7N7c4QeFROtQ5ZuQQchNHyKpou7gACgYKAZUSARMSFQHGX2MiyZCZTEopyOBtq_qZwr1tYRoVAUF8yKpjHCe1IPIfXdeOEUV19kmJ0076"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1787641000.446935,
+        "expirationDate": 1787706652.472976,
         "hostOnly": False,
         "httpOnly": True,
         "name": "__Secure-3PSID",
@@ -135,7 +135,7 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "g.a000zQiomkhbSrVzmOsO7YG5DNnCZHAkWNsuPG4gCGcMq_G8dQwHbuyyG8W4rQDwMd3k1Rf-qgACgYKAYESARMSFQHGX2MixdgkMXZY8Cuxnkg2yHhjXxoVAUF8yKpkw8dyfwvxUsGRHCxBef8Y0076"
+        "value": "g.a000zQiomtDlSOw-WP1X9Hy3WRahpeuNVF6vDhR-p01xf6UZTlB4WW32SG0LO_5qK9y5d0sLvAACgYKAa4SARMSFQHGX2MifXGFTc9DPIJPCkxjBopf1xoVAUF8yKq5CWMvIGBjxLRQeDXAtnDa0076"
     },
     {
         "domain": "mail.google.com",
@@ -151,7 +151,7 @@ gmail_cookies = [
     },
     {
         "domain": "mail.google.com",
-        "expirationDate": 1755672640.118665,
+        "expirationDate": 1755699731.207688,
         "hostOnly": True,
         "httpOnly": True,
         "name": "__Host-GMAIL_SCH_GMN",
@@ -164,7 +164,7 @@ gmail_cookies = [
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1787641000.446893,
+        "expirationDate": 1787706652.47101,
         "hostOnly": False,
         "httpOnly": True,
         "name": "__Secure-1PSID",
@@ -173,11 +173,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "g.a000zQiomkhbSrVzmOsO7YG5DNnCZHAkWNsuPG4gCGcMq_G8dQwHG9RfSUFQm6nuRmFqpy9fewACgYKAd4SARMSFQHGX2MilfbS0xSCSh7p7OPLbYYPHxoVAUF8yKruEbIqC7z4vRQOdumq30tg0076"
+        "value": "g.a000zQiomtDlSOw-WP1X9Hy3WRahpeuNVF6vDhR-p01xf6UZTlB4ZlrC37vxNqrdwtKgQA3LAQACgYKAVwSARMSFQHGX2MiIdeEZrzn0i_BDUneFVFZuRoVAUF8yKruPgMpDlSXIjD-XpoL43SM0076"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1784617046.512471,
+        "expirationDate": 1784682965.579247,
         "hostOnly": False,
         "httpOnly": True,
         "name": "__Secure-1PSIDCC",
@@ -186,11 +186,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "AKEyXzVyBbVym0MOoOZgRlMlsbcRft78hXkJZ0YMNY_EBftqDT4J-l5-wEq6ShghD-ESHze0kA"
+        "value": "AKEyXzVFp9udMyg4bXqOAlnlH6uWj_v2sJKlPEVqaelTFQatnn_4PXhczmvx8B2T4RcU-bNy"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1784617046.512543,
+        "expirationDate": 1784682965.580652,
         "hostOnly": False,
         "httpOnly": True,
         "name": "__Secure-3PSIDCC",
@@ -199,11 +199,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "AKEyXzUCABmZ9lL7JWekZ02sMP3mqL9s8SAM9uPU3iPX6gPU4CbAwIi1LPMQo-b18lF2iy9NLA"
+        "value": "AKEyXzWf16V8yIRwtVNeTPvhux7-IPe6BoM_8VflM83OCEPkl2HcEqXMLwBEX6ktoquLq_M6"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1784617031.795636,
+        "expirationDate": 1784682672.19924,
         "hostOnly": False,
         "httpOnly": True,
         "name": "__Secure-3PSIDTS",
@@ -212,11 +212,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "sidts-CjEB5H03P_2UR0lzOIj0OfapEYoJskm1XEZOsxIW029V8VjZ5A0s291wrcNwMdFAPiToEAA"
+        "value": "sidts-CjEB5H03P94zOWi9S3DV17_mf15ucGlAo3HwqHQqAgTtMOBquD1s1yeVw8NGrdjsVlGREAA"
     },
     {
         "domain": "mail.google.com",
-        "expirationDate": 1787641015.170452,
+        "expirationDate": 1787706652.979604,
         "hostOnly": True,
         "httpOnly": True,
         "name": "__Secure-OSID",
@@ -225,11 +225,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "g.a000zQiomjQIIpQx2IDugECxjQx8cFJFfxMG4h60BLQRtT_jdpv4SCcPa_5m0dtPmZkOziWP-AACgYKAVASARMSFQHGX2Mi2fwVWgA8EffvJN6B5GSuWxoVAUF8yKp_ha-luvsfnhG3KbxMMx_-0076"
+        "value": "g.a000zQiommhugQQNhINz3K2Wnmw_RsTvn13H-kJeYfLeRB7N7c4QhfqDM1MWF0YsILAe54NdqAACgYKATYSARMSFQHGX2MiBTHQJKMShg67dfAewJ8oLRoVAUF8yKoNtk6JHAGeyXejfYn6tmNV0076"
     },
     {
         "domain": "mail.google.com",
-        "expirationDate": 1753945041.758972,
+        "expirationDate": 1754010679.645417,
         "hostOnly": True,
         "httpOnly": True,
         "name": "COMPASS",
@@ -238,11 +238,11 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "appsfrontendserver=CgAQx-X3wwYaegAJa4lXYttg4yYGU2qO-I44E96BbOFY9_z3VM74AaNyCmaysTT_WvAFs4WbwDCQQMjXvtl8tU52Xhc4H-ejBuNkrIMIVO_eVupzhQoIqW7Hkffbn_5gIByGLZ0lQ-1zBvhiVuzqiHtLYwn2xNtLIZ89s10D-sbPa1twIAEwAQ"
+        "value": "appsfrontendserver=CgAQreb7wwYaeAAJa4lX46URvH_YiEByNiGLx_gilhg9bB68KF905cmwV9m6n3JjcpFR_Ss0GpKM5Una_NWVJIWSz6WexNYw4PaR_KH6o4La0_SmwdTGuCW_5V97eO8sCk9t0CXVx7TBMAd0wPrk8QCOSAzZ3dVJ8X2QaPUN2Z3sfyABMAE"
     },
     {
         "domain": ".google.com",
-        "expirationDate": 1787641000.447081,
+        "expirationDate": 1787706652.475179,
         "hostOnly": False,
         "httpOnly": True,
         "name": "SSID",
@@ -251,7 +251,72 @@ gmail_cookies = [
         "secure": True,
         "session": False,
         "storeId": None,
-        "value": "A4L4KfS8jC9MzCjyS"
+        "value": "AipUFcsN70TRO8iSA"
+    },
+    {
+        "domain": "accounts.google.com",
+        "expirationDate": 1755738615,
+        "hostOnly": True,
+        "httpOnly": False,
+        "name": "OTZ",
+        "path": "/",
+        "sameSite": None,
+        "secure": True,
+        "session": False,
+        "storeId": None,
+        "value": "8180710_34_34__34_"
+    },
+    {
+        "domain": "accounts.google.com",
+        "expirationDate": 1787706652.478717,
+        "hostOnly": True,
+        "httpOnly": True,
+        "name": "ACCOUNT_CHOOSER",
+        "path": "/",
+        "sameSite": None,
+        "secure": True,
+        "session": False,
+        "storeId": None,
+        "value": "AFx_qI7OzRPEqkta8y8j_NCiNpNnfcMVvlitWhLSzcAYRVOVohZgzx36lE_GkAuyottJ346c3Z00Knruhxnuq7daOmUP-X2oTz1nj7n4DPQjV6n9QuH5hofb02JgfCLdU4eDAlQw02dnqnHsjtzdRWSRi-9sp74Xig"
+    },
+    {
+        "domain": ".google.com",
+        "expirationDate": 1768929886.067578,
+        "hostOnly": False,
+        "httpOnly": True,
+        "name": "NID",
+        "path": "/",
+        "sameSite": "no_restriction",
+        "secure": True,
+        "session": False,
+        "storeId": None,
+        "value": "525=f9LgkegZG2uzGBWuw_q49zXZToQKnxlrIPM6qeP9IZ1i1dlzTUuOMg4HJfwPLAyiHf1BBV2HY8hzRT8KEDJd0eYJA8bRnepwUIvjJBithZkAP4yCITrtDTuWVJywmCtZUkOKyW3q0K2iaq5s1GF8YbtwwycL4gdS0zD90RYBycEM5zKFPEGixt4vkUqfb738W249muNgTdHQhb94oitllQhYMkUIn-B76_xuhpY5ERppJP6ngNyDKqRu88oXhZxmJmTL0Qpdl1n-WPfSoWMdGuqizJso366o4zXoOigR3CIEQTpBCv1A0x2RchFQAghs231Wd1tZjIEk-9zlu35CfdIxkgyGeSGcftoEFZd2QU4bmjy5RLc"
+    },
+    {
+        "domain": "accounts.google.com",
+        "expirationDate": 1787706652.479848,
+        "hostOnly": True,
+        "httpOnly": True,
+        "name": "SMSV",
+        "path": "/",
+        "sameSite": None,
+        "secure": True,
+        "session": False,
+        "storeId": None,
+        "value": "ADHTe-CxeACZGveRRSx9i4V5jvX0s7uJNsOfVStW6tggKRidyqbS6ovFLnzHYb9fX0b1GQP0flyT1LHn6nhRYnSnwkssG2jCRdv-wgw5Sv3BrFabmiM-JPA"
+    },
+    {
+        "domain": "accounts.google.com",
+        "expirationDate": 1787706652.479165,
+        "hostOnly": True,
+        "httpOnly": True,
+        "name": "__Host-GAPS",
+        "path": "/",
+        "sameSite": None,
+        "secure": True,
+        "session": False,
+        "storeId": None,
+        "value": "1:pPs_DmRJerioe_ZmYk1izhVxD_muA07rTMlC56M2Yw24fw_Z5JzEiCniafMP0uU8WraMuoLTKCFDVRHzC0IV1KgHKUwPoA:bDkO--9TniPbxpMs"
     }
 ]
 
