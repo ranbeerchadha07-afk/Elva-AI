@@ -358,7 +358,7 @@ def main():
     )
     
     if success:
-        print("✅ Successfully saved Gmail cookies for brainlyarpit8649@gmail.com")
+        print("✅ Successfully updated Gmail cookies for brainlyarpit8649@gmail.com")
         print(f"📊 Total cookies saved: {len(playwright_cookies)}")
         
         # Verify cookies were saved
