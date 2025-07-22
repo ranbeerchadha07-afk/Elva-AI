@@ -1769,400 +1769,13 @@ class ElvaBackendTester:
             self.log_test("Existing Functionality Preservation", False, f"Error: {str(e)}")
             return False
 
-    def test_chat_endpoint_linkedin_automation_integration(self):
-        """Test 35: Chat endpoint LinkedIn automation integration with cookies"""
-        try:
-            payload = {
-                "message": "Check my LinkedIn notifications for user sarah@company.com",
-                "session_id": self.session_id,
-                "user_id": "test_user"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=20)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check intent detection
-                intent_data = data.get("intent_data", {})
-                detected_intent = intent_data.get("intent")
-                
-                if detected_intent != "linkedin_insights":
-                    self.log_test("Chat LinkedIn Automation Integration", False, f"Expected linkedin_insights intent, got {detected_intent}", data)
-                    return False
-                
-                # Check if user_email was extracted
-                user_email = intent_data.get("user_email")
-                if not user_email:
-                    self.log_test("Chat LinkedIn Automation Integration", False, "user_email not extracted from message", intent_data)
-                    return False
-                
-                # Check response for cookie-related messaging
-                response_text = data.get("response", "")
-                
-                # Since no cookies are saved, should either:
-                # 1. Show error about missing cookies, or
-                # 2. Need approval for automation
-                needs_approval = data.get("needs_approval", False)
-                
-                if "LinkedIn Error" in response_text or "Automation Error" in response_text:
-                    # Direct execution attempted but failed due to missing cookies
-                    self.log_test("Chat LinkedIn Automation Integration", True, f"LinkedIn automation correctly handled missing cookies in chat flow")
-                    return True
-                elif needs_approval:
-                    # Automation needs approval (normal flow)
-                    self.log_test("Chat LinkedIn Automation Integration", True, f"LinkedIn automation correctly detected and needs approval")
-                    return True
-                else:
-                    self.log_test("Chat LinkedIn Automation Integration", False, f"Unexpected response for LinkedIn automation: {response_text}", data)
-                    return False
-                
-            else:
-                self.log_test("Chat LinkedIn Automation Integration", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Chat LinkedIn Automation Integration", False, f"Error: {str(e)}")
-            return False
-
-    def test_chat_endpoint_email_automation_integration(self):
-        """Test 36: Chat endpoint email automation integration with cookies"""
-        try:
-            payload = {
-                "message": "Check my Gmail inbox for user john@company.com",
-                "session_id": self.session_id,
-                "user_id": "test_user"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=20)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check intent detection
-                intent_data = data.get("intent_data", {})
-                detected_intent = intent_data.get("intent")
-                
-                if detected_intent != "email_automation":
-                    self.log_test("Chat Email Automation Integration", False, f"Expected email_automation intent, got {detected_intent}", data)
-                    return False
-                
-                # Check if provider and user_email were extracted
-                provider = intent_data.get("email_provider")
-                user_email = intent_data.get("user_email")
-                
-                if not provider:
-                    self.log_test("Chat Email Automation Integration", False, "email_provider not extracted from message", intent_data)
-                    return False
-                
-                if not user_email:
-                    self.log_test("Chat Email Automation Integration", False, "user_email not extracted from message", intent_data)
-                    return False
-                
-                # Check response for cookie-related messaging
-                response_text = data.get("response", "")
-                needs_approval = data.get("needs_approval", False)
-                
-                if "Email Error" in response_text or "Automation Error" in response_text:
-                    # Direct execution attempted but failed due to missing cookies
-                    self.log_test("Chat Email Automation Integration", True, f"Email automation correctly handled missing cookies in chat flow")
-                    return True
-                elif needs_approval:
-                    # Automation needs approval (normal flow)
-                    self.log_test("Chat Email Automation Integration", True, f"Email automation correctly detected and needs approval")
-                    return True
-                else:
-                    self.log_test("Chat Email Automation Integration", False, f"Unexpected response for email automation: {response_text}", data)
-                    return False
-                
-            else:
-                self.log_test("Chat Email Automation Integration", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Chat Email Automation Integration", False, f"Error: {str(e)}")
-            return False
-
-    def test_gmail_automation_check_inbox_brainlyarpit(self):
-        """Test 37: Gmail automation - Check inbox for brainlyarpit8649@gmail.com"""
-        try:
-            payload = {
-                "user_email": "brainlyarpit8649@gmail.com",
-                "provider": "gmail",
-                "action": "check_inbox"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/automation/email-check", json=payload, timeout=30)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check response structure
-                required_fields = ["success", "message"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, f"Missing fields: {missing_fields}", data)
-                    return False
-                
-                success = data.get("success")
-                message = data.get("message", "")
-                
-                if success:
-                    # Check if actual email data is returned
-                    email_data = data.get("data", {})
-                    execution_time = data.get("execution_time", 0)
-                    
-                    if not email_data:
-                        self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, "No email data returned despite success=True", data)
-                        return False
-                    
-                    # Check if execution time is reasonable (under 30s as requested)
-                    if execution_time > 30:
-                        self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, f"Execution time too long: {execution_time}s (should be under 30s)", data)
-                        return False
-                    
-                    self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", True, f"Successfully retrieved Gmail inbox data. Execution time: {execution_time:.2f}s, Data keys: {list(email_data.keys())}")
-                    return True
-                else:
-                    # Check if it's a cookie issue
-                    if "cookies" in message.lower() or "login" in message.lower():
-                        self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, f"Cookie authentication failed: {message}", data)
-                        return False
-                    else:
-                        self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, f"Gmail automation failed: {message}", data)
-                        return False
-            else:
-                self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Gmail Automation - Check Inbox (brainlyarpit8649)", False, f"Error: {str(e)}")
-            return False
-
-    def test_gmail_automation_check_unread_brainlyarpit(self):
-        """Test 38: Gmail automation - Check unread emails for brainlyarpit8649@gmail.com"""
-        try:
-            payload = {
-                "user_email": "brainlyarpit8649@gmail.com",
-                "provider": "gmail",
-                "action": "check_unread"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/automation/email-check", json=payload, timeout=30)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check response structure
-                required_fields = ["success", "message"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, f"Missing fields: {missing_fields}", data)
-                    return False
-                
-                success = data.get("success")
-                message = data.get("message", "")
-                
-                if success:
-                    # Check if actual email data is returned
-                    email_data = data.get("data", {})
-                    execution_time = data.get("execution_time", 0)
-                    
-                    if not email_data:
-                        self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, "No email data returned despite success=True", data)
-                        return False
-                    
-                    # Check if execution time is reasonable (under 30s as requested)
-                    if execution_time > 30:
-                        self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, f"Execution time too long: {execution_time}s (should be under 30s)", data)
-                        return False
-                    
-                    self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", True, f"Successfully retrieved Gmail unread data. Execution time: {execution_time:.2f}s, Data keys: {list(email_data.keys())}")
-                    return True
-                else:
-                    # Check if it's a cookie issue
-                    if "cookies" in message.lower() or "login" in message.lower():
-                        self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, f"Cookie authentication failed: {message}", data)
-                        return False
-                    else:
-                        self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, f"Gmail automation failed: {message}", data)
-                        return False
-            else:
-                self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Gmail Automation - Check Unread (brainlyarpit8649)", False, f"Error: {str(e)}")
-            return False
-
-    def test_gmail_chat_interface_check_inbox(self):
-        """Test 39: Gmail automation via chat interface - Check inbox"""
-        try:
-            payload = {
-                "message": "Check my Gmail inbox for brainlyarpit8649@gmail.com",
-                "session_id": self.session_id,
-                "user_id": "test_user"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=30)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check if intent was detected correctly
-                intent_data = data.get("intent_data", {})
-                detected_intent = intent_data.get("intent")
-                
-                # Should detect email automation or similar intent
-                if detected_intent not in ["email_automation", "check_gmail_inbox", "gmail_check"]:
-                    self.log_test("Gmail Chat Interface - Check Inbox", False, f"Wrong intent detected: {detected_intent}. Expected email automation related intent.", data)
-                    return False
-                
-                # Check if user email was extracted
-                user_email = intent_data.get("user_email") or intent_data.get("email")
-                if not user_email or "brainlyarpit8649@gmail.com" not in user_email:
-                    self.log_test("Gmail Chat Interface - Check Inbox", False, f"User email not properly extracted: {user_email}", intent_data)
-                    return False
-                
-                # Check response for automation results or approval requirement
-                response_text = data.get("response", "")
-                needs_approval = data.get("needs_approval", False)
-                
-                # Check if automation was executed directly or needs approval
-                if "automation_result" in intent_data:
-                    # Direct execution
-                    automation_success = intent_data.get("automation_success", False)
-                    execution_time = intent_data.get("execution_time", 0)
-                    
-                    if automation_success and execution_time <= 30:
-                        self.log_test("Gmail Chat Interface - Check Inbox", True, f"Gmail inbox check executed directly via chat. Execution time: {execution_time:.2f}s")
-                        return True
-                    else:
-                        self.log_test("Gmail Chat Interface - Check Inbox", False, f"Direct execution failed or took too long. Success: {automation_success}, Time: {execution_time}s", data)
-                        return False
-                elif needs_approval:
-                    # Approval required
-                    self.log_test("Gmail Chat Interface - Check Inbox", True, f"Gmail inbox check detected and requires approval. Intent: {detected_intent}")
-                    return True
-                else:
-                    self.log_test("Gmail Chat Interface - Check Inbox", False, "Gmail automation not properly handled via chat interface", data)
-                    return False
-            else:
-                self.log_test("Gmail Chat Interface - Check Inbox", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Gmail Chat Interface - Check Inbox", False, f"Error: {str(e)}")
-            return False
-
-    def test_gmail_chat_interface_check_unread(self):
-        """Test 40: Gmail automation via chat interface - Check unread emails"""
-        try:
-            payload = {
-                "message": "Check Gmail unread emails for brainlyarpit8649@gmail.com",
-                "session_id": self.session_id,
-                "user_id": "test_user"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=30)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check if intent was detected correctly
-                intent_data = data.get("intent_data", {})
-                detected_intent = intent_data.get("intent")
-                
-                # Should detect email automation or similar intent
-                if detected_intent not in ["email_automation", "check_gmail_unread", "gmail_check"]:
-                    self.log_test("Gmail Chat Interface - Check Unread", False, f"Wrong intent detected: {detected_intent}. Expected email automation related intent.", data)
-                    return False
-                
-                # Check if user email was extracted
-                user_email = intent_data.get("user_email") or intent_data.get("email")
-                if not user_email or "brainlyarpit8649@gmail.com" not in user_email:
-                    self.log_test("Gmail Chat Interface - Check Unread", False, f"User email not properly extracted: {user_email}", intent_data)
-                    return False
-                
-                # Check if action was extracted correctly
-                action = intent_data.get("action")
-                if action and "unread" not in action.lower():
-                    self.log_test("Gmail Chat Interface - Check Unread", False, f"Action not properly extracted: {action}. Should contain 'unread'", intent_data)
-                    return False
-                
-                # Check response for automation results or approval requirement
-                response_text = data.get("response", "")
-                needs_approval = data.get("needs_approval", False)
-                
-                # Check if automation was executed directly or needs approval
-                if "automation_result" in intent_data:
-                    # Direct execution
-                    automation_success = intent_data.get("automation_success", False)
-                    execution_time = intent_data.get("execution_time", 0)
-                    
-                    if automation_success and execution_time <= 30:
-                        self.log_test("Gmail Chat Interface - Check Unread", True, f"Gmail unread check executed directly via chat. Execution time: {execution_time:.2f}s")
-                        return True
-                    else:
-                        self.log_test("Gmail Chat Interface - Check Unread", False, f"Direct execution failed or took too long. Success: {automation_success}, Time: {execution_time}s", data)
-                        return False
-                elif needs_approval:
-                    # Approval required
-                    self.log_test("Gmail Chat Interface - Check Unread", True, f"Gmail unread check detected and requires approval. Intent: {detected_intent}")
-                    return True
-                else:
-                    self.log_test("Gmail Chat Interface - Check Unread", False, "Gmail automation not properly handled via chat interface", data)
-                    return False
-            else:
-                self.log_test("Gmail Chat Interface - Check Unread", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Gmail Chat Interface - Check Unread", False, f"Error: {str(e)}")
-            return False
-
-    def test_cookie_detection_for_gmail_user(self):
-        """Test 41: Cookie detection for brainlyarpit8649@gmail.com"""
-        try:
-            response = requests.get(f"{BACKEND_URL}/cookie-sessions/gmail/brainlyarpit8649@gmail.com/status", timeout=10)
-            
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Check response structure
-                required_fields = ["has_valid_cookies", "cookie_count", "message"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("Cookie Detection - Gmail User", False, f"Missing fields: {missing_fields}", data)
-                    return False
-                
-                has_valid_cookies = data.get("has_valid_cookies")
-                cookie_count = data.get("cookie_count", 0)
-                message = data.get("message", "")
-                
-                if has_valid_cookies:
-                    self.log_test("Cookie Detection - Gmail User", True, f"Valid Gmail cookies found for brainlyarpit8649@gmail.com. Cookie count: {cookie_count}")
-                    return True
-                else:
-                    self.log_test("Cookie Detection - Gmail User", False, f"No valid Gmail cookies found for brainlyarpit8649@gmail.com. Message: {message}")
-                    return False
-            else:
-                self.log_test("Cookie Detection - Gmail User", False, f"HTTP {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("Cookie Detection - Gmail User", False, f"Error: {str(e)}")
-            return False
-
     def run_all_tests(self):
         """Run all backend tests"""
-        print("🚀 Starting Comprehensive Elva AI Backend Testing with Cookie-Based Authentication")
+        print("🚀 Starting Comprehensive Gmail API OAuth2 Integration & Cleanup Verification Testing")
         print("=" * 80)
         
         test_methods = [
+            # Core functionality tests
             self.test_server_connectivity,
             self.test_intent_detection_general_chat,
             self.test_intent_detection_send_email,
@@ -2176,6 +1789,8 @@ class ElvaBackendTester:
             self.test_chat_history_clearing,
             self.test_error_handling,
             self.test_health_endpoint,
+            
+            # Web automation tests
             self.test_web_automation_intent_detection,
             self.test_web_automation_endpoint_data_extraction,
             self.test_web_automation_endpoint_price_monitoring,
@@ -2184,30 +1799,26 @@ class ElvaBackendTester:
             self.test_web_automation_error_handling,
             self.test_automation_history_endpoint,
             self.test_direct_web_scraping_execution,
-            # New enhanced automation flow tests
+            
+            # Enhanced automation flow tests
             self.test_direct_automation_intents,
             self.test_automation_status_endpoint,
             self.test_direct_automation_response_format,
             self.test_traditional_vs_direct_automation,
-            # Cookie-based authentication system tests
-            self.test_cookie_sessions_list,
-            self.test_cookie_session_status_check,
-            self.test_cookie_session_delete_non_existent,
-            self.test_cookie_cleanup_expired,
-            self.test_health_endpoint_cookie_management,
-            self.test_linkedin_automation_missing_user_email,
-            self.test_linkedin_automation_no_cookies,
-            self.test_email_automation_missing_parameters,
-            self.test_email_automation_no_cookies,
-            self.test_chat_endpoint_linkedin_automation_integration,
-            self.test_chat_endpoint_email_automation_integration,
             
-            # Gmail automation tests for brainlyarpit8649@gmail.com
-            self.test_cookie_detection_for_gmail_user,
-            self.test_gmail_automation_check_inbox_brainlyarpit,
-            self.test_gmail_automation_check_unread_brainlyarpit,
-            self.test_gmail_chat_interface_check_inbox,
-            self.test_gmail_chat_interface_check_unread
+            # Gmail OAuth2 integration tests
+            self.test_gmail_oauth_auth_endpoint,
+            self.test_gmail_oauth_status_endpoint,
+            self.test_gmail_oauth_callback_structure,
+            self.test_gmail_credentials_loading,
+            self.test_gmail_service_initialization,
+            
+            # Cleanup verification tests
+            self.test_cleanup_verification_cookie_references,
+            self.test_cleanup_verification_price_monitoring_removal,
+            self.test_cleanup_verification_deprecated_endpoints,
+            self.test_system_health_gmail_integration,
+            self.test_existing_functionality_preservation
         ]
         
         passed = 0
@@ -2227,13 +1838,13 @@ class ElvaBackendTester:
             time.sleep(0.5)
         
         print("=" * 70)
-        print(f"🏁 Enhanced Automation Testing Complete!")
+        print(f"🏁 Gmail API OAuth2 Integration & Cleanup Testing Complete!")
         print(f"✅ Passed: {passed}")
         print(f"❌ Failed: {failed}")
         print(f"📊 Success Rate: {(passed/(passed+failed)*100):.1f}%")
         
         if failed == 0:
-            print("🎉 ALL TESTS PASSED! Enhanced Elva AI Backend with Direct Automation is working perfectly!")
+            print("🎉 ALL TESTS PASSED! Gmail API OAuth2 integration and cleanup verification successful!")
         else:
             print(f"⚠️  {failed} tests failed. Please check the details above.")
         
