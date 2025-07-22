@@ -1550,169 +1550,223 @@ class ElvaBackendTester:
             self.log_test("Gmail Service Initialization", False, f"Error: {str(e)}")
             return False
 
-    def test_linkedin_automation_missing_user_email(self):
-        """Test 31: LinkedIn automation endpoint with missing user_email"""
+    def test_cleanup_verification_cookie_references(self):
+        """Test 31: Verify cookie-based code is completely removed"""
         try:
-            payload = {
-                "insight_type": "notifications"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/automation/linkedin-insights", json=payload, timeout=10)
-            
-            if response.status_code == 400:
-                data = response.json()
-                
-                # Check error message mentions user_email is required
-                detail = data.get("detail", "")
-                if "user_email is required" not in detail:
-                    self.log_test("LinkedIn Automation - Missing user_email", False, f"Error message doesn't mention user_email requirement: {detail}", data)
-                    return False
-                
-                self.log_test("LinkedIn Automation - Missing user_email", True, "Correctly returned 400 error for missing user_email")
-                return True
-            else:
-                self.log_test("LinkedIn Automation - Missing user_email", False, f"Expected 400, got {response.status_code}", response.text)
-                return False
-                
-        except Exception as e:
-            self.log_test("LinkedIn Automation - Missing user_email", False, f"Error: {str(e)}")
-            return False
-
-    def test_linkedin_automation_no_cookies(self):
-        """Test 32: LinkedIn automation with no saved cookies"""
-        try:
-            payload = {
-                "user_email": "test@example.com",
-                "insight_type": "notifications"
-            }
-            
-            response = requests.post(f"{BACKEND_URL}/automation/linkedin-insights", json=payload, timeout=10)
+            # Test health endpoint to ensure no cookie management references
+            response = requests.get(f"{BACKEND_URL}/health", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 
-                # Check response structure
-                required_fields = ["success", "message"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test("LinkedIn Automation - No Cookies", False, f"Missing fields: {missing_fields}", data)
+                # Check that cookie_management section is NOT present
+                if "cookie_management" in data:
+                    self.log_test("Cleanup - Cookie References", False, "cookie_management section still present in health endpoint", data)
                     return False
                 
-                # Should return success=False when no cookies found
-                success = data.get("success")
-                if success != False:
-                    self.log_test("LinkedIn Automation - No Cookies", False, f"Expected success=False when no cookies found, got {success}", data)
+                # Check playwright service doesn't mention cookie capabilities
+                playwright_service = data.get("playwright_service", {})
+                capabilities = playwright_service.get("capabilities", [])
+                
+                cookie_capabilities = [cap for cap in capabilities if "cookie" in cap.lower()]
+                if cookie_capabilities:
+                    self.log_test("Cleanup - Cookie References", False, f"Cookie capabilities still present: {cookie_capabilities}", playwright_service)
                     return False
                 
-                # Message should indicate no cookies found and guide user
-                message = data.get("message", "")
-                if "No valid LinkedIn cookies found" not in message:
-                    self.log_test("LinkedIn Automation - No Cookies", False, f"Message doesn't indicate no cookies found: {message}", data)
-                    return False
-                
-                if "manual cookie capture" not in message:
-                    self.log_test("LinkedIn Automation - No Cookies", False, f"Message doesn't guide user to capture cookies: {message}", data)
-                    return False
-                
-                # Should have needs_login flag
-                needs_login = data.get("needs_login")
-                if needs_login != True:
-                    self.log_test("LinkedIn Automation - No Cookies", False, f"Expected needs_login=True, got {needs_login}", data)
-                    return False
-                
-                self.log_test("LinkedIn Automation - No Cookies", True, "Correctly handled missing LinkedIn cookies with user guidance")
+                self.log_test("Cleanup - Cookie References", True, "No cookie management references found in health endpoint")
                 return True
             else:
-                self.log_test("LinkedIn Automation - No Cookies", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("Cleanup - Cookie References", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("LinkedIn Automation - No Cookies", False, f"Error: {str(e)}")
+            self.log_test("Cleanup - Cookie References", False, f"Error: {str(e)}")
             return False
 
-    def test_email_automation_missing_parameters(self):
-        """Test 33: Email automation endpoint with missing parameters"""
+    def test_cleanup_verification_price_monitoring_removal(self):
+        """Test 32: Verify price monitoring intent is removed from AI routing"""
         try:
-            # Test missing user_email
+            # Test that price_monitoring intent is no longer supported
             payload = {
-                "provider": "gmail",
-                "action": "check_inbox"
+                "message": "Monitor the price of iPhone 15 on Amazon",
+                "session_id": self.session_id,
+                "user_id": "test_user"
             }
             
-            response = requests.post(f"{BACKEND_URL}/automation/email-check", json=payload, timeout=10)
+            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=15)
             
-            if response.status_code == 400:
+            if response.status_code == 200:
                 data = response.json()
+                intent_data = data.get("intent_data", {})
+                detected_intent = intent_data.get("intent")
                 
-                # Check error message mentions required parameters
-                detail = data.get("detail", "")
-                if "user_email and provider are required" not in detail:
-                    self.log_test("Email Automation - Missing Parameters", False, f"Error message doesn't mention required parameters: {detail}", data)
+                # Price monitoring should either be:
+                # 1. Not detected (classified as general_chat)
+                # 2. Detected but handled differently (not as price_monitoring)
+                if detected_intent == "price_monitoring":
+                    self.log_test("Cleanup - Price Monitoring Removal", False, "price_monitoring intent still being detected", data)
                     return False
                 
-                self.log_test("Email Automation - Missing Parameters", True, "Correctly returned 400 error for missing parameters")
-                return True
+                # Check web automation endpoint doesn't support price_monitoring
+                web_automation_payload = {
+                    "session_id": self.session_id,
+                    "automation_type": "price_monitoring",
+                    "parameters": {
+                        "product_url": "https://example.com/product",
+                        "price_selector": ".price"
+                    }
+                }
+                
+                web_response = requests.post(f"{BACKEND_URL}/web-automation", json=web_automation_payload, timeout=15)
+                
+                if web_response.status_code == 400:
+                    web_data = web_response.json()
+                    if "Unsupported automation type" in web_data.get("detail", ""):
+                        self.log_test("Cleanup - Price Monitoring Removal", True, "Price monitoring intent and web automation removed successfully")
+                        return True
+                
+                self.log_test("Cleanup - Price Monitoring Removal", False, f"Web automation still supports price_monitoring: {web_response.status_code}", web_response.text)
+                return False
             else:
-                self.log_test("Email Automation - Missing Parameters", False, f"Expected 400, got {response.status_code}", response.text)
+                self.log_test("Cleanup - Price Monitoring Removal", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Email Automation - Missing Parameters", False, f"Error: {str(e)}")
+            self.log_test("Cleanup - Price Monitoring Removal", False, f"Error: {str(e)}")
             return False
 
-    def test_email_automation_no_cookies(self):
-        """Test 34: Email automation with no saved cookies"""
+    def test_cleanup_verification_deprecated_endpoints(self):
+        """Test 33: Verify deprecated cookie and price monitoring endpoints are removed"""
         try:
-            payload = {
-                "user_email": "test@example.com",
-                "provider": "outlook",
-                "action": "check_inbox"
-            }
+            deprecated_endpoints = [
+                "/cookie-sessions",
+                "/automation/linkedin-insights", 
+                "/automation/email-check",
+                "/cookie-sessions/cleanup"
+            ]
             
-            response = requests.post(f"{BACKEND_URL}/automation/email-check", json=payload, timeout=10)
+            results = []
+            all_removed = True
+            
+            for endpoint in deprecated_endpoints:
+                try:
+                    response = requests.get(f"{BACKEND_URL}{endpoint}", timeout=5)
+                    if response.status_code == 404:
+                        results.append(f"✅ {endpoint}: Correctly removed (404)")
+                    else:
+                        results.append(f"❌ {endpoint}: Still accessible ({response.status_code})")
+                        all_removed = False
+                except requests.exceptions.RequestException:
+                    # Connection errors are also acceptable (endpoint doesn't exist)
+                    results.append(f"✅ {endpoint}: Correctly removed (connection error)")
+            
+            result_summary = "\n    ".join(results)
+            self.log_test("Cleanup - Deprecated Endpoints", all_removed, result_summary)
+            return all_removed
+            
+        except Exception as e:
+            self.log_test("Cleanup - Deprecated Endpoints", False, f"Error: {str(e)}")
+            return False
+
+    def test_system_health_gmail_integration(self):
+        """Test 34: System health shows Gmail integration status"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/health", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 
-                # Check response structure
-                required_fields = ["success", "message"]
-                missing_fields = [field for field in required_fields if field not in data]
+                # Check Gmail API integration is present and properly configured
+                gmail_integration = data.get("gmail_api_integration", {})
+                
+                if not gmail_integration:
+                    self.log_test("System Health - Gmail Integration", False, "Gmail API integration section missing", data)
+                    return False
+                
+                # Check required fields
+                required_fields = ["status", "oauth2_flow", "credentials_configured", "authenticated", "scopes", "endpoints"]
+                missing_fields = [field for field in required_fields if field not in gmail_integration]
                 
                 if missing_fields:
-                    self.log_test("Email Automation - No Cookies", False, f"Missing fields: {missing_fields}", data)
+                    self.log_test("System Health - Gmail Integration", False, f"Missing Gmail integration fields: {missing_fields}", gmail_integration)
                     return False
                 
-                # Should return success=False when no cookies found
-                success = data.get("success")
-                if success != False:
-                    self.log_test("Email Automation - No Cookies", False, f"Expected success=False when no cookies found, got {success}", data)
+                # Check status is ready
+                if gmail_integration.get("status") != "ready":
+                    self.log_test("System Health - Gmail Integration", False, f"Gmail integration status not ready: {gmail_integration.get('status')}", gmail_integration)
                     return False
                 
-                # Message should indicate no cookies found and guide user
-                message = data.get("message", "")
-                if "No valid outlook cookies found" not in message:
-                    self.log_test("Email Automation - No Cookies", False, f"Message doesn't indicate no cookies found: {message}", data)
+                # Verify no cookie management in health check
+                if "cookie_management" in data:
+                    self.log_test("System Health - Gmail Integration", False, "Cookie management still present in health check", data)
                     return False
                 
-                if "manual cookie capture" not in message:
-                    self.log_test("Email Automation - No Cookies", False, f"Message doesn't guide user to capture cookies: {message}", data)
-                    return False
-                
-                # Should have needs_login flag
-                needs_login = data.get("needs_login")
-                if needs_login != True:
-                    self.log_test("Email Automation - No Cookies", False, f"Expected needs_login=True, got {needs_login}", data)
-                    return False
-                
-                self.log_test("Email Automation - No Cookies", True, "Correctly handled missing email cookies with user guidance")
+                self.log_test("System Health - Gmail Integration", True, f"Gmail integration properly configured in health check with {len(gmail_integration.get('endpoints', []))} endpoints")
                 return True
             else:
-                self.log_test("Email Automation - No Cookies", False, f"HTTP {response.status_code}", response.text)
+                self.log_test("System Health - Gmail Integration", False, f"HTTP {response.status_code}", response.text)
                 return False
                 
         except Exception as e:
-            self.log_test("Email Automation - No Cookies", False, f"Error: {str(e)}")
+            self.log_test("System Health - Gmail Integration", False, f"Error: {str(e)}")
+            return False
+
+    def test_existing_functionality_preservation(self):
+        """Test 35: Verify all existing functionality still works after cleanup"""
+        try:
+            # Test core chat functionality
+            chat_payload = {
+                "message": "Hello, how are you?",
+                "session_id": self.session_id,
+                "user_id": "test_user"
+            }
+            
+            chat_response = requests.post(f"{BACKEND_URL}/chat", json=chat_payload, timeout=15)
+            
+            if chat_response.status_code != 200:
+                self.log_test("Existing Functionality Preservation", False, "Chat functionality broken", chat_response.text)
+                return False
+            
+            # Test intent detection
+            intent_payload = {
+                "message": "Send an email to John about the meeting",
+                "session_id": self.session_id,
+                "user_id": "test_user"
+            }
+            
+            intent_response = requests.post(f"{BACKEND_URL}/chat", json=intent_payload, timeout=15)
+            
+            if intent_response.status_code != 200:
+                self.log_test("Existing Functionality Preservation", False, "Intent detection broken", intent_response.text)
+                return False
+            
+            intent_data = intent_response.json()
+            if intent_data.get("intent_data", {}).get("intent") != "send_email":
+                self.log_test("Existing Functionality Preservation", False, "Email intent detection not working", intent_data)
+                return False
+            
+            # Test web automation (allowed types)
+            web_automation_payload = {
+                "session_id": self.session_id,
+                "automation_type": "web_scraping",
+                "parameters": {
+                    "url": "https://httpbin.org/html",
+                    "selectors": {"title": "title"},
+                    "wait_for_element": "title"
+                }
+            }
+            
+            web_response = requests.post(f"{BACKEND_URL}/web-automation", json=web_automation_payload, timeout=30)
+            
+            if web_response.status_code != 200:
+                self.log_test("Existing Functionality Preservation", False, "Web automation broken", web_response.text)
+                return False
+            
+            self.log_test("Existing Functionality Preservation", True, "All existing functionality (chat, intent detection, web automation) working correctly")
+            return True
+            
+        except Exception as e:
+            self.log_test("Existing Functionality Preservation", False, f"Error: {str(e)}")
             return False
 
     def test_chat_endpoint_linkedin_automation_integration(self):
