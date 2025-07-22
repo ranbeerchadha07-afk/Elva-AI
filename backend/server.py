@@ -489,10 +489,19 @@ async def health_check():
             "status": "healthy",
             "mongodb": "connected",
             "gmail_api_integration": {
-                "status": "ready_for_setup",
-                "oauth2_endpoints": "prepared",
-                "credentials_needed": True,
-                "message": "Ready for Gmail API credentials"
+                "status": "ready",
+                "oauth2_flow": "implemented",
+                "credentials_configured": gmail_oauth_service.get_auth_status()['credentials_configured'],
+                "authenticated": gmail_oauth_service.get_auth_status()['authenticated'],
+                "scopes": gmail_oauth_service.scopes,
+                "endpoints": [
+                    "/api/gmail/auth",
+                    "/api/gmail/callback", 
+                    "/api/gmail/status",
+                    "/api/gmail/inbox",
+                    "/api/gmail/send",
+                    "/api/gmail/email/{id}"
+                ]
             },
             "advanced_hybrid_ai_system": {
                 "version": "2.0",
