@@ -239,14 +239,15 @@ class GmailOAuthService:
             logger.error(f"❌ Gmail authentication failed for session {session_id}: {e}")
             return False
     
-    def check_inbox(self, max_results: int = 10, query: str = 'is:unread') -> Dict[str, Any]:
-        """Check Gmail inbox and return email list"""
+    async def check_inbox(self, session_id: str, max_results: int = 10, query: str = 'is:unread') -> Dict[str, Any]:
+        """Check Gmail inbox and return email list for specific session"""
         try:
-            if not self._authenticate():
+            if not await self._authenticate(session_id):
                 return {
                     'success': False,
                     'message': 'Gmail authentication required. Please complete OAuth2 flow.',
-                    'requires_auth': True
+                    'requires_auth': True,
+                    'session_id': session_id
                 }
             
             # Search for messages
