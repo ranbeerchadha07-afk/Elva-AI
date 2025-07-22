@@ -784,6 +784,12 @@ function App() {
 
   const renderIntentData = (intentData) => {
     if (!intentData || intentData.intent === 'general_chat') return null;
+    
+    // Hide intent detection for read-only Gmail actions to reduce clutter
+    const gmailReadOnlyIntents = ['check_gmail_inbox', 'check_gmail_unread', 'gmail_inbox_check'];
+    if (gmailReadOnlyIntents.includes(intentData.intent)) {
+      return null;
+    }
 
     return (
       <div className="mt-3 p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
