@@ -73,13 +73,65 @@ function App() {
   const checkGmailAuthStatus = async () => {
     try {
       const response = await axios.get(`${API}/gmail/status?session_id=${sessionId}`);
+      const data = response.data;
+      
       setGmailAuthStatus({ 
-        authenticated: response.data.authenticated,
-        loading: false 
+        authenticated: data.authenticated || false,
+        loading: false,
+        credentialsConfigured: data.credentials_configured || false,
+        error: data.error || null,
+        debugInfo: {
+          success: data.success,
+          requires_auth: data.requires_auth,
+          scopes: data.scopes,
+          service: data.service,
+          session_id: data.session_id
+        }
       });
+      
+      // Add debug information to chat if there are issues
+      if (!data.success || !data.credentials_configured) {
+        console.log('Gmail Auth Debug Info:', data);
+        
+        // Add helpful debug message to chat
+        const debugMessage = {
+          id: 'gmail_debug_' + Date.now(),
+          response: `🔧 **Gmail Connection Debug**\n\n` +
+            `📋 **Status**: ${data.success ? 'Service Running' : 'Service Error'}\n` +
+            `🔑 **Credentials**: ${data.credentials_configured ? 'Configured ✅' : 'Missing ❌'}\n` +
+            `🔐 **Authentication**: ${data.authenticated ? 'Connected ✅' : 'Not Connected ❌'}\n` +
+            `🆔 **Session ID**: ${sessionId}\n\n` +
+            (!data.credentials_configured ? 
+              '⚠️ **Issue**: Gmail credentials.json file is missing from backend. This is required for OAuth2 authentication to work properly.' : 
+              !data.authenticated ? 
+                '💡 Click "Connect Gmail" above to authenticate with your Google account.' : 
+                '✅ Everything looks good!'),
+          isUser: false,
+          isSystem: true,
+          timestamp: new Date()
+        };
+        
+        // Only add debug message if we don't have one already
+        setTimeout(() => {
+          setMessages(prev => {
+            const hasDebugMessage = prev.some(msg => msg.id && msg.id.startsWith('gmail_debug_'));
+            if (!hasDebugMessage) {
+              return [...prev, debugMessage];
+            }
+            return prev;
+          });
+        }, 1000);
+      }
+      
     } catch (error) {
-      console.log('Gmail auth status check failed:', error);
-      setGmailAuthStatus({ authenticated: false, loading: false });
+      console.error('Gmail auth status check failed:', error);
+      setGmailAuthStatus({ 
+        authenticated: false, 
+        loading: false,
+        credentialsConfigured: false,
+        error: error.message,
+        debugInfo: { error: error.response?.data || error.message }
+      });
     }
   };
 
