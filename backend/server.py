@@ -476,10 +476,13 @@ async def gmail_auth_status(session_id: str = None):
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/gmail/inbox")
-async def gmail_check_inbox(max_results: int = 10, query: str = 'is:unread'):
-    """Check Gmail inbox using OAuth2"""
+async def gmail_check_inbox(session_id: str = None, max_results: int = 10, query: str = 'is:unread'):
+    """Check Gmail inbox using OAuth2 for specific session"""
     try:
-        result = gmail_oauth_service.check_inbox(max_results=max_results, query=query)
+        if not session_id:
+            raise HTTPException(status_code=400, detail="session_id is required")
+            
+        result = await gmail_oauth_service.check_inbox(session_id, max_results=max_results, query=query)
         return result
     except Exception as e:
         logger.error(f"Gmail inbox check error: {e}")
