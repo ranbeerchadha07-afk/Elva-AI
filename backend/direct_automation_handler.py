@@ -416,6 +416,60 @@ class DirectAutomationHandler:
                     notifications=notifications_text
                 )
             
+            elif intent in ["check_gmail_inbox", "check_gmail_unread", "email_inbox_check"]:
+                emails = data.get("emails", [])
+                if not emails:
+                    if intent == "check_gmail_inbox":
+                        return "📥 Your Gmail inbox is empty."
+                    elif intent in ["check_gmail_unread", "email_inbox_check"]:
+                        return "✅ No unread emails! Your inbox is all caught up."
+                else:
+                    # Beautiful formatted email display as requested
+                    email_blocks = []
+                    for i, email in enumerate(emails, 1):
+                        # Parse sender name from "Name <email>" format
+                        sender = email.get('sender', 'Unknown')
+                        if '<' in sender and '>' in sender:
+                            sender_name = sender.split('<')[0].strip().strip('"')
+                        else:
+                            sender_name = sender
+                        
+                        # Format date nicely
+                        date_str = email.get('date', 'Unknown Date')
+                        try:
+                            # Try to parse and format date nicely
+                            from datetime import datetime
+                            import re
+                            
+                            # Extract meaningful date parts if possible
+                            if 'GMT' in date_str or 'EST' in date_str or 'PST' in date_str:
+                                # Try to extract readable date
+                                date_match = re.search(r'(\w{3}),?\s+(\d{1,2})\s+(\w{3})\s+(\d{4})\s+(\d{1,2}):(\d{2})', date_str)
+                                if date_match:
+                                    day, date_num, month, year, hour, minute = date_match.groups()
+                                    date_str = f"{month} {date_num}, {year}, {hour}:{minute}"
+                        except:
+                            pass  # Keep original date if parsing fails
+                        
+                        subject = email.get('subject', 'No Subject')
+                        snippet = email.get('snippet', '')
+                        
+                        # Truncate snippet if too long
+                        if len(snippet) > 60:
+                            snippet = snippet[:57] + '...'
+                        
+                        email_block = f"""**{i}.** 🧑 **From:** {sender_name}
+   📨 **Subject:** {subject}
+   🕒 **Received:** {date_str}
+   ✏️ **Snippet:** "{snippet}\""""
+                        
+                        email_blocks.append(email_block)
+                    
+                    count = len(emails)
+                    header = f"📥 **You have {count} {'unread email' if count == 1 else 'unread emails'}:**\n\n"
+                    
+                    return header + "\n\n".join(email_blocks)
+                    
             elif intent in ["check_gmail_inbox", "check_gmail_unread"]:
                 emails_text = "\n".join([
                     f"• **{email.get('sender', 'Unknown')}**: {email.get('subject', 'No Subject')} {('🔴' if email.get('unread', False) else '')}"
