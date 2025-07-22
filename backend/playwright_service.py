@@ -55,7 +55,8 @@ class PlaywrightService:
                     '--disable-background-timer-throttling',
                     '--disable-renderer-backgrounding',
                     '--disable-backgrounding-occluded-windows',
-                    '--disable-blink-features=AutomationControlled'
+                    '--disable-blink-features=AutomationControlled',
+                    '--headless=new'  # Use new headless mode
                 ]
             )
             
