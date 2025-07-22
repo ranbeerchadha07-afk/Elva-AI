@@ -481,5 +481,4 @@ class GmailOAuthService:
                 'error': str(e)
             }
 
-# Create singleton instance
-gmail_oauth_service = GmailOAuthService()
+# Gmail OAuth service will be instantiated in server.py with database connection
