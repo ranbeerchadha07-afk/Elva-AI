@@ -127,7 +127,7 @@ async def chat(request: ChatRequest):
             logger.info(f"🔄 Direct automation detected: {intent}")
             
             # Process the automation directly
-            automation_result = await direct_automation_handler.process_direct_automation(intent_data)
+            automation_result = await direct_automation_handler.process_direct_automation(intent_data, request.session_id)
             
             # Set response text to the automation result
             response_text = automation_result["message"]
