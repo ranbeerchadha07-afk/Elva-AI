@@ -196,14 +196,14 @@ function App() {
     }
   };
 
-  const handleGmailAuthError = (errorMessage) => {
+  const handleGmailAuthError = (errorMessage, details) => {
     try {
       // Update auth status and re-check
       checkGmailAuthStatus();
       
       // Map error codes to user-friendly messages
       let userMessage = 'Gmail authentication failed. Please try again.';
-      let debugInfo = '';
+      let debugInfo = details || '';
       
       switch(errorMessage) {
         case 'access_denied':
@@ -216,15 +216,17 @@ function App() {
           break;
         case 'auth_failed':
           userMessage = 'Gmail authentication failed during token exchange.';
-          debugInfo = 'Token exchange with Google failed.';
+          debugInfo = details || 'Token exchange with Google failed.';
           break;
         case 'server_error':
           userMessage = 'Gmail authentication failed due to a server error.';
-          debugInfo = 'Backend server error during OAuth2 processing.';
+          debugInfo = details || 'Backend server error during OAuth2 processing.';
           break;
         default:
-          debugInfo = `Unknown error: ${errorMessage}`;
+          debugInfo = details || `Unknown error: ${errorMessage}`;
       }
+      
+      console.error('🚨 Gmail Auth Error Details:', { errorMessage, details, debugInfo });
       
       // Add error message to chat with debug info
       const errorMsg = {
@@ -243,7 +245,7 @@ function App() {
       
       setMessages(prev => [...prev, errorMsg]);
       
-      console.error('Gmail authentication error:', errorMessage, debugInfo);
+      console.error('Gmail authentication error processed');
     } catch (error) {
       console.error('Error handling Gmail auth error:', error);
     }
