@@ -536,14 +536,17 @@ async def health_check():
         # Test MongoDB connection
         await db.command("ping")
         
+        # Get Gmail OAuth status (default session for health check)
+        gmail_status = await gmail_oauth_service.get_auth_status('health_check')
+        
         health_status = {
             "status": "healthy",
             "mongodb": "connected",
             "gmail_api_integration": {
                 "status": "ready",
-                "oauth2_flow": "implemented",
-                "credentials_configured": gmail_oauth_service.get_auth_status()['credentials_configured'],
-                "authenticated": gmail_oauth_service.get_auth_status()['authenticated'],
+                "oauth2_flow": "implemented", 
+                "credentials_configured": gmail_status.get('credentials_configured', False),
+                "authenticated": gmail_status.get('authenticated', False),
                 "scopes": gmail_oauth_service.scopes,
                 "endpoints": [
                     "/api/gmail/auth",
