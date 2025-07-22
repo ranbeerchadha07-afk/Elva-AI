@@ -410,7 +410,7 @@ function App() {
     // Handle authentication prompts
     if (response.includes('🔐 Please connect your Gmail account')) {
       return (
-        <div className="email-display-card">
+        <div className="email-display-card premium-gmail-card">
           <div className="email-header">
             🔐 Gmail Connection Required
           </div>
