@@ -1,77 +1,79 @@
 {
   "total_tests": 10,
-  "passed": 9,
-  "failed": 1,
-  "success_rate": 90.0,
+  "passed": 5,
+  "failed": 5,
+  "success_rate": 50.0,
   "results": [
     {
       "test": "Gmail OAuth - Auth URL",
       "success": true,
       "details": "OAuth2 auth URL generated successfully with all required parameters",
-      "timestamp": "2025-07-22T08:22:33.780294",
+      "timestamp": "2025-07-22T13:46:06.840371",
       "response_data": null
     },
     {
       "test": "Gmail OAuth - Status",
-      "success": true,
-      "details": "Gmail OAuth2 status configured correctly. Authenticated: False, Token exists: False",
-      "timestamp": "2025-07-22T08:22:34.323327",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='1177f8b3-e76c-450d-ac57-9d136be3218f.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-22T13:46:17.357834",
       "response_data": null
     },
     {
       "test": "Gmail OAuth - Callback Structure",
       "success": false,
-      "details": "Expected 400 for missing code, got 500",
-      "timestamp": "2025-07-22T08:22:34.839833",
-      "response_data": "{\"detail\":\"400: Authorization code required\"}"
+      "details": "Expected 400 for missing code, got 405",
+      "timestamp": "2025-07-22T13:46:21.664116",
+      "response_data": "{\"detail\":\"Method Not Allowed\"}"
     },
     {
       "test": "Gmail Credentials Loading",
-      "success": true,
-      "details": "Gmail credentials loaded successfully with 4 scopes and 6 endpoints",
-      "timestamp": "2025-07-22T08:22:35.355898",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='1177f8b3-e76c-450d-ac57-9d136be3218f.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-22T13:46:32.187605",
       "response_data": null
     },
     {
       "test": "Gmail Service Initialization",
-      "success": true,
-      "details": "Gmail service properly requires authentication",
-      "timestamp": "2025-07-22T08:22:35.880666",
-      "response_data": null
+      "success": false,
+      "details": "Unexpected response: {'detail': '400: session_id is required'}",
+      "timestamp": "2025-07-22T13:46:34.665116",
+      "response_data": {
+        "detail": "400: session_id is required"
+      }
     },
     {
       "test": "Cleanup - Cookie References",
-      "success": true,
-      "details": "No cookie management references found in health endpoint",
-      "timestamp": "2025-07-22T08:22:36.396774",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='1177f8b3-e76c-450d-ac57-9d136be3218f.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-07-22T13:46:45.187568",
       "response_data": null
     },
     {
       "test": "Cleanup - Price Monitoring Removal",
       "success": true,
       "details": "Price monitoring web automation removed successfully",
-      "timestamp": "2025-07-22T08:22:36.915401",
+      "timestamp": "2025-07-22T13:46:48.196447",
       "response_data": null
     },
     {
       "test": "Cleanup - Deprecated Endpoints",
       "success": true,
-      "details": "\u2705 /cookie-sessions: Correctly removed (connection error)\n    \u2705 /automation/linkedin-insights: Correctly removed (404)\n    \u2705 /automation/email-check: Correctly removed (404)\n    \u2705 /cookie-sessions/cleanup: Correctly removed (404)",
-      "timestamp": "2025-07-22T08:22:46.563887",
+      "details": "\u2705 /cookie-sessions: Correctly removed (404)\n    \u2705 /automation/linkedin-insights: Correctly removed (404)\n    \u2705 /automation/email-check: Correctly removed (404)\n    \u2705 /cookie-sessions/cleanup: Correctly removed (404)",
+      "timestamp": "2025-07-22T13:46:48.776372",
       "response_data": null
     },
     {
       "test": "System Health - Gmail Integration",
       "success": true,
       "details": "Gmail integration properly configured in health check with 6 endpoints",
-      "timestamp": "2025-07-22T08:22:47.083570",
+      "timestamp": "2025-07-22T13:46:49.298008",
       "response_data": null
     },
     {
       "test": "Existing Functionality Preservation",
       "success": true,
       "details": "Web automation functionality working correctly",
-      "timestamp": "2025-07-22T08:23:13.045202",
+      "timestamp": "2025-07-22T13:46:50.307826",
       "response_data": null
     }
   ]
