@@ -29,6 +29,11 @@ class DirectAutomationHandler:
                 "error_template": "❌ Unable to check Gmail unread emails: {error}",
                 "automation_type": "gmail_automation"
             },
+            "email_inbox_check": {
+                "success_template": "📥 **Your Inbox** ({count} unread emails)\n{emails}",
+                "error_template": "❌ Unable to check your inbox: {error}",
+                "automation_type": "gmail_automation"
+            },
 
             "scrape_product_listings": {
                 "success_template": "🛒 **Product Listings** ({count} found)\n{listings}",
