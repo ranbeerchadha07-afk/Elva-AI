@@ -29,11 +29,7 @@ class DirectAutomationHandler:
                 "error_template": "❌ Unable to check Gmail unread emails: {error}",
                 "automation_type": "gmail_automation"
             },
-            "scrape_price": {
-                "success_template": "💰 **Price Check Results**\n🏷️ **{product}**: {price}\n📊 Platform: {platform}",
-                "error_template": "❌ Unable to find price for {product}: {error}",
-                "automation_type": "price_monitoring"
-            },
+
             "scrape_product_listings": {
                 "success_template": "🛒 **Product Listings** ({count} found)\n{listings}",
                 "error_template": "❌ Unable to scrape product listings: {error}",
