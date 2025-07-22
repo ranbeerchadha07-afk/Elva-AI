@@ -16,7 +16,6 @@ from advanced_hybrid_ai import detect_intent, generate_friendly_draft, handle_ge
 from webhook_handler import send_approved_action
 from playwright_service import playwright_service, AutomationResult
 from direct_automation_handler import direct_automation_handler
-from cookie_manager import cookie_manager
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -72,12 +71,8 @@ class ApprovalRequest(BaseModel):
 
 class WebAutomationRequest(BaseModel):
     session_id: str
-    automation_type: str  # "web_scraping", "linkedin_insights", "email_automation", "price_monitoring"
+    automation_type: str  # "web_scraping", "linkedin_insights", "email_automation", "data_extraction"
     parameters: dict
-
-class CookieSessionRequest(BaseModel):
-    service_name: str  # "linkedin", "gmail", "outlook", "yahoo"
-    user_identifier: str  # email or username
 
 # Helper functions
 def convert_objectid_to_str(doc):
@@ -147,61 +142,13 @@ async def chat(request: ChatRequest):
             
         else:
             # Traditional flow for non-direct automation intents
-            web_automation_intents = ["web_scraping", "linkedin_insights", "email_automation", "price_monitoring", "data_extraction"]
+            web_automation_intents = ["web_scraping", "linkedin_insights", "email_automation", "data_extraction"]
             needs_approval = intent_data.get("intent") not in ["general_chat"]
             
             # For web automation intents, check if we have required credentials
             if intent_data.get("intent") in web_automation_intents:
-        # If this is a web automation request that can be executed directly
-                if intent_data.get("intent") in web_automation_intents:
-                    # Check if we have cookies saved for the user
-                    if intent_data.get("intent") == "linkedin_insights":
-                        # For LinkedIn, we need user email to load cookies
-                        user_email = intent_data.get("user_email")
-                        if user_email:
-                            try:
-                                automation_result = await playwright_service.scrape_linkedin_insights(
-                                    user_email, intent_data.get("insight_type", "notifications")
-                                )
-                                
-                                if automation_result.success:
-                                    response_text += f"\n\n🔍 **LinkedIn Insights:**\n{json.dumps(automation_result.data, indent=2)}"
-                                    intent_data["automation_result"] = automation_result.data
-                                    intent_data["automation_success"] = True
-                                    needs_approval = False
-                                else:
-                                    response_text += f"\n\n⚠️ **LinkedIn Error:** {automation_result.message}"
-                                    intent_data["automation_error"] = automation_result.message
-                                    
-                            except Exception as e:
-                                logger.error(f"Direct LinkedIn automation error: {e}")
-                                response_text += f"\n\n❌ **Automation Error:** {str(e)}"
-                    
-                    elif intent_data.get("intent") == "email_automation":
-                        # For email automation, we need provider and user email
-                        provider = intent_data.get("email_provider")
-                        user_email = intent_data.get("user_email")
-                        if provider and user_email:
-                            try:
-                                automation_result = await playwright_service.automate_email_interaction(
-                                    provider, user_email, intent_data.get("action", "check_inbox")
-                                )
-                                
-                                if automation_result.success:
-                                    response_text += f"\n\n📧 **Email Automation Results:**\n{json.dumps(automation_result.data, indent=2)}"
-                                    intent_data["automation_result"] = automation_result.data
-                                    intent_data["automation_success"] = True
-                                    needs_approval = False
-                                else:
-                                    response_text += f"\n\n⚠️ **Email Error:** {automation_result.message}"
-                                    intent_data["automation_error"] = automation_result.message
-                                    
-                            except Exception as e:
-                                logger.error(f"Direct email automation error: {e}")
-                                response_text += f"\n\n❌ **Automation Error:** {str(e)}"
-                                
                 # Check if this is a web scraping request that can be executed directly
-                elif intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
+                if intent_data.get("intent") == "web_scraping" and intent_data.get("url"):
                     # Execute web scraping directly if we have URL and selectors
                     try:
                         automation_result = await playwright_service.extract_dynamic_data(
@@ -387,40 +334,12 @@ async def execute_web_automation(request: WebAutomationRequest):
             result = await playwright_service.extract_dynamic_data(url, selectors, wait_for_element)
             
         elif request.automation_type == "linkedin_insights":
-            # Scrape LinkedIn insights
-            email = request.parameters.get("email")
-            password = request.parameters.get("password")
-            insight_type = request.parameters.get("insight_type", "notifications")
-            
-            if not email or not password:
-                raise HTTPException(status_code=400, detail="LinkedIn email and password are required")
-            
-            result = await playwright_service.scrape_linkedin_insights(email, password, insight_type)
+            # LinkedIn insights will be handled via Gmail API integration in the future
+            raise HTTPException(status_code=501, detail="LinkedIn insights temporarily disabled - Gmail API integration coming soon")
             
         elif request.automation_type == "email_automation":
-            # Automate email interactions
-            provider = request.parameters.get("provider")
-            email = request.parameters.get("email")
-            password = request.parameters.get("password")
-            action = request.parameters.get("action", "check_inbox")
-            
-            if not all([provider, email, password]):
-                raise HTTPException(status_code=400, detail="Provider, email, and password are required")
-            
-            result = await playwright_service.automate_email_interaction(
-                provider, email, password, action, **request.parameters.get("action_params", {})
-            )
-            
-        elif request.automation_type == "price_monitoring":
-            # Monitor e-commerce prices
-            product_url = request.parameters.get("product_url")
-            price_selector = request.parameters.get("price_selector")
-            product_name = request.parameters.get("product_name")
-            
-            if not product_url or not price_selector:
-                raise HTTPException(status_code=400, detail="Product URL and price selector are required")
-            
-            result = await playwright_service.monitor_ecommerce_price(product_url, price_selector, product_name)
+            # Email automation will be handled via Gmail API
+            raise HTTPException(status_code=501, detail="Email automation temporarily disabled - Gmail API integration coming soon")
             
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported automation type: {request.automation_type}")
@@ -472,136 +391,31 @@ async def get_automation_history(session_id: str):
         logger.error(f"Automation history error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@api_router.get("/cookie-sessions")
-async def list_cookie_sessions():
-    """List all saved cookie sessions"""
+# OAuth2 endpoints for Gmail API (Preparation)
+@api_router.get("/gmail/auth")
+async def gmail_auth_init():
+    """Initialize Gmail OAuth2 authentication flow"""
     try:
-        sessions = cookie_manager.list_saved_sessions()
+        # This will be implemented when Gmail API credentials are provided
         return {
-            "sessions": sessions,
-            "total": len(sessions)
+            "auth_url": "Will be implemented with Gmail API credentials",
+            "message": "Gmail API OAuth2 flow preparation - credentials needed"
         }
     except Exception as e:
-        logger.error(f"Failed to list cookie sessions: {e}")
+        logger.error(f"Gmail auth init error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@api_router.delete("/cookie-sessions/{service_name}/{user_identifier}")
-async def delete_cookie_session(service_name: str, user_identifier: str):
-    """Delete a specific cookie session"""
+@api_router.post("/gmail/callback")
+async def gmail_auth_callback(request: dict):
+    """Handle Gmail OAuth2 callback"""
     try:
-        success = cookie_manager.delete_cookies(service_name, user_identifier)
-        if success:
-            return {"success": True, "message": f"Deleted cookies for {service_name} user {user_identifier}"}
-        else:
-            return {"success": False, "message": "Cookies not found"}
-    except Exception as e:
-        logger.error(f"Failed to delete cookie session: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@api_router.post("/cookie-sessions/cleanup")
-async def cleanup_expired_cookies():
-    """Clean up all expired cookie sessions"""
-    try:
-        cleaned_count = cookie_manager.cleanup_expired_cookies()
+        # This will be implemented when Gmail API credentials are provided
         return {
-            "success": True,
-            "message": f"Cleaned up {cleaned_count} expired cookie sessions",
-            "cleaned_count": cleaned_count
+            "success": False,
+            "message": "Gmail API OAuth2 callback - implementation pending credentials"
         }
     except Exception as e:
-        logger.error(f"Failed to cleanup cookies: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@api_router.get("/cookie-sessions/{service_name}/{user_identifier}/status")
-async def check_cookie_session_status(service_name: str, user_identifier: str):
-    """Check if valid cookies exist for a service and user"""
-    try:
-        cookies = cookie_manager.load_cookies(service_name, user_identifier)
-        if cookies:
-            return {
-                "has_valid_cookies": True,
-                "cookie_count": len(cookies),
-                "message": f"Valid cookies found for {service_name} user {user_identifier}"
-            }
-        else:
-            return {
-                "has_valid_cookies": False,
-                "cookie_count": 0,
-                "message": f"No valid cookies found for {service_name} user {user_identifier}"
-            }
-    except Exception as e:
-        logger.error(f"Failed to check cookie status: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@api_router.post("/automation/linkedin-insights")
-async def get_linkedin_insights(request: dict):
-    """Get LinkedIn insights using saved cookies"""
-    try:
-        user_email = request.get("user_email")
-        insight_type = request.get("insight_type", "notifications")
-        
-        if not user_email:
-            raise HTTPException(status_code=400, detail="user_email is required")
-        
-        # Check if cookies exist
-        cookies = cookie_manager.load_cookies("linkedin", user_email)
-        if not cookies:
-            return {
-                "success": False,
-                "message": f"No valid LinkedIn cookies found for {user_email}. Please run manual cookie capture.",
-                "needs_login": True
-            }
-        
-        # Execute LinkedIn automation
-        result = await playwright_service.scrape_linkedin_insights(user_email, insight_type)
-        
-        return {
-            "success": result.success,
-            "data": result.data,
-            "message": result.message,
-            "execution_time": result.execution_time
-        }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"LinkedIn insights error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@api_router.post("/automation/email-check")
-async def check_email_with_cookies(request: dict):
-    """Check email using saved cookies"""
-    try:
-        user_email = request.get("user_email")
-        provider = request.get("provider")  # gmail, outlook, yahoo
-        action = request.get("action", "check_inbox")
-        
-        if not user_email or not provider:
-            raise HTTPException(status_code=400, detail="user_email and provider are required")
-        
-        # Check if cookies exist
-        cookies = cookie_manager.load_cookies(provider, user_email)
-        if not cookies:
-            return {
-                "success": False,
-                "message": f"No valid {provider} cookies found for {user_email}. Please run manual cookie capture.",
-                "needs_login": True
-            }
-        
-        # Execute email automation
-        result = await playwright_service.automate_email_interaction(provider, user_email, action)
-        
-        return {
-            "success": result.success,
-            "data": result.data,
-            "message": result.message,
-            "execution_time": result.execution_time
-        }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Email automation error: {e}")
+        logger.error(f"Gmail auth callback error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 async def root():
@@ -618,18 +432,14 @@ async def health_check():
         # Test MongoDB connection
         await db.command("ping")
         
-        # Get cookie sessions info
-        cookie_sessions = cookie_manager.list_saved_sessions()
-        valid_sessions = [s for s in cookie_sessions if s['status'] == 'valid']
-        
         health_status = {
             "status": "healthy",
             "mongodb": "connected",
-            "cookie_management": {
-                "total_sessions": len(cookie_sessions),
-                "valid_sessions": len(valid_sessions),
-                "services_with_cookies": list(set([s['service'] for s in valid_sessions])),
-                "encryption": "enabled"
+            "gmail_api_integration": {
+                "status": "ready_for_setup",
+                "oauth2_endpoints": "prepared",
+                "credentials_needed": True,
+                "message": "Ready for Gmail API credentials"
             },
             "advanced_hybrid_ai_system": {
                 "version": "2.0",
@@ -656,7 +466,7 @@ async def health_check():
                     "claude_tasks": ["high_emotional", "creative_content", "conversational", "professional_warm"],
                     "groq_tasks": ["logical_reasoning", "structured_analysis", "technical_complex", "intent_detection"],
                     "sequential_tasks": ["professional_emails", "linkedin_posts", "complex_creative"],
-                    "web_automation_tasks": ["web_scraping", "linkedin_insights", "email_automation", "price_monitoring", "data_extraction"]
+                    "web_automation_tasks": ["web_scraping", "data_extraction"]
                 }
             },
             "n8n_webhook": "configured" if os.getenv("N8N_WEBHOOK_URL") else "missing",
@@ -664,8 +474,7 @@ async def health_check():
                 "status": "available",
                 "browser": "chromium",
                 "capabilities": [
-                    "dynamic_data_extraction", "linkedin_insights_scraping", 
-                    "email_automation", "price_monitoring", "stealth_mode"
+                    "dynamic_data_extraction", "web_scraping"
                 ]
             }
         }
