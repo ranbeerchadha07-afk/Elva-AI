@@ -493,14 +493,33 @@ function App() {
             </div>
           </div>
           
-          <button
-            onClick={startNewChat}
-            className="premium-new-chat-btn px-6 py-2.5 rounded-full flex items-center space-x-2 shadow-lg"
-            title="Start New Chat"
-          >
-            <span className="text-xl premium-plus-icon">+</span>
-            <span className="text-sm font-medium">New Chat</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            {/* Gmail Authentication Button */}
+            {!gmailAuthStatus.loading && (
+              <button
+                onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
+                className={`px-4 py-2 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
+                  gmailAuthStatus.authenticated 
+                    ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border border-green-500/30 cursor-default' 
+                    : 'bg-gradient-to-r from-red-500/20 to-orange-500/20 text-orange-300 border border-orange-500/30 hover:from-red-500/30 hover:to-orange-500/30 shadow-lg hover:shadow-orange-500/20'
+                }`}
+                title={gmailAuthStatus.authenticated ? "Gmail Connected" : "Connect Gmail"}
+                disabled={gmailAuthStatus.authenticated}
+              >
+                <span className="text-sm">{gmailAuthStatus.authenticated ? '✅' : '📧'}</span>
+                <span>{gmailAuthStatus.authenticated ? 'Gmail Connected' : 'Connect Gmail'}</span>
+              </button>
+            )}
+            
+            <button
+              onClick={startNewChat}
+              className="premium-new-chat-btn px-6 py-2.5 rounded-full flex items-center space-x-2 shadow-lg"
+              title="Start New Chat"
+            >
+              <span className="text-xl premium-plus-icon">+</span>
+              <span className="text-sm font-medium">New Chat</span>
+            </button>
+          </div>
         </div>
       </div>
 
