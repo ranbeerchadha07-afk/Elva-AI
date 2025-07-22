@@ -372,10 +372,15 @@ class GmailOAuthService:
                 'message': f'Failed to send email: {str(e)}'
             }
     
-    def get_email_content(self, message_id: str) -> Dict[str, Any]:
+    def get_email_content(self, message_id: str, session_id: str = None) -> Dict[str, Any]:
         """Get full email content by message ID"""
         try:
-            if not self._authenticate():
+            if not session_id:
+                session_id = self.current_session_id or 'default_session'
+                
+            # Use async authentication check
+            import asyncio
+            if not asyncio.run(self._authenticate(session_id)):
                 return {
                     'success': False,
                     'message': 'Gmail authentication required. Please complete OAuth2 flow.',
