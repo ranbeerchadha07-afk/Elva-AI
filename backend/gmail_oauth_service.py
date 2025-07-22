@@ -210,30 +210,33 @@ class GmailOAuthService:
                 'message': f'OAuth2 authentication failed: {str(e)}'
             }
     
-    def _authenticate(self) -> bool:
-        """Authenticate with Gmail API using stored or refreshed credentials"""
+    async def _authenticate(self, session_id: str) -> bool:
+        """Authenticate with Gmail API using stored or refreshed credentials for specific session"""
         try:
-            # Try to load existing credentials
-            if not self.credentials:
-                self.credentials = self._load_token()
+            # Set current session
+            self.current_session_id = session_id
+            
+            # Try to load existing credentials for this session
+            if not self.credentials or self.current_session_id != session_id:
+                self.credentials = await self._load_token(session_id)
             
             if not self.credentials:
-                logger.info("ℹ️ No Gmail credentials found. OAuth2 flow required.")
+                logger.info(f"ℹ️ No Gmail credentials found for session {session_id}. OAuth2 flow required.")
                 return False
             
             # Refresh credentials if expired
             if self.credentials.expired and self.credentials.refresh_token:
                 self.credentials.refresh(Request())
-                self._save_token(self.credentials)
-                logger.info("🔄 Gmail credentials refreshed successfully")
+                await self._save_token(self.credentials, session_id)
+                logger.info(f"🔄 Gmail credentials refreshed successfully for session: {session_id}")
             
             # Build Gmail service
             self.service = build('gmail', 'v1', credentials=self.credentials)
-            logger.info("✅ Gmail API service initialized successfully")
+            logger.info(f"✅ Gmail authentication successful for session: {session_id}")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Gmail authentication failed: {e}")
+            logger.error(f"❌ Gmail authentication failed for session {session_id}: {e}")
             return False
     
     def check_inbox(self, max_results: int = 10, query: str = 'is:unread') -> Dict[str, Any]:
