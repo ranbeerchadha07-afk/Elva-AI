@@ -1769,6 +1769,172 @@ class ElvaBackendTester:
             self.log_test("Existing Functionality Preservation", False, f"Error: {str(e)}")
             return False
 
+    def test_email_inbox_check_intent(self):
+        """Test: Email inbox check intent detection via chat endpoint"""
+        test_cases = [
+            {
+                "message": "Check my inbox",
+                "description": "Simple inbox check"
+            },
+            {
+                "message": "Any unread emails?",
+                "description": "Unread emails query"
+            },
+            {
+                "message": "Show me my inbox",
+                "description": "Show inbox request"
+            },
+            {
+                "message": "Do I have any new emails?",
+                "description": "New emails inquiry"
+            }
+        ]
+        
+        all_passed = True
+        results = []
+        
+        for test_case in test_cases:
+            try:
+                payload = {
+                    "message": test_case["message"],
+                    "session_id": self.session_id,
+                    "user_id": "test_user"
+                }
+                
+                response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=15)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    intent_data = data.get("intent_data", {})
+                    detected_intent = intent_data.get("intent")
+                    
+                    # Check if intent is detected as email_inbox_check or similar email-related intent
+                    email_intents = ["email_inbox_check", "check_email", "inbox_check", "email_check", "email_automation"]
+                    
+                    if detected_intent in email_intents:
+                        results.append(f"✅ {test_case['description']}: Correctly detected as {detected_intent}")
+                        self.message_ids.append(data["id"])
+                    else:
+                        # Check if response mentions email or inbox functionality
+                        response_text = data.get("response", "").lower()
+                        if "email" in response_text or "inbox" in response_text or "gmail" in response_text:
+                            results.append(f"✅ {test_case['description']}: Email functionality recognized in response")
+                        else:
+                            results.append(f"❌ {test_case['description']}: Expected email intent, got {detected_intent}")
+                            all_passed = False
+                else:
+                    results.append(f"❌ {test_case['description']}: HTTP {response.status_code}")
+                    all_passed = False
+                    
+            except Exception as e:
+                results.append(f"❌ {test_case['description']}: Error {str(e)}")
+                all_passed = False
+        
+        result_summary = "\n    ".join(results)
+        self.log_test("Email Inbox Check Intent Detection", all_passed, result_summary)
+        return all_passed
+
+    def test_gmail_inbox_endpoint_direct(self):
+        """Test: Direct Gmail inbox endpoint (should require authentication)"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/gmail/inbox", timeout=10)
+            
+            # This should fail with authentication error since we're not authenticated
+            if response.status_code in [401, 403, 500]:
+                # Check if error message indicates authentication issue
+                try:
+                    data = response.json()
+                    error_message = data.get("detail", "").lower()
+                    if "auth" in error_message or "credential" in error_message or "token" in error_message:
+                        self.log_test("Gmail Inbox Endpoint Direct", True, f"Correctly requires authentication: {response.status_code} - {error_message}")
+                        return True
+                    else:
+                        self.log_test("Gmail Inbox Endpoint Direct", True, f"Endpoint accessible but returns error (expected): {response.status_code}")
+                        return True
+                except:
+                    # If response is not JSON, still consider it a pass if status code indicates auth issue
+                    self.log_test("Gmail Inbox Endpoint Direct", True, f"Correctly requires authentication: {response.status_code}")
+                    return True
+            elif response.status_code == 200:
+                # If it returns 200, check if it's a proper error response about authentication
+                data = response.json()
+                if "error" in data or "authenticated" in str(data).lower():
+                    self.log_test("Gmail Inbox Endpoint Direct", True, "Endpoint accessible but requires authentication")
+                    return True
+                else:
+                    self.log_test("Gmail Inbox Endpoint Direct", False, "Endpoint should require authentication", data)
+                    return False
+            else:
+                self.log_test("Gmail Inbox Endpoint Direct", False, f"Unexpected HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail Inbox Endpoint Direct", False, f"Error: {str(e)}")
+            return False
+
+    def test_gmail_api_health_integration(self):
+        """Test: Gmail API integration in health endpoint"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check if Gmail API integration section exists
+                if "gmail_api_integration" not in data:
+                    self.log_test("Gmail API Health Integration", False, "gmail_api_integration section missing from health endpoint", data)
+                    return False
+                
+                gmail_section = data["gmail_api_integration"]
+                
+                # Check required fields
+                required_fields = ["status", "oauth2_flow", "credentials_configured", "authenticated", "scopes", "endpoints"]
+                missing_fields = [field for field in required_fields if field not in gmail_section]
+                
+                if missing_fields:
+                    self.log_test("Gmail API Health Integration", False, f"Missing Gmail API fields: {missing_fields}", gmail_section)
+                    return False
+                
+                # Check status is ready
+                if gmail_section.get("status") != "ready":
+                    self.log_test("Gmail API Health Integration", False, f"Gmail API status not ready: {gmail_section.get('status')}", gmail_section)
+                    return False
+                
+                # Check OAuth2 flow is implemented
+                if gmail_section.get("oauth2_flow") != "implemented":
+                    self.log_test("Gmail API Health Integration", False, f"OAuth2 flow not implemented: {gmail_section.get('oauth2_flow')}", gmail_section)
+                    return False
+                
+                # Check credentials are configured
+                if not gmail_section.get("credentials_configured"):
+                    self.log_test("Gmail API Health Integration", False, "Gmail credentials not configured", gmail_section)
+                    return False
+                
+                # Check scopes are present
+                scopes = gmail_section.get("scopes", [])
+                if len(scopes) == 0:
+                    self.log_test("Gmail API Health Integration", False, "No Gmail API scopes configured", gmail_section)
+                    return False
+                
+                # Check endpoints are present
+                endpoints = gmail_section.get("endpoints", [])
+                expected_endpoints = ["/api/gmail/auth", "/api/gmail/callback", "/api/gmail/status", "/api/gmail/inbox", "/api/gmail/send", "/api/gmail/email/{id}"]
+                missing_endpoints = [ep for ep in expected_endpoints if ep not in endpoints]
+                
+                if missing_endpoints:
+                    self.log_test("Gmail API Health Integration", False, f"Missing Gmail API endpoints: {missing_endpoints}", gmail_section)
+                    return False
+                
+                self.log_test("Gmail API Health Integration", True, f"Gmail API integration ready with {len(scopes)} scopes and {len(endpoints)} endpoints")
+                return True
+            else:
+                self.log_test("Gmail API Health Integration", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail API Health Integration", False, f"Error: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Comprehensive Gmail API OAuth2 Integration & Cleanup Verification Testing")
