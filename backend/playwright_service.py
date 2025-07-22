@@ -438,9 +438,53 @@ class PlaywrightService:
         """Check if user is successfully logged into email provider"""
         try:
             if provider == 'gmail':
-                # Look for Gmail-specific elements that indicate login
-                await page.wait_for_selector('[data-testid="gmail-logo"], .nZ.aiq, .gb_C', timeout=10000)
-                return True
+                # Updated Gmail login check with more comprehensive selectors
+                logger.info("🔍 Checking Gmail login status...")
+                
+                # First, wait for the page to load
+                await page.wait_for_load_state('networkidle', timeout=15000)
+                
+                # Check for multiple possible Gmail elements that indicate successful login
+                gmail_selectors = [
+                    'div[gh="tl"]',  # Gmail header toolbar
+                    '.nH.if',        # Gmail interface container
+                    '[data-testid="gmail-logo"]',  # Gmail logo
+                    '.gb_C',         # Google bar
+                    '.aip',          # Gmail sidebar
+                    'div[data-tooltip="Gmail"]',  # Gmail tooltip
+                    '.aim',          # Gmail compose button area
+                    'div[role="main"]'  # Main Gmail content area
+                ]
+                
+                for selector in gmail_selectors:
+                    try:
+                        await page.wait_for_selector(selector, timeout=3000)
+                        logger.info(f"✅ Found Gmail element: {selector}")
+                        
+                        # Additional check - make sure we're not on a login page
+                        current_url = page.url
+                        if 'accounts.google.com' in current_url and 'signin' in current_url:
+                            logger.warning("❌ Still on login page despite finding elements")
+                            continue
+                            
+                        # Check for inbox or mail-specific elements
+                        try:
+                            await page.wait_for_selector('.zA', timeout=2000)  # Email thread
+                            logger.info("✅ Found email threads - definitely logged in")
+                            return True
+                        except:
+                            pass
+                            
+                        return True
+                    except:
+                        continue
+                        
+                # If no elements found, log page details for debugging
+                current_url = page.url
+                title = await page.title()
+                logger.warning(f"❌ Gmail login check failed. URL: {current_url}, Title: {title}")
+                return False
+                
             elif provider == 'outlook':
                 # Look for Outlook-specific elements
                 await page.wait_for_selector('[aria-label="Outlook"], .ms-Nav, ._2wUgT81Yh2C3S6tGYy9e-H', timeout=10000)
