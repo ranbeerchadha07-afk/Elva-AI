@@ -433,18 +433,52 @@ class GmailOAuthService:
         """Check if user is authenticated with Gmail API"""
         return self._authenticate()
     
-    def get_auth_status(self) -> Dict[str, Any]:
-        """Get current authentication status"""
-        credentials_exists = self.credentials_file_path.exists()
-        token_exists = self.token_file_path.exists()
-        
-        return {
-            'credentials_configured': credentials_exists,
-            'token_exists': token_exists,
-            'authenticated': self.is_authenticated() if credentials_exists else False,
-            'redirect_uri': self.redirect_uri,
-            'scopes': self.scopes
-        }
+    async def get_auth_status(self, session_id: str = None) -> Dict[str, Any]:
+        """Get Gmail authentication status for specific session"""
+        try:
+            credentials_configured = self._load_credentials_config() is not None
+            
+            if session_id:
+                # Check if we have valid credentials for this session
+                credentials = await self._load_token(session_id)
+                authenticated = credentials is not None
+                
+                # If credentials exist, check if they're still valid
+                if authenticated and credentials:
+                    try:
+                        if credentials.expired and credentials.refresh_token:
+                            credentials.refresh(Request())
+                            await self._save_token(credentials, session_id)
+                        
+                        # Try to build service to verify credentials work
+                        service = build('gmail', 'v1', credentials=credentials)
+                        authenticated = True
+                    except Exception as e:
+                        logger.warning(f"Gmail credentials invalid for session {session_id}: {e}")
+                        authenticated = False
+            else:
+                authenticated = False
+            
+            return {
+                'success': True,
+                'credentials_configured': credentials_configured,
+                'authenticated': authenticated,
+                'session_id': session_id,
+                'requires_auth': not authenticated,
+                'scopes': self.scopes,
+                'service': 'gmail'
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Error checking Gmail auth status: {e}")
+            return {
+                'success': False,
+                'credentials_configured': False,
+                'authenticated': False,
+                'session_id': session_id,
+                'requires_auth': True,
+                'error': str(e)
+            }
 
 # Create singleton instance
 gmail_oauth_service = GmailOAuthService()
