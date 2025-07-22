@@ -676,7 +676,7 @@ function App() {
                           : 'bg-black/30 border border-blue-500/20 backdrop-blur-sm shadow-lg'
                 } ${msg.isWelcome ? 'border-2 border-blue-400/40 bg-gradient-to-r from-blue-900/40 to-purple-900/40' : ''}`}>
                   <div className="text-sm leading-relaxed">
-                    {msg.isUser ? msg.message : msg.response}
+                    {msg.isUser ? msg.message : renderEmailDisplay(msg.response)}
                     {msg.isWelcome && (
                       <div className="mt-2 text-xs text-blue-300 flex items-center">
                         <span className="animate-pulse">✨</span>
