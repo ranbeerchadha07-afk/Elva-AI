@@ -22,13 +22,13 @@ from gmail_oauth_service import GmailOAuthService
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# Initialize Gmail OAuth service
-gmail_oauth_service = GmailOAuthService()
-
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Initialize Gmail OAuth service with database connection
+gmail_oauth_service = GmailOAuthService(db=db)
 
 # Create the main app without a prefix
 app = FastAPI()
