@@ -398,10 +398,21 @@ async def get_automation_history(session_id: str):
 
 # OAuth2 endpoints for Gmail API
 @api_router.get("/gmail/auth")
-async def gmail_auth_init():
-    """Initialize Gmail OAuth2 authentication flow"""
+async def gmail_auth_init(session_id: str = None):
+    """Initialize Gmail OAuth2 authentication flow with session support"""
     try:
+        if not session_id:
+            session_id = 'default_session'
+            
         result = gmail_oauth_service.get_auth_url()
+        
+        if result.get('success') and result.get('auth_url'):
+            # Add session ID to the state parameter
+            auth_url = result['auth_url']
+            if 'state=' in auth_url:
+                auth_url = auth_url.replace('state=', f'state={session_id}_')
+            result['auth_url'] = auth_url
+            
         return result
     except Exception as e:
         logger.error(f"Gmail auth init error: {e}")
