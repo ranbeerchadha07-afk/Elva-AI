@@ -403,16 +403,30 @@ async def gmail_auth_init():
         logger.error(f"Gmail auth init error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@api_router.post("/gmail/callback")
-async def gmail_auth_callback(request: dict):
-    """Handle Gmail OAuth2 callback"""
+@api_router.get("/gmail/callback")
+async def gmail_auth_callback(code: str = None, state: str = None, error: str = None):
+    """Handle Gmail OAuth2 callback from Google redirect"""
     try:
-        authorization_code = request.get('code')
-        if not authorization_code:
+        # Handle OAuth error responses
+        if error:
+            logger.warning(f"OAuth callback received error: {error}")
+            raise HTTPException(status_code=400, detail=f"OAuth authorization failed: {error}")
+        
+        # Check for authorization code
+        if not code:
             raise HTTPException(status_code=400, detail="Authorization code required")
         
-        result = gmail_oauth_service.handle_oauth_callback(authorization_code)
-        return result
+        # Handle OAuth callback with authorization code
+        result = gmail_oauth_service.handle_oauth_callback(code)
+        
+        # Return success response that can redirect user or show success message
+        return {
+            "success": True,
+            "message": "Gmail authentication successful! You can now close this window.",
+            "authenticated": result.get("authenticated", False),
+            "redirect_message": "Please return to Elva AI to continue using Gmail features."
+        }
+        
     except Exception as e:
         logger.error(f"Gmail auth callback error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
