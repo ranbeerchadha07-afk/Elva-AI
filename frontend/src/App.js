@@ -79,10 +79,15 @@ function App() {
 
   const initiateGmailAuth = async () => {
     try {
-      const response = await axios.get(`${API}/gmail/auth`);
+      const response = await axios.get(`${API}/gmail/auth?session_id=${sessionId}`);
       if (response.data.success && response.data.auth_url) {
-        // Redirect to Google OAuth2
-        window.location.href = response.data.auth_url;
+        // Add session ID to the auth URL state parameter
+        const authUrl = new URL(response.data.auth_url);
+        const currentState = authUrl.searchParams.get('state') || '';
+        authUrl.searchParams.set('state', `${sessionId}_${currentState}`);
+        
+        // Redirect to Google OAuth2 with session-aware state
+        window.location.href = authUrl.toString();
       } else {
         console.error('Failed to get Gmail auth URL:', response.data.message);
       }
