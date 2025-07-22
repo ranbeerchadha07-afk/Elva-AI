@@ -66,7 +66,7 @@ function App() {
 
   const checkGmailAuthStatus = async () => {
     try {
-      const response = await axios.get(`${API}/gmail/status`);
+      const response = await axios.get(`${API}/gmail/status?session_id=${sessionId}`);
       setGmailAuthStatus({ 
         authenticated: response.data.authenticated,
         loading: false 
