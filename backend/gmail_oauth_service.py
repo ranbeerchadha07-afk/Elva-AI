@@ -70,7 +70,7 @@ class GmailOAuthService:
     async def _save_token(self, credentials: Credentials, session_id: str):
         """Save OAuth2 token to MongoDB with session association"""
         try:
-            if not self.db:
+            if self.db is None:
                 logger.error("❌ No database connection available for token storage")
                 return
                 
