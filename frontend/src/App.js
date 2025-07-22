@@ -503,16 +503,16 @@ function App() {
             {!gmailAuthStatus.loading && (
               <button
                 onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                className={`px-4 py-2 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
+                className={`px-6 py-3 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
                   gmailAuthStatus.authenticated 
-                    ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border border-green-500/30 cursor-default' 
-                    : 'bg-gradient-to-r from-red-500/20 to-orange-500/20 text-orange-300 border border-orange-500/30 hover:from-red-500/30 hover:to-orange-500/30 shadow-lg hover:shadow-orange-500/20'
+                    ? 'premium-gmail-connected cursor-default' 
+                    : 'premium-gmail-btn hover:scale-105'
                 }`}
                 title={gmailAuthStatus.authenticated ? "Gmail Connected" : "Connect Gmail"}
                 disabled={gmailAuthStatus.authenticated}
               >
                 <span className="text-sm">{gmailAuthStatus.authenticated ? '✅' : '📧'}</span>
-                <span>{gmailAuthStatus.authenticated ? 'Gmail Connected' : 'Connect Gmail'}</span>
+                <span className="font-semibold">{gmailAuthStatus.authenticated ? 'Gmail Connected' : 'Connect Gmail'}</span>
               </button>
             )}
             
