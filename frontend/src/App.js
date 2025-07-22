@@ -91,6 +91,73 @@ function App() {
     }
   };
 
+  const handleGmailAuthSuccess = async () => {
+    try {
+      // Update auth status
+      setGmailAuthStatus({ authenticated: true, loading: false });
+      
+      // Add success message to chat
+      const successMessage = {
+        id: 'gmail_auth_success_' + Date.now(),
+        session_id: sessionId,
+        user_id: 'system',
+        message: '✅ Gmail Connected Successfully!',
+        response: 'Great! Gmail authentication successful. You can now ask me to check your inbox, send emails, and manage your Gmail account.',
+        timestamp: new Date().toISOString(),
+        intent_data: null,
+        needs_approval: false
+      };
+      
+      setMessages(prev => [...prev, successMessage]);
+      
+      console.log('Gmail authentication successful!');
+    } catch (error) {
+      console.error('Error handling Gmail auth success:', error);
+    }
+  };
+
+  const handleGmailAuthError = (errorMessage) => {
+    try {
+      // Update auth status
+      setGmailAuthStatus({ authenticated: false, loading: false });
+      
+      // Map error codes to user-friendly messages
+      let userMessage = 'Gmail authentication failed. Please try again.';
+      switch(errorMessage) {
+        case 'access_denied':
+          userMessage = 'Gmail authentication was cancelled. You can try connecting again anytime.';
+          break;
+        case 'no_code':
+          userMessage = 'Gmail authentication failed - no authorization received.';
+          break;
+        case 'auth_failed':
+          userMessage = 'Gmail authentication failed during token exchange.';
+          break;
+        case 'server_error':
+          userMessage = 'Gmail authentication failed due to a server error.';
+          break;
+      }
+      
+      // Add error message to chat
+      const errorMsg = {
+        id: 'gmail_auth_error_' + Date.now(),
+        session_id: sessionId,
+        user_id: 'system', 
+        message: '❌ Gmail Authentication Failed',
+        response: userMessage,
+        timestamp: new Date().toISOString(),
+        intent_data: null,
+        needs_approval: false
+      };
+      
+      setMessages(prev => [...prev, errorMsg]);
+      
+      console.error('Gmail authentication error:', errorMessage);
+    } catch (error) {
+      console.error('Error handling Gmail auth error:', error);
+    }
+  };
+
   const handleGmailCallback = async (authorizationCode) => {
     try {
       const response = await axios.post(`${API}/gmail/callback`, {
