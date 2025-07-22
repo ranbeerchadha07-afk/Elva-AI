@@ -2177,7 +2177,14 @@ class ElvaBackendTester:
             self.test_email_automation_missing_parameters,
             self.test_email_automation_no_cookies,
             self.test_chat_endpoint_linkedin_automation_integration,
-            self.test_chat_endpoint_email_automation_integration
+            self.test_chat_endpoint_email_automation_integration,
+            
+            # Gmail automation tests for brainlyarpit8649@gmail.com
+            self.test_cookie_detection_for_gmail_user,
+            self.test_gmail_automation_check_inbox_brainlyarpit,
+            self.test_gmail_automation_check_unread_brainlyarpit,
+            self.test_gmail_chat_interface_check_inbox,
+            self.test_gmail_chat_interface_check_unread
         ]
         
         passed = 0
