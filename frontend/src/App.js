@@ -490,9 +490,9 @@ function App() {
       }
 
       return (
-        <div className="email-display-card">
+        <div className="email-display-card premium-gmail-card">
           <div className="email-header">
-            📥 You have <span className="email-count-badge">{count}</span> unread email{count !== 1 ? 's' : ''}:
+            📥 You have <span className="email-count-badge-enhanced">{count}</span> unread email{count !== 1 ? 's' : ''}
           </div>
           
           {emailBlocks.map((block, index) => {
