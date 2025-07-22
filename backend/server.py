@@ -17,10 +17,13 @@ from advanced_hybrid_ai import detect_intent, generate_friendly_draft, handle_ge
 from webhook_handler import send_approved_action
 from playwright_service import playwright_service, AutomationResult
 from direct_automation_handler import direct_automation_handler
-from gmail_oauth_service import gmail_oauth_service
+from gmail_oauth_service import GmailOAuthService
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# Initialize Gmail OAuth service
+gmail_oauth_service = GmailOAuthService()
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
