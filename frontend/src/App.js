@@ -883,53 +883,39 @@ function App() {
           <div className="flex items-center space-x-3">
             {/* Gmail Authentication Button */}
             {!gmailAuthStatus.loading && (
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                  className={`px-6 py-3 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
-                    gmailAuthStatus.authenticated 
-                      ? 'premium-gmail-connected cursor-default' 
-                      : gmailAuthStatus.credentialsConfigured 
-                        ? 'premium-gmail-btn hover:scale-105'
-                        : 'premium-gmail-error cursor-not-allowed opacity-75'
-                  }`}
-                  title={
-                    gmailAuthStatus.authenticated 
-                      ? "Gmail Connected ✅" 
-                      : gmailAuthStatus.credentialsConfigured 
-                        ? "Connect Gmail" 
-                        : "Gmail credentials missing ❌"
-                  }
-                  disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
-                >
-                  <span className="text-sm">
-                    {gmailAuthStatus.authenticated 
-                      ? '✅' 
-                      : gmailAuthStatus.credentialsConfigured 
-                        ? '📧' 
-                        : '⚠️'}
-                  </span>
-                  <span className="font-semibold">
-                    {gmailAuthStatus.authenticated 
-                      ? 'Gmail Connected' 
-                      : gmailAuthStatus.credentialsConfigured 
-                        ? 'Connect Gmail' 
-                        : 'Gmail Setup Required'}
-                  </span>
-                </button>
-                
-                {/* Debug Status Indicator */}
-                {gmailAuthStatus.debugInfo && (
-                  <button
-                    onClick={showGmailDebugInfo}
-                    className="text-xs text-gray-400 flex items-center space-x-1 px-3 py-1 rounded-full bg-gray-800/50 hover:bg-gray-700/50 transition-all duration-200"
-                    title="Show detailed Gmail debug information"
-                  >
-                    <span>🔧</span>
-                    <span>Debug Info</span>
-                  </button>
-                )}
-              </div>
+              <button
+                onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
+                className={`px-6 py-3 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
+                  gmailAuthStatus.authenticated 
+                    ? 'premium-gmail-connected cursor-default' 
+                    : gmailAuthStatus.credentialsConfigured 
+                      ? 'premium-gmail-btn hover:scale-105'
+                      : 'premium-gmail-error cursor-not-allowed opacity-75'
+                }`}
+                title={
+                  gmailAuthStatus.authenticated 
+                    ? "Gmail Connected ✅" 
+                    : gmailAuthStatus.credentialsConfigured 
+                      ? "Connect Gmail" 
+                      : "Gmail credentials missing ❌"
+                }
+                disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
+              >
+                <span className="text-sm">
+                  {gmailAuthStatus.authenticated 
+                    ? '✅' 
+                    : gmailAuthStatus.credentialsConfigured 
+                      ? '📧' 
+                      : '⚠️'}
+                </span>
+                <span className="font-semibold">
+                  {gmailAuthStatus.authenticated 
+                    ? 'Gmail Connected' 
+                    : gmailAuthStatus.credentialsConfigured 
+                      ? 'Connect Gmail' 
+                      : 'Gmail Setup Required'}
+                </span>
+              </button>
             )}
             
             <button
