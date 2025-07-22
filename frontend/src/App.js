@@ -170,6 +170,115 @@ function App() {
     return getAutomationStatusMessage(message) !== null;
   };
 
+  // Function to render beautiful email cards
+  const renderEmailDisplay = (response) => {
+    // Check if this is an email display response
+    if (!response.includes('📥') && !response.includes('have') && !response.includes('emails') && !response.includes('unread')) {
+      return response;
+    }
+
+    // If the response contains the special email format, parse and render it
+    if (response.includes('**From:**') && response.includes('**Subject:**')) {
+      const lines = response.split('\n');
+      const headerLine = lines[0];
+      
+      // Extract count from header
+      const countMatch = headerLine.match(/(\d+)\s+(?:unread\s+)?emails?/i);
+      const count = countMatch ? parseInt(countMatch[1]) : 0;
+      
+      if (count === 0) {
+        return (
+          <div className="email-display-card">
+            <div className="email-header">
+              ✅ No unread emails! Your inbox is all caught up.
+            </div>
+          </div>
+        );
+      }
+
+      // Parse individual email blocks
+      const emailBlocks = [];
+      let currentBlock = null;
+      
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        if (line.match(/^\*\*\d+\.\*\*/)) {
+          // Start of new email block
+          if (currentBlock) {
+            emailBlocks.push(currentBlock);
+          }
+          currentBlock = { lines: [line] };
+        } else if (currentBlock && line) {
+          currentBlock.lines.push(line);
+        }
+      }
+      
+      if (currentBlock) {
+        emailBlocks.push(currentBlock);
+      }
+
+      return (
+        <div className="email-display-card">
+          <div className="email-header">
+            📥 You have <span className="email-count-badge">{count}</span> unread email{count !== 1 ? 's' : ''}:
+          </div>
+          
+          {emailBlocks.map((block, index) => {
+            const lines = block.lines;
+            let sender = '', subject = '', date = '', snippet = '';
+            
+            lines.forEach(line => {
+              if (line.includes('**From:**')) {
+                sender = line.replace(/.*\*\*From:\*\*\s*/, '').trim();
+              } else if (line.includes('**Subject:**')) {
+                subject = line.replace(/.*\*\*Subject:\*\*\s*/, '').trim();
+              } else if (line.includes('**Received:**')) {
+                date = line.replace(/.*\*\*Received:\*\*\s*/, '').trim();
+              } else if (line.includes('**Snippet:**')) {
+                snippet = line.replace(/.*\*\*Snippet:\*\*\s*"?/, '').replace(/"$/, '').trim();
+              }
+            });
+            
+            return (
+              <div key={index} className="email-item">
+                <div className="email-field">
+                  <span className="email-field-icon">🧑</span>
+                  <span className="email-field-label">From:</span>
+                  <span className="email-field-content">{sender}</span>
+                </div>
+                
+                <div className="email-field">
+                  <span className="email-field-icon">📨</span>
+                  <span className="email-field-label">Subject:</span>
+                  <span className="email-field-content">{subject}</span>
+                </div>
+                
+                <div className="email-field">
+                  <span className="email-field-icon">🕒</span>
+                  <span className="email-field-label">Received:</span>
+                  <span className="email-field-content">{date}</span>
+                </div>
+                
+                {snippet && (
+                  <div className="email-field">
+                    <span className="email-field-icon">✏️</span>
+                    <span className="email-field-label">Snippet:</span>
+                    <div className="email-field-content">
+                      <div className="email-snippet">"{snippet}"</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    return response;
+  };
+
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
 
