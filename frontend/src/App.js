@@ -56,24 +56,33 @@ function App() {
     const auth = urlParams.get('auth');
     const service = urlParams.get('service');
     const message = urlParams.get('message');
+    const details = urlParams.get('details');
+    const returnedSessionId = urlParams.get('session_id');
+    
+    console.log('🔍 OAuth Redirect Params:', { auth, service, message, details, returnedSessionId, currentSessionId: sessionId });
     
     if (auth === 'success' && service === 'gmail') {
       // Gmail authentication successful
+      console.log('✅ Processing Gmail auth success');
       handleGmailAuthSuccess();
       // Clear URL parameters
       window.history.replaceState({}, document.title, '/');
     } else if (auth === 'error') {
       // Gmail authentication failed
-      handleGmailAuthError(message);
-      // Clear URL parameters
+      console.error('❌ Processing Gmail auth error:', message, details);
+      handleGmailAuthError(message, details);
+      // Clear URL parameters  
       window.history.replaceState({}, document.title, '/');
     }
   }, []);
 
   const checkGmailAuthStatus = async () => {
     try {
+      console.log('🔍 Checking Gmail auth status for session:', sessionId);
       const response = await axios.get(`${API}/gmail/status?session_id=${sessionId}`);
       const data = response.data;
+      
+      console.log('📊 Gmail Auth Status Response:', data);
       
       setGmailAuthStatus({ 
         authenticated: data.authenticated || false,
@@ -90,8 +99,8 @@ function App() {
       });
       
       // Add debug information to chat if there are issues
-      if (!data.success || !data.credentials_configured) {
-        console.log('Gmail Auth Debug Info:', data);
+      if (!data.success || !data.credentials_configured || data.error) {
+        console.log('🔧 Gmail Auth Issues Detected:', data);
         
         // Add helpful debug message to chat
         const debugMessage = {
@@ -100,7 +109,9 @@ function App() {
             `📋 **Status**: ${data.success ? 'Service Running' : 'Service Error'}\n` +
             `🔑 **Credentials**: ${data.credentials_configured ? 'Configured ✅' : 'Missing ❌'}\n` +
             `🔐 **Authentication**: ${data.authenticated ? 'Connected ✅' : 'Not Connected ❌'}\n` +
-            `🆔 **Session ID**: ${sessionId}\n\n` +
+            `🆔 **Session ID**: ${sessionId}\n` +
+            (data.error ? `❌ **Error**: ${data.error}\n` : '') +
+            `\n` +
             (!data.credentials_configured ? 
               '⚠️ **Issue**: Gmail credentials.json file is missing from backend. This is required for OAuth2 authentication to work properly.' : 
               !data.authenticated ? 
@@ -124,7 +135,7 @@ function App() {
       }
       
     } catch (error) {
-      console.error('Gmail auth status check failed:', error);
+      console.error('❌ Gmail auth status check failed:', error);
       setGmailAuthStatus({ 
         authenticated: false, 
         loading: false,
