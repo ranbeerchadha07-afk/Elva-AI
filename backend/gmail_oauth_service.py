@@ -16,17 +16,22 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+# MongoDB imports
+from motor.motor_asyncio import AsyncIOMotorClient
+
 logger = logging.getLogger(__name__)
 
 class GmailOAuthService:
     """
     Gmail API service with OAuth2 authentication
-    Handles authentication, email reading, sending, and management
+    Handles authentication, email reading, sending, and management with session-based token storage
     """
     
-    def __init__(self):
+    def __init__(self, db=None):
         self.credentials = None
         self.service = None
+        self.current_session_id = None  # Track current session
+        self.db = db  # MongoDB database connection
         self.scopes = [
             'https://www.googleapis.com/auth/gmail.readonly',
             'https://www.googleapis.com/auth/gmail.send',
@@ -36,7 +41,6 @@ class GmailOAuthService:
         
         # Load credentials configuration
         self.credentials_file_path = Path(__file__).parent / 'credentials.json'
-        self.token_file_path = Path(__file__).parent / 'gmail_token.json'
         
         # OAuth2 configuration from environment
         self.redirect_uri = os.getenv('GMAIL_REDIRECT_URI', 'http://localhost:3000/auth/gmail/callback')
