@@ -802,19 +802,51 @@ function App() {
           <div className="flex items-center space-x-3">
             {/* Gmail Authentication Button */}
             {!gmailAuthStatus.loading && (
-              <button
-                onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                className={`px-6 py-3 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
-                  gmailAuthStatus.authenticated 
-                    ? 'premium-gmail-connected cursor-default' 
-                    : 'premium-gmail-btn hover:scale-105'
-                }`}
-                title={gmailAuthStatus.authenticated ? "Gmail Connected" : "Connect Gmail"}
-                disabled={gmailAuthStatus.authenticated}
-              >
-                <span className="text-sm">{gmailAuthStatus.authenticated ? '✅' : '📧'}</span>
-                <span className="font-semibold">{gmailAuthStatus.authenticated ? 'Gmail Connected' : 'Connect Gmail'}</span>
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
+                  className={`px-6 py-3 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
+                    gmailAuthStatus.authenticated 
+                      ? 'premium-gmail-connected cursor-default' 
+                      : gmailAuthStatus.credentialsConfigured 
+                        ? 'premium-gmail-btn hover:scale-105'
+                        : 'premium-gmail-error cursor-not-allowed opacity-75'
+                  }`}
+                  title={
+                    gmailAuthStatus.authenticated 
+                      ? "Gmail Connected ✅" 
+                      : gmailAuthStatus.credentialsConfigured 
+                        ? "Connect Gmail" 
+                        : "Gmail credentials missing ❌"
+                  }
+                  disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
+                >
+                  <span className="text-sm">
+                    {gmailAuthStatus.authenticated 
+                      ? '✅' 
+                      : gmailAuthStatus.credentialsConfigured 
+                        ? '📧' 
+                        : '⚠️'}
+                  </span>
+                  <span className="font-semibold">
+                    {gmailAuthStatus.authenticated 
+                      ? 'Gmail Connected' 
+                      : gmailAuthStatus.credentialsConfigured 
+                        ? 'Connect Gmail' 
+                        : 'Gmail Setup Required'}
+                  </span>
+                </button>
+                
+                {/* Debug Status Indicator */}
+                {gmailAuthStatus.debugInfo && (
+                  <div className="text-xs text-gray-400 flex items-center space-x-1">
+                    <span>🔧</span>
+                    <span title={JSON.stringify(gmailAuthStatus.debugInfo, null, 2)}>
+                      Debug
+                    </span>
+                  </div>
+                )}
+              </div>
             )}
             
             <button
