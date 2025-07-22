@@ -619,7 +619,7 @@ Web automation (traditional):
 Web scraping: {{"intent": "web_scraping", "url": "target URL", "data_type": "type of data to extract", "selectors": {{"field": "css_selector"}}}}
 LinkedIn insights: {{"intent": "linkedin_insights", "insight_type": "notifications/profile_views/connections", "email": "linkedin_email", "password": "password"}}
 Email automation: {{"intent": "email_automation", "provider": "outlook/yahoo/gmail", "email": "email", "password": "password", "action": "check_inbox/send_email"}}
-Price monitoring: {{"intent": "price_monitoring", "product_url": "URL", "product_name": "Name", "price_selector": "CSS selector"}}
+
 Data extraction: {{"intent": "data_extraction", "url": "URL", "data_fields": ["field1", "field2"], "selectors": {{"field": "selector"}}}}
 
 Direct automation (no approval needed):
