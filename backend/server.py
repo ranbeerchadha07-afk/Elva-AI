@@ -476,6 +476,75 @@ async def gmail_auth_callback(code: str = None, state: str = None, error: str = 
             status_code=302
         )
 
+@api_router.get("/gmail/debug")
+async def gmail_debug_info():
+    """Get detailed Gmail integration debug information"""
+    try:
+        # Get Gmail OAuth status for debugging
+        gmail_status = await gmail_oauth_service.get_auth_status('debug_session')
+        
+        # Check for credentials file
+        credentials_file_exists = gmail_oauth_service.credentials_file_path.exists()
+        credentials_content = None
+        
+        if credentials_file_exists:
+            try:
+                with open(gmail_oauth_service.credentials_file_path, 'r') as f:
+                    credentials_data = json.load(f)
+                    # Don't expose actual credentials, just structure
+                    credentials_content = {
+                        "has_web_config": "web" in credentials_data,
+                        "has_installed_config": "installed" in credentials_data,
+                        "client_id_configured": bool(credentials_data.get('web', {}).get('client_id') or credentials_data.get('installed', {}).get('client_id')),
+                        "redirect_uri_configured": bool(credentials_data.get('web', {}).get('redirect_uris') or credentials_data.get('installed', {}).get('redirect_uris'))
+                    }
+            except Exception as e:
+                credentials_content = {"error": f"Failed to parse credentials.json: {str(e)}"}
+        
+        # Check database connection
+        db_status = "unknown"
+        token_count = 0
+        try:
+            await db.command("ping")
+            db_status = "connected"
+            token_count = await db.oauth_tokens.count_documents({"service": "gmail"})
+        except Exception as e:
+            db_status = f"error: {str(e)}"
+        
+        debug_info = {
+            "gmail_service_status": {
+                "credentials_file_exists": credentials_file_exists,
+                "credentials_file_path": str(gmail_oauth_service.credentials_file_path),
+                "credentials_content": credentials_content,
+                "redirect_uri_env": os.getenv('GMAIL_REDIRECT_URI'),
+                "scopes": gmail_oauth_service.scopes
+            },
+            "database_status": {
+                "connection": db_status,
+                "gmail_token_count": token_count
+            },
+            "gmail_auth_status": gmail_status,
+            "environment": {
+                "GMAIL_REDIRECT_URI": os.getenv('GMAIL_REDIRECT_URI'),
+                "has_claude_key": bool(os.getenv('CLAUDE_API_KEY')),
+                "has_groq_key": bool(os.getenv('GROQ_API_KEY'))
+            }
+        }
+        
+        return {
+            "success": True,
+            "debug_info": debug_info,
+            "message": "Gmail integration debug information retrieved successfully"
+        }
+        
+    except Exception as e:
+        logger.error(f"Gmail debug error: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "message": "Failed to retrieve Gmail debug information"
+        }
+
 @api_router.get("/gmail/status")
 async def gmail_auth_status(session_id: str = None):
     """Get Gmail authentication status for specific session"""
