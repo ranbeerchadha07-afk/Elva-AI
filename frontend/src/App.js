@@ -74,7 +74,6 @@ function App() {
   const getAutomationStatusMessage = (message) => {
     const directAutomationPatterns = {
       'check.*linkedin.*notification': '🔔 Checking LinkedIn notifications...',
-      'scrape.*price|price.*check|current.*price': '💰 Searching for current prices...',
       'scrape.*product|product.*listing|find.*product': '🛒 Scraping product listings...',
       'job.*alert|linkedin.*job|check.*job': '💼 Checking LinkedIn job alerts...',
       'website.*update|check.*website': '🔍 Monitoring website updates...',
