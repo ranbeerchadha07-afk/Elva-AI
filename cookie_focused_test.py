@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://af098d16-9597-4dd0-a834-4a62fb331841.preview.emergentagent.com/api"
+BACKEND_URL = "https://8d2f8c84-5b59-4d4b-8a7e-7dc4a5239749.preview.emergentagent.com/api"
 
 class CookieSystemTester:
     def __init__(self):
