@@ -8,40 +8,40 @@
       "test": "Cookie Detection - Gmail User",
       "success": true,
       "details": "Valid Gmail cookies found for brainlyarpit8649@gmail.com. Cookie count: 24",
-      "timestamp": "2025-07-22T05:16:24.760637",
+      "timestamp": "2025-07-22T05:18:49.202795",
       "response_data": null
     },
     {
       "test": "Gmail Automation - Check Inbox (brainlyarpit8649)",
       "success": false,
       "details": "Cookie authentication failed: Login failed for gmail - please recapture cookies",
-      "timestamp": "2025-07-22T05:16:52.437276",
+      "timestamp": "2025-07-22T05:19:15.532999",
       "response_data": {
         "success": false,
         "data": {},
         "message": "Login failed for gmail - please recapture cookies",
-        "execution_time": 26.64360475540161
+        "execution_time": 25.29127788543701
       }
     },
     {
       "test": "Gmail Automation - Check Unread (brainlyarpit8649)",
       "success": false,
       "details": "Cookie authentication failed: Login failed for gmail - please recapture cookies",
-      "timestamp": "2025-07-22T05:17:19.639927",
+      "timestamp": "2025-07-22T05:19:41.933587",
       "response_data": {
         "success": false,
         "data": {},
         "message": "Login failed for gmail - please recapture cookies",
-        "execution_time": 26.14176106452942
+        "execution_time": 25.34209418296814
       }
     },
     {
       "test": "Gmail Chat Interface - Check Inbox",
       "success": false,
-      "details": "Direct execution failed or took too long. Success: False, Time: 25.417318s",
-      "timestamp": "2025-07-22T05:17:47.840819",
+      "details": "Direct execution failed or took too long. Success: False, Time: 25.320513s",
+      "timestamp": "2025-07-22T05:20:10.731380",
       "response_data": {
-        "id": "7a61b758-6d41-4029-89aa-10914c8f716b",
+        "id": "a787c3a8-6cb8-4a06-8c95-057c0379e2a0",
         "message": "Check my Gmail inbox for brainlyarpit8649@gmail.com",
         "response": "\u274c Unable to check Gmail inbox: Unable to access Gmail - cookies may need refresh. Error: Login failed for gmail - please recapture cookies",
         "intent_data": {
@@ -50,20 +50,20 @@
           "include_unread_only": false,
           "automation_result": {},
           "automation_success": false,
-          "execution_time": 25.417318,
+          "execution_time": 25.320513,
           "direct_automation": true
         },
         "needs_approval": false,
-        "timestamp": "2025-07-22T05:17:47.832612"
+        "timestamp": "2025-07-22T05:20:10.725356"
       }
     },
     {
       "test": "Gmail Chat Interface - Check Unread",
       "success": false,
-      "details": "Direct execution failed or took too long. Success: False, Time: 25.300737s",
-      "timestamp": "2025-07-22T05:18:15.621616",
+      "details": "Direct execution failed or took too long. Success: False, Time: 25.320638s",
+      "timestamp": "2025-07-22T05:20:39.077278",
       "response_data": {
-        "id": "8ba592f6-7ca7-42d0-9034-eb365fe14c4b",
+        "id": "c360f55b-d482-4f23-9641-ec890ed7c487",
         "message": "Check Gmail unread emails for brainlyarpit8649@gmail.com",
         "response": "\u274c Unable to check Gmail unread emails: Unable to access Gmail - cookies may need refresh. Error: Login failed for gmail - please recapture cookies",
         "intent_data": {
@@ -71,11 +71,11 @@
           "user_email": "brainlyarpit8649@gmail.com",
           "automation_result": {},
           "automation_success": false,
-          "execution_time": 25.300737,
+          "execution_time": 25.320638,
           "direct_automation": true
         },
         "needs_approval": false,
-        "timestamp": "2025-07-22T05:18:15.615942"
+        "timestamp": "2025-07-22T05:20:39.072543"
       }
     }
   ]
