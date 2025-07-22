@@ -408,15 +408,27 @@ async def gmail_auth_init():
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/gmail/callback")
-async def gmail_auth_callback(code: str = None, state: str = None, error: str = None):
+async def gmail_auth_callback(code: str = None, state: str = None, error: str = None, session_id: str = None):
     """Handle Gmail OAuth2 callback from Google redirect"""
     try:
+        # Extract session_id from state if not provided separately
+        if not session_id and state:
+            # State can contain session information
+            try:
+                # For now, we'll use a default session if none provided
+                session_id = state.split('_')[0] if '_' in state else 'default_session'
+            except:
+                session_id = 'default_session'
+        
+        if not session_id:
+            session_id = 'default_session'
+            
         # Handle OAuth error responses
         if error:
             logger.warning(f"OAuth callback received error: {error}")
             # Redirect to frontend with error parameter
             return RedirectResponse(
-                url=f'https://elva-codebase-1.preview.emergentagent.com/?auth=error&message={error}',
+                url=f'https://elva-codebase-1.preview.emergentagent.com/?auth=error&message={error}&session_id={session_id}',
                 status_code=302
             )
         
@@ -424,24 +436,24 @@ async def gmail_auth_callback(code: str = None, state: str = None, error: str = 
         if not code:
             logger.error("No authorization code received")
             return RedirectResponse(
-                url='https://elva-codebase-1.preview.emergentagent.com/?auth=error&message=no_code',
+                url=f'https://elva-codebase-1.preview.emergentagent.com/?auth=error&message=no_code&session_id={session_id}',
                 status_code=302
             )
         
         # Handle OAuth callback with authorization code
-        result = gmail_oauth_service.handle_oauth_callback(code)
+        result = await gmail_oauth_service.handle_oauth_callback(code, session_id)
         
         if result.get("authenticated", False):
-            logger.info("Gmail authentication successful - redirecting to frontend")
+            logger.info(f"Gmail authentication successful for session {session_id} - redirecting to frontend")
             # Redirect to frontend with success parameter
             return RedirectResponse(
-                url='https://elva-codebase-1.preview.emergentagent.com/?auth=success&service=gmail',
+                url=f'https://elva-codebase-1.preview.emergentagent.com/?auth=success&service=gmail&session_id={session_id}',
                 status_code=302
             )
         else:
-            logger.error("Gmail authentication failed")
+            logger.error(f"Gmail authentication failed for session {session_id}")
             return RedirectResponse(
-                url='https://elva-codebase-1.preview.emergentagent.com/?auth=error&message=auth_failed',
+                url=f'https://elva-codebase-1.preview.emergentagent.com/?auth=error&message=auth_failed&session_id={session_id}',
                 status_code=302
             )
         
@@ -449,7 +461,7 @@ async def gmail_auth_callback(code: str = None, state: str = None, error: str = 
         logger.error(f"Gmail auth callback error: {e}")
         # Redirect to frontend with error parameter
         return RedirectResponse(
-            url='https://elva-codebase-1.preview.emergentagent.com/?auth=error&message=server_error',
+            url=f'https://elva-codebase-1.preview.emergentagent.com/?auth=error&message=server_error&session_id={session_id if session_id else "unknown"}',
             status_code=302
         )
 
