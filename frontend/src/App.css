@@ -702,8 +702,20 @@ button:active:not(:disabled) {
     0 12px 40px rgba(16, 185, 129, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
+/* Gmail Error State with Red Gradient */
+.premium-gmail-error {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  border: 2px solid rgba(239, 68, 68, 0.4);
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 8px 32px rgba(220, 38, 38, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
 
-/* Beautiful Email Display Card */
+.premium-gmail-error:hover {
+  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+}
 .email-display-card {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(20px);
