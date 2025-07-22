@@ -172,9 +172,45 @@ function App() {
 
   // Function to render beautiful email cards
   const renderEmailDisplay = (response) => {
+    // Handle authentication prompts
+    if (response.includes('🔐 Please connect your Gmail account')) {
+      return (
+        <div className="email-display-card">
+          <div className="email-header">
+            🔐 Gmail Connection Required
+          </div>
+          <div className="email-item">
+            <div className="email-field">
+              <span className="email-field-icon">📧</span>
+              <span className="email-field-content">
+                Please connect your Gmail account to let Elva AI access your inbox.
+              </span>
+            </div>
+            <div className="email-field">
+              <span className="email-field-icon">👆</span>
+              <span className="email-field-content">
+                Click the <strong>"Connect Gmail"</strong> button above to continue.
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // Check if this is an email display response
     if (!response.includes('📥') && !response.includes('have') && !response.includes('emails') && !response.includes('unread')) {
       return response;
+    }
+
+    // Handle "no unread emails" message
+    if (response.includes('No unread emails') || response.includes('all caught up')) {
+      return (
+        <div className="email-display-card">
+          <div className="email-header">
+            ✅ No unread emails! Your inbox is all caught up.
+          </div>
+        </div>
+      );
     }
 
     // If the response contains the special email format, parse and render it
