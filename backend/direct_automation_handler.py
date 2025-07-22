@@ -141,14 +141,17 @@ class DirectAutomationHandler:
     async def _handle_gmail_automation(self, intent: str, intent_data: Dict[str, Any]) -> Dict[str, Any]:
         """Handle Gmail automation using saved cookies"""
         try:
+            # Get the user email from intent_data, fallback to known email
             user_email = intent_data.get("user_email", "brainlyarpit8649@gmail.com")
+            logger.info(f"🔍 Gmail automation for user: {user_email}")
+            logger.info(f"🔍 Intent data: {intent_data}")
             
             if intent in ["check_gmail_inbox", "check_gmail_unread"]:
                 # Use real Gmail automation with saved cookies
                 try:
                     automation_result = await playwright_service.automate_email_interaction(
                         email_provider="gmail", 
-                        user_email=user_email,
+                        user_email=user_email,  # Make sure we pass the correct email
                         action="check_inbox"
                     )
                     
