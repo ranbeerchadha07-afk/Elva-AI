@@ -637,7 +637,7 @@ function App() {
         setEditMode(true); // Start in edit mode so user can see and modify fields
         setShowApprovalModal(true);
         
-        // Add a helpful message about the modal
+      // Add a helpful message about the modal
         const modalHelpMessage = {
           id: Date.now() + 1,
           response: "📋 I've opened the approval modal with pre-filled details. You can review and edit the information above, then click 'Approve' or just type 'Send it' to execute! Type 'Cancel' to abort.",
@@ -648,6 +648,29 @@ function App() {
         setTimeout(() => {
           setMessages(prev => [...prev, modalHelpMessage]);
         }, 500);
+      }
+
+      // Add special handling for Gmail debug commands
+      if (inputMessage.toLowerCase().includes('gmail debug') || inputMessage.toLowerCase().includes('test gmail')) {
+        const debugTestMessage = {
+          id: Date.now() + 1,
+          response: `🔧 **Gmail Integration Test**\n\n` +
+                   `🔗 **Current Status**: ${gmailAuthStatus.authenticated ? 'Connected ✅' : 'Not Connected ❌'}\n` +
+                   `🔑 **Credentials**: ${gmailAuthStatus.credentialsConfigured ? 'Configured ✅' : 'Missing ❌'}\n` +
+                   `🆔 **Session ID**: ${sessionId}\n\n` +
+                   `**🧪 Test Steps:**\n` +
+                   `1. Click the "Connect Gmail" button above\n` +
+                   `2. You'll be redirected to Google's OAuth page\n` +
+                   `3. Grant permissions to your Google account\n` +
+                   `4. You'll be redirected back here\n` +
+                   `5. You should see a success message in this chat\n` +
+                   `6. The button should change to "Gmail Connected ✅"\n\n` +
+                   `**💡 Debug Info**: Click the "Debug Info" button next to the Gmail button for technical details.`,
+          isUser: false,
+          isSystem: true,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, debugTestMessage]);
       }
 
     } catch (error) {
