@@ -40,7 +40,77 @@ function App() {
     if (messages.length === 0) {
       addWelcomeMessage();
     }
+    // Check Gmail authentication status
+    checkGmailAuthStatus();
   }, [sessionId]);
+
+  // Handle Gmail OAuth callback
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const state = urlParams.get('state');
+    
+    if (code && window.location.pathname === '/auth/gmail/callback') {
+      handleGmailCallback(code);
+    }
+  }, []);
+
+  const checkGmailAuthStatus = async () => {
+    try {
+      const response = await axios.get(`${API}/gmail/status`);
+      setGmailAuthStatus({ 
+        authenticated: response.data.authenticated,
+        loading: false 
+      });
+    } catch (error) {
+      console.log('Gmail auth status check failed:', error);
+      setGmailAuthStatus({ authenticated: false, loading: false });
+    }
+  };
+
+  const initiateGmailAuth = async () => {
+    try {
+      const response = await axios.get(`${API}/gmail/auth`);
+      if (response.data.success && response.data.auth_url) {
+        // Redirect to Google OAuth2
+        window.location.href = response.data.auth_url;
+      } else {
+        console.error('Failed to get Gmail auth URL:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Gmail auth initiation failed:', error);
+    }
+  };
+
+  const handleGmailCallback = async (authorizationCode) => {
+    try {
+      const response = await axios.post(`${API}/gmail/callback`, {
+        code: authorizationCode
+      });
+      
+      if (response.data.success) {
+        // Clear URL parameters
+        window.history.replaceState({}, document.title, '/');
+        
+        // Update auth status
+        setGmailAuthStatus({ authenticated: true, loading: false });
+        
+        // Add success message to chat
+        const successMessage = {
+          id: 'gmail_auth_success_' + Date.now(),
+          response: "✅ **Gmail Integration Successful!** 🎉\n\nI can now help you with:\n• 📧 Check your Gmail inbox\n• ✉️ Send emails\n• 📨 Read specific emails\n• 🔍 Search your messages\n\nTry saying: '*Check my Gmail inbox*' or '*Send an email to [someone]*'",
+          isUser: false,
+          isSystem: true,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, successMessage]);
+      } else {
+        console.error('Gmail OAuth callback failed:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Gmail callback handling failed:', error);
+    }
+  };
 
   const addWelcomeMessage = () => {
     const welcomeMessage = {
