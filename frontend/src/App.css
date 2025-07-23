@@ -1460,7 +1460,8 @@ button:active:not(:disabled) {
 
 .drop-panel-content {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
 }
 
