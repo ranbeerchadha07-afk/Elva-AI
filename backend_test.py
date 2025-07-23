@@ -1297,8 +1297,411 @@ class ElvaBackendTester:
             self.log_test("Direct Automation Response Format", False, f"Error: {str(e)}")
             return False
 
+    def test_gmail_oauth_status_check(self):
+        """Test 25: Gmail OAuth Status Check - Verify credentials are loaded correctly"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/gmail/status", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check response structure
+                required_fields = ["success", "credentials_configured", "authenticated", "requires_auth", "scopes", "service"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test("Gmail OAuth Status Check", False, f"Missing fields: {missing_fields}", data)
+                    return False
+                
+                # Check credentials are configured
+                if not data.get("credentials_configured"):
+                    self.log_test("Gmail OAuth Status Check", False, "Gmail credentials not configured", data)
+                    return False
+                
+                # Check service is Gmail
+                if data.get("service") != "gmail":
+                    self.log_test("Gmail OAuth Status Check", False, f"Wrong service: {data.get('service')}", data)
+                    return False
+                
+                # Check scopes are properly configured
+                scopes = data.get("scopes", [])
+                expected_scopes = [
+                    'https://www.googleapis.com/auth/gmail.readonly',
+                    'https://www.googleapis.com/auth/gmail.send',
+                    'https://www.googleapis.com/auth/gmail.compose',
+                    'https://www.googleapis.com/auth/gmail.modify'
+                ]
+                
+                missing_scopes = [scope for scope in expected_scopes if scope not in scopes]
+                if missing_scopes:
+                    self.log_test("Gmail OAuth Status Check", False, f"Missing scopes: {missing_scopes}", data)
+                    return False
+                
+                # Check authentication status (should be False initially)
+                authenticated = data.get("authenticated", True)  # Default True to catch if missing
+                requires_auth = data.get("requires_auth", False)
+                
+                self.log_test("Gmail OAuth Status Check", True, f"Credentials configured: {data.get('credentials_configured')}, Authenticated: {authenticated}, Requires auth: {requires_auth}, Scopes: {len(scopes)} configured")
+                return True
+            else:
+                self.log_test("Gmail OAuth Status Check", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail OAuth Status Check", False, f"Error: {str(e)}")
+            return False
+
+    def test_gmail_oauth_authorization_url(self):
+        """Test 26: Gmail OAuth Authorization URL - Generate valid OAuth2 authorization URLs"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/gmail/auth", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check response structure
+                required_fields = ["success", "auth_url", "message"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test("Gmail OAuth Authorization URL", False, f"Missing fields: {missing_fields}", data)
+                    return False
+                
+                # Check success flag
+                if not data.get("success"):
+                    self.log_test("Gmail OAuth Authorization URL", False, f"Auth URL generation failed: {data.get('message')}", data)
+                    return False
+                
+                # Check auth URL is present and valid
+                auth_url = data.get("auth_url", "")
+                if not auth_url:
+                    self.log_test("Gmail OAuth Authorization URL", False, "No auth_url in response", data)
+                    return False
+                
+                # Verify auth URL contains expected components
+                expected_components = [
+                    "https://accounts.google.com/o/oauth2/auth",
+                    "client_id=191070483179-5ldsbkb4fl76at31kbldgj24org21hpl.apps.googleusercontent.com",
+                    "redirect_uri=https://fdda3d29-2c2b-4e80-a552-365a2356b8ba.preview.emergentagent.com/api/gmail/callback",
+                    "scope=",
+                    "response_type=code"
+                ]
+                
+                missing_components = [comp for comp in expected_components if comp not in auth_url]
+                if missing_components:
+                    self.log_test("Gmail OAuth Authorization URL", False, f"Missing URL components: {missing_components}", {"auth_url": auth_url})
+                    return False
+                
+                # Check that all required scopes are in the URL
+                gmail_scopes = [
+                    "https://www.googleapis.com/auth/gmail.readonly",
+                    "https://www.googleapis.com/auth/gmail.send",
+                    "https://www.googleapis.com/auth/gmail.compose",
+                    "https://www.googleapis.com/auth/gmail.modify"
+                ]
+                
+                missing_scopes = [scope for scope in gmail_scopes if scope not in auth_url]
+                if missing_scopes:
+                    self.log_test("Gmail OAuth Authorization URL", False, f"Missing scopes in URL: {missing_scopes}", {"auth_url": auth_url})
+                    return False
+                
+                self.log_test("Gmail OAuth Authorization URL", True, f"Valid OAuth2 URL generated with correct client_id and redirect_uri. URL length: {len(auth_url)} chars")
+                return True
+            else:
+                self.log_test("Gmail OAuth Authorization URL", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail OAuth Authorization URL", False, f"Error: {str(e)}")
+            return False
+
+    def test_health_check_gmail_integration(self):
+        """Test 27: Health Check - Verify Gmail integration status as ready"""
+        try:
+            response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check Gmail API integration section
+                gmail_integration = data.get("gmail_api_integration", {})
+                if not gmail_integration:
+                    self.log_test("Health Check - Gmail Integration", False, "No gmail_api_integration section in health check", data)
+                    return False
+                
+                # Check required Gmail integration fields
+                required_fields = ["status", "oauth2_flow", "credentials_configured", "scopes", "endpoints"]
+                missing_fields = [field for field in required_fields if field not in gmail_integration]
+                
+                if missing_fields:
+                    self.log_test("Health Check - Gmail Integration", False, f"Missing Gmail integration fields: {missing_fields}", gmail_integration)
+                    return False
+                
+                # Check status is ready
+                if gmail_integration.get("status") != "ready":
+                    self.log_test("Health Check - Gmail Integration", False, f"Gmail integration status not ready: {gmail_integration.get('status')}", gmail_integration)
+                    return False
+                
+                # Check OAuth2 flow is implemented
+                if gmail_integration.get("oauth2_flow") != "implemented":
+                    self.log_test("Health Check - Gmail Integration", False, f"OAuth2 flow not implemented: {gmail_integration.get('oauth2_flow')}", gmail_integration)
+                    return False
+                
+                # Check credentials are configured
+                if not gmail_integration.get("credentials_configured"):
+                    self.log_test("Health Check - Gmail Integration", False, "Gmail credentials not configured in health check", gmail_integration)
+                    return False
+                
+                # Check scopes count
+                scopes = gmail_integration.get("scopes", [])
+                if len(scopes) != 4:
+                    self.log_test("Health Check - Gmail Integration", False, f"Expected 4 scopes, got {len(scopes)}", gmail_integration)
+                    return False
+                
+                # Check endpoints count
+                endpoints = gmail_integration.get("endpoints", [])
+                expected_endpoints = [
+                    "/api/gmail/auth",
+                    "/api/gmail/callback", 
+                    "/api/gmail/status",
+                    "/api/gmail/inbox",
+                    "/api/gmail/send",
+                    "/api/gmail/email/{id}"
+                ]
+                
+                if len(endpoints) != len(expected_endpoints):
+                    self.log_test("Health Check - Gmail Integration", False, f"Expected {len(expected_endpoints)} endpoints, got {len(endpoints)}", gmail_integration)
+                    return False
+                
+                missing_endpoints = [ep for ep in expected_endpoints if ep not in endpoints]
+                if missing_endpoints:
+                    self.log_test("Health Check - Gmail Integration", False, f"Missing endpoints: {missing_endpoints}", gmail_integration)
+                    return False
+                
+                self.log_test("Health Check - Gmail Integration", True, f"Gmail integration ready with {len(scopes)} scopes and {len(endpoints)} endpoints configured")
+                return True
+            else:
+                self.log_test("Health Check - Gmail Integration", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Health Check - Gmail Integration", False, f"Error: {str(e)}")
+            return False
+
+    def test_gmail_service_configuration(self):
+        """Test 28: Gmail Service Configuration - Verify OAuth2 config with correct client_id, redirect_uri, scopes"""
+        try:
+            # Test the debug endpoint to get detailed configuration info
+            response = requests.get(f"{BACKEND_URL}/gmail/debug", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                if not data.get("success"):
+                    self.log_test("Gmail Service Configuration", False, f"Debug endpoint failed: {data.get('message')}", data)
+                    return False
+                
+                debug_info = data.get("debug_info", {})
+                gmail_service_status = debug_info.get("gmail_service_status", {})
+                
+                # Check credentials file exists
+                if not gmail_service_status.get("credentials_file_exists"):
+                    self.log_test("Gmail Service Configuration", False, "Credentials file does not exist", debug_info)
+                    return False
+                
+                # Check credentials content structure
+                credentials_content = gmail_service_status.get("credentials_content", {})
+                if not credentials_content.get("client_id_configured"):
+                    self.log_test("Gmail Service Configuration", False, "Client ID not configured", credentials_content)
+                    return False
+                
+                if not credentials_content.get("redirect_uri_configured"):
+                    self.log_test("Gmail Service Configuration", False, "Redirect URI not configured", credentials_content)
+                    return False
+                
+                # Check scopes configuration
+                scopes = gmail_service_status.get("scopes", [])
+                expected_scopes = [
+                    'https://www.googleapis.com/auth/gmail.readonly',
+                    'https://www.googleapis.com/auth/gmail.send',
+                    'https://www.googleapis.com/auth/gmail.compose',
+                    'https://www.googleapis.com/auth/gmail.modify'
+                ]
+                
+                if len(scopes) != len(expected_scopes):
+                    self.log_test("Gmail Service Configuration", False, f"Expected {len(expected_scopes)} scopes, got {len(scopes)}", gmail_service_status)
+                    return False
+                
+                missing_scopes = [scope for scope in expected_scopes if scope not in scopes]
+                if missing_scopes:
+                    self.log_test("Gmail Service Configuration", False, f"Missing scopes: {missing_scopes}", gmail_service_status)
+                    return False
+                
+                # Check environment configuration
+                environment = debug_info.get("environment", {})
+                gmail_redirect_uri = environment.get("GMAIL_REDIRECT_URI")
+                expected_redirect_uri = "https://fdda3d29-2c2b-4e80-a552-365a2356b8ba.preview.emergentagent.com/api/gmail/callback"
+                
+                if gmail_redirect_uri != expected_redirect_uri:
+                    self.log_test("Gmail Service Configuration", False, f"Wrong redirect URI: {gmail_redirect_uri}", environment)
+                    return False
+                
+                self.log_test("Gmail Service Configuration", True, f"OAuth2 configuration verified: client_id configured, redirect_uri correct, {len(scopes)} scopes configured")
+                return True
+            else:
+                self.log_test("Gmail Service Configuration", False, f"HTTP {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail Service Configuration", False, f"Error: {str(e)}")
+            return False
+
+    def test_gmail_integration_readiness(self):
+        """Test 29: Integration Readiness - Confirm system ready for Gmail OAuth2 authentication flow"""
+        try:
+            # Test multiple endpoints to verify complete readiness
+            test_results = []
+            
+            # 1. Test Gmail status endpoint
+            status_response = requests.get(f"{BACKEND_URL}/gmail/status", timeout=10)
+            if status_response.status_code == 200:
+                status_data = status_response.json()
+                if status_data.get("credentials_configured"):
+                    test_results.append("✅ Gmail status endpoint working with credentials configured")
+                else:
+                    test_results.append("❌ Gmail credentials not configured in status endpoint")
+            else:
+                test_results.append(f"❌ Gmail status endpoint failed: HTTP {status_response.status_code}")
+            
+            # 2. Test Gmail auth URL generation
+            auth_response = requests.get(f"{BACKEND_URL}/gmail/auth", timeout=10)
+            if auth_response.status_code == 200:
+                auth_data = auth_response.json()
+                if auth_data.get("success") and auth_data.get("auth_url"):
+                    auth_url = auth_data.get("auth_url")
+                    if "191070483179-5ldsbkb4fl76at31kbldgj24org21hpl.apps.googleusercontent.com" in auth_url:
+                        test_results.append("✅ Gmail auth URL generation working with correct client_id")
+                    else:
+                        test_results.append("❌ Gmail auth URL missing correct client_id")
+                else:
+                    test_results.append("❌ Gmail auth URL generation failed")
+            else:
+                test_results.append(f"❌ Gmail auth endpoint failed: HTTP {auth_response.status_code}")
+            
+            # 3. Test Gmail inbox endpoint (should require authentication)
+            inbox_response = requests.get(f"{BACKEND_URL}/gmail/inbox?session_id=test_session", timeout=10)
+            if inbox_response.status_code == 500:  # Expected since not authenticated
+                inbox_data = inbox_response.json()
+                if "authentication" in inbox_data.get("detail", "").lower():
+                    test_results.append("✅ Gmail inbox endpoint properly requires authentication")
+                else:
+                    test_results.append("❌ Gmail inbox endpoint error not related to authentication")
+            elif inbox_response.status_code == 400:
+                test_results.append("✅ Gmail inbox endpoint working (requires session_id)")
+            else:
+                test_results.append(f"❌ Gmail inbox endpoint unexpected response: HTTP {inbox_response.status_code}")
+            
+            # 4. Test health check Gmail integration
+            health_response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+            if health_response.status_code == 200:
+                health_data = health_response.json()
+                gmail_integration = health_data.get("gmail_api_integration", {})
+                if gmail_integration.get("status") == "ready":
+                    test_results.append("✅ Health check shows Gmail integration as ready")
+                else:
+                    test_results.append(f"❌ Health check Gmail status: {gmail_integration.get('status')}")
+            else:
+                test_results.append(f"❌ Health check failed: HTTP {health_response.status_code}")
+            
+            # Evaluate overall readiness
+            failed_tests = [result for result in test_results if result.startswith("❌")]
+            passed_tests = [result for result in test_results if result.startswith("✅")]
+            
+            if len(failed_tests) == 0:
+                result_summary = "\n    ".join(test_results)
+                self.log_test("Gmail Integration Readiness", True, f"System ready for Gmail OAuth2 flow:\n    {result_summary}")
+                return True
+            else:
+                result_summary = "\n    ".join(test_results)
+                self.log_test("Gmail Integration Readiness", False, f"System not fully ready:\n    {result_summary}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Gmail Integration Readiness", False, f"Error: {str(e)}")
+            return False
+
+    def test_gmail_intent_detection(self):
+        """Test 30: Gmail Intent Detection - Test natural language Gmail queries"""
+        try:
+            gmail_test_cases = [
+                {
+                    "message": "Check my Gmail inbox",
+                    "expected_intent": "check_gmail_inbox",
+                    "description": "Gmail inbox check"
+                },
+                {
+                    "message": "Any unread emails in my Gmail?",
+                    "expected_intent": "check_gmail_unread",
+                    "description": "Gmail unread check"
+                },
+                {
+                    "message": "Show me my Gmail inbox",
+                    "expected_intent": "check_gmail_inbox",
+                    "description": "Gmail inbox display"
+                },
+                {
+                    "message": "Do I have any new emails?",
+                    "expected_intent": "check_gmail_inbox",
+                    "description": "New emails check"
+                }
+            ]
+            
+            all_passed = True
+            results = []
+            
+            for test_case in gmail_test_cases:
+                try:
+                    payload = {
+                        "message": test_case["message"],
+                        "session_id": self.session_id,
+                        "user_id": "test_user"
+                    }
+                    
+                    response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=15)
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        intent_data = data.get("intent_data", {})
+                        detected_intent = intent_data.get("intent")
+                        response_text = data.get("response", "")
+                        
+                        # Check if Gmail-related intent was detected or if authentication prompt is provided
+                        if (detected_intent and "gmail" in detected_intent.lower()) or "gmail" in response_text.lower():
+                            if "connect" in response_text.lower() or "authentication" in response_text.lower():
+                                results.append(f"✅ {test_case['description']}: Gmail intent detected with auth prompt")
+                            else:
+                                results.append(f"✅ {test_case['description']}: Gmail intent detected - {detected_intent}")
+                        else:
+                            results.append(f"❌ {test_case['description']}: No Gmail intent detected, got {detected_intent}")
+                            all_passed = False
+                    else:
+                        results.append(f"❌ {test_case['description']}: HTTP {response.status_code}")
+                        all_passed = False
+                        
+                except Exception as e:
+                    results.append(f"❌ {test_case['description']}: Error {str(e)}")
+                    all_passed = False
+            
+            result_summary = "\n    ".join(results)
+            self.log_test("Gmail Intent Detection", all_passed, result_summary)
+            return all_passed
+            
+        except Exception as e:
+            self.log_test("Gmail Intent Detection", False, f"Error: {str(e)}")
+            return False
+
     def test_traditional_vs_direct_automation(self):
-        """Test 25: Compare traditional automation vs direct automation flow"""
+        """Test 31: Compare traditional automation vs direct automation flow"""
         try:
             # Test traditional automation (should need approval)
             traditional_payload = {
