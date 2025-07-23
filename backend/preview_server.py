@@ -185,26 +185,41 @@ async def get_chat_history(session_id: str):
 
 @api_router.get("/gmail/status")
 async def get_gmail_status(session_id: str = None):
-    """Mock Gmail status for preview"""
-    return {
-        "success": True,
-        "authenticated": False,
-        "credentials_configured": False,
-        "requires_auth": True,
-        "service": "gmail",
-        "session_id": session_id,
-        "scopes": ["gmail.readonly", "gmail.send"],
-        "error": "This is a preview mode - Gmail integration requires full setup"
-    }
+    """Check real Gmail status"""
+    try:
+        from gmail_oauth_service import GmailOAuthService
+        gmail_service = GmailOAuthService()
+        status = await gmail_service.get_auth_status(session_id)
+        return status
+    except Exception as e:
+        return {
+            "success": False,
+            "authenticated": False,
+            "credentials_configured": False,
+            "requires_auth": True,
+            "service": "gmail",
+            "session_id": session_id,
+            "error": str(e)
+        }
 
 @api_router.get("/gmail/auth")
 async def initiate_gmail_auth(session_id: str = None):
-    """Mock Gmail auth for preview"""
-    return {
-        "success": False,
-        "message": "Gmail authentication not available in preview mode",
-        "auth_url": None
-    }
+    """Initiate real Gmail authentication"""
+    try:
+        from gmail_oauth_service import GmailOAuthService
+        gmail_service = GmailOAuthService()
+        auth_url = await gmail_service.get_auth_url(session_id)
+        return {
+            "success": True,
+            "auth_url": auth_url,
+            "session_id": session_id
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Gmail authentication error: {str(e)}",
+            "auth_url": None
+        }
 
 @api_router.get("/gmail/profile")
 async def get_gmail_profile(session_id: str = None):
