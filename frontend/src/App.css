@@ -3,6 +3,16 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Root HTML and Body Height Management */
+html, body {
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  height: 100vh;
+}
+
 /* Custom scrollbar with blue theme */
 ::-webkit-scrollbar {
   width: 8px;
