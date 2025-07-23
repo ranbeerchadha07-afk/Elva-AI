@@ -497,17 +497,98 @@ button:active:not(:disabled) {
 }
 
 /* Premium Glassy Header */
+/* Premium Glassy Header with Enhanced 3D Effects */
 .glassy-header {
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 2px solid rgba(59, 130, 246, 0.2);
-  border-bottom: 2px solid rgba(59, 130, 246, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  position: relative;
+  
+  /* Double-edged borders - Outer ring */
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  border-bottom: 2px solid rgba(59, 130, 246, 0.6);
+  
+  /* 3D Deepened edges with multiple shadows */
   box-shadow: 
-    0 4px 24px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-    0 0 40px rgba(59, 130, 246, 0.15);
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(139, 92, 246, 0.2),
+    0 0 40px rgba(59, 130, 246, 0.2),
+    inset 0 0 60px rgba(0, 0, 0, 0.2);
+    
+  /* Soft glow effect */
+  filter: drop-shadow(0 4px 20px rgba(59, 130, 246, 0.15));
+}
+
+/* Inner ring effect using pseudo-element */
+.glassy-header::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Outer animated glow ring */
+.glassy-header::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(90deg, 
+    rgba(59, 130, 246, 0.3), 
+    rgba(139, 92, 246, 0.3), 
+    rgba(236, 72, 153, 0.3),
+    rgba(59, 130, 246, 0.3)
+  );
+  background-size: 400% 400%;
+  z-index: -1;
+  opacity: 0.7;
+  animation: header-border-glow 12s linear infinite;
+}
+
+@keyframes header-border-glow {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.7;
+  }
+  25% {
+    background-position: 100% 50%;
+    opacity: 0.9;
+  }
+  50% {
+    background-position: 100% 100%;
+    opacity: 0.8;
+  }
+  75% {
+    background-position: 0% 100%;
+    opacity: 0.9;
+  }
+}
+
+/* Enhanced hover effect for header interactivity */
+.glassy-header:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.7),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(139, 92, 246, 0.3),
+    0 0 50px rgba(59, 130, 246, 0.3),
+    inset 0 0 80px rgba(0, 0, 0, 0.25);
+    
+  /* Enhanced glow on hover */
+  filter: drop-shadow(0 6px 25px rgba(59, 130, 246, 0.2));
+  
+  /* Subtle lift effect */
+  transform: translateY(-1px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Smooth Glowing "Elva AI" Text - No Deep Embossing */
