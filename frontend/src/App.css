@@ -515,6 +515,7 @@ button:active:not(:disabled) {
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   position: relative;
+  z-index: 1000; /* Lower than dropdown panel */
   
   /* Double-edged borders - Outer ring */
   border: 2px solid rgba(59, 130, 246, 0.4);
@@ -531,6 +532,10 @@ button:active:not(:disabled) {
     
   /* Soft glow effect */
   filter: drop-shadow(0 4px 20px rgba(59, 130, 246, 0.15));
+  
+  /* Prevent layout shift */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Inner ring effect using pseudo-element */
