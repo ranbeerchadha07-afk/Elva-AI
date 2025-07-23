@@ -28,7 +28,11 @@ function App() {
     debugInfo: null 
   }); // Gmail authentication status
   const [showDropPanel, setShowDropPanel] = useState(false); // Drop-left panel state
-  const [isDarkTheme, setIsDarkTheme] = useState(true); // Theme toggle state
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    // Initialize theme from localStorage or default to dark
+    const savedTheme = localStorage.getItem('elva-theme');
+    return savedTheme ? savedTheme === 'dark' : true;
+  }); // Theme toggle state with localStorage persistence
   const messagesEndRef = useRef(null);
   const dropPanelRef = useRef(null); // Reference for drop panel
 
