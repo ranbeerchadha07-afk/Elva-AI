@@ -1277,6 +1277,15 @@ button:active:not(:disabled) {
   overflow: hidden;
 }
 
+/* Chat Input Container - Force Anchor to Bottom */
+.chat-input-container {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: transparent;
+  flex-shrink: 0;
+}
+
 .glassy-input-area::before {
   content: '';
   position: absolute;
