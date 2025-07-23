@@ -1387,11 +1387,317 @@ button:active:not(:disabled) {
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
-/* Error State */
-.error-icon {
-  font-size: 20px;
+/* Drop-Left Panel Styles */
+.drop-left-panel {
+  position: absolute;
+  top: 0;
+  right: 60px; /* Position to the left of the plus button */
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(139, 92, 246, 0.2);
+  padding: 12px;
+  overflow: hidden;
+}
+
+/* Double-edged 3D border effect */
+.drop-left-panel::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.drop-left-panel::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, 
+    rgba(139, 92, 246, 0.3), 
+    rgba(59, 130, 246, 0.3), 
+    rgba(99, 102, 241, 0.3),
+    rgba(139, 92, 246, 0.3)
+  );
+  background-size: 300% 300%;
+  animation: panel-border-glow 8s ease-in-out infinite;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+@keyframes panel-border-glow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+}
+
+.drop-panel-content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Panel Button Base Styles */
+.panel-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Glassy background */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* 3D deepened effect with multiple shadows */
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Inner ring effect using pseudo-element */
+.panel-btn::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Outer glow ring using pseudo-element */
+.panel-btn::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.2), 
+    rgba(139, 92, 246, 0.2), 
+    rgba(99, 102, 241, 0.2)
+  );
+  background-size: 200% 200%;
+  animation: panel-btn-glow 6s linear infinite;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+@keyframes panel-btn-glow {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+  25% {
+    background-position: 50% 0%;
+    opacity: 0.7;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.6;
+  }
+  75% {
+    background-position: 50% 100%;
+    opacity: 0.8;
+  }
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+}
+
+/* Hover effects for panel buttons */
+.panel-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 
+    0 10px 35px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.panel-btn:active {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 
+    0 5px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Individual Button Themes */
+
+/* Gmail Button */
+.gmail-panel-btn.gmail-ready::after {
+  background: linear-gradient(135deg, 
+    rgba(234, 67, 53, 0.3), 
+    rgba(52, 168, 83, 0.3), 
+    rgba(251, 188, 4, 0.3),
+    rgba(66, 133, 244, 0.3)
+  );
+  animation: gmail-panel-colors 6s linear infinite;
+}
+
+@keyframes gmail-panel-colors {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 25% 50%; }
+  50% { background-position: 50% 50%; }
+  75% { background-position: 75% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.gmail-panel-btn.gmail-connected::after {
+  background: linear-gradient(135deg, 
+    rgba(52, 168, 83, 0.4), 
+    rgba(52, 168, 83, 0.2)
+  );
+  animation: connected-panel-pulse 3s ease-in-out infinite;
+}
+
+@keyframes connected-panel-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+.gmail-panel-btn.gmail-error::after {
+  background: linear-gradient(135deg, 
+    rgba(239, 68, 68, 0.4), 
+    rgba(239, 68, 68, 0.2)
+  );
+}
+
+/* Theme Toggle Button */
+.theme-panel-btn::after {
+  background: linear-gradient(135deg, 
+    rgba(251, 191, 36, 0.3), 
+    rgba(147, 51, 234, 0.3), 
+    rgba(59, 130, 246, 0.3)
+  );
+}
+
+/* Export Button */
+.export-panel-btn::after {
+  background: linear-gradient(135deg, 
+    rgba(16, 185, 129, 0.3), 
+    rgba(6, 182, 212, 0.3), 
+    rgba(34, 197, 94, 0.3)
+  );
+}
+
+/* New Chat Panel Button */
+.new-chat-panel-btn::after {
+  background: linear-gradient(135deg, 
+    rgba(139, 92, 246, 0.3), 
+    rgba(59, 130, 246, 0.3), 
+    rgba(99, 102, 241, 0.3)
+  );
+}
+
+/* Icon styling inside panel buttons */
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.btn-icon-text {
+  font-size: 16px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.panel-btn:hover .btn-icon,
+.panel-btn:hover .btn-icon-text {
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  transform: scale(1.1);
+}
+
+/* Connected indicator for Gmail in panel */
+.panel-btn-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connected-indicator-small {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 14px;
+  height: 14px;
+  background: rgba(16, 185, 129, 0.9);
+  border-radius: 50%;
+  color: white;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+}
+
+.error-icon-small {
+  font-size: 16px;
   color: #fbbf24;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Light theme support (future enhancement) */
+.light-theme .drop-left-panel {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .panel-btn {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Error State */
+.circular-icon-btn.gmail-error {
+  border-color: rgba(239, 68, 68, 0.5);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 }
 
 /* Glassy Input Area with Double-Deeped Frosted Glass Effect */
