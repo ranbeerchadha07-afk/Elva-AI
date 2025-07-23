@@ -796,14 +796,23 @@ function App() {
     setShowDropPanel(!showDropPanel);
   };
 
-  // Theme toggle function
+  // Theme toggle function with localStorage persistence
   const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+    const newTheme = !isDarkTheme;
+    setIsDarkTheme(newTheme);
+    
+    // Save theme preference to localStorage
+    localStorage.setItem('elva-theme', newTheme ? 'dark' : 'light');
+    
     // Apply theme changes to document
-    if (isDarkTheme) {
-      document.documentElement.classList.add('light-theme');
-    } else {
+    if (newTheme) {
+      // Dark theme
       document.documentElement.classList.remove('light-theme');
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      // Light theme
+      document.documentElement.classList.remove('dark-theme');
+      document.documentElement.classList.add('light-theme');
     }
   };
 
