@@ -478,6 +478,7 @@ button:active:not(:disabled) {
   background-position: center;
   background-attachment: fixed;
   position: relative;
+  transition: all 0.5s ease;
 }
 
 .chat-background::before {
@@ -489,11 +490,22 @@ button:active:not(:disabled) {
   bottom: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 0;
+  transition: all 0.5s ease;
 }
 
 .chat-background > * {
   position: relative;
   z-index: 1;
+}
+
+/* Light Theme Background with Lion Image */
+.light-theme .chat-background {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJsaW9uLWJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjdmOGZhIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNlMWU1ZTkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkMWQ1ZGIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0idXJsKCNsaW9uLWJnKSIvPjx0ZXh0IHg9IjI1MCIgeT0iMjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZm9udC1zaXplPSIxMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZmlsbD0iIzZiNzI4MCIgZmlsbC1vcGFjaXR5PSIwLjEiPjw/4paEPC90ZXh0Pjwvc3ZnPg==');
+  background-color: #f8fafc;
+}
+
+.light-theme .chat-background::before {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Premium Glassy Header */
