@@ -1373,18 +1373,56 @@ button:active:not(:disabled) {
   );
 }
 
+/* Enhanced Plus Icon Animation */
 .plus-icon {
   font-size: 24px;
   font-weight: 300;
   color: #e2e8f0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .circular-icon-btn.new-chat-btn:hover .plus-icon {
-  transform: rotate(90deg) scale(1.1);
   color: #ffffff;
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive adjustments for panel */
+@media (max-width: 768px) {
+  .drop-left-panel {
+    right: 50px;
+    transform: scale(0.9);
+  }
+  
+  .panel-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .btn-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .btn-icon-text {
+    font-size: 14px;
+  }
+}
+
+/* Accessibility improvements */
+.panel-btn:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+.panel-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.panel-btn:disabled:hover {
+  transform: none;
+  box-shadow: initial;
 }
 
 /* Drop-Left Panel Styles */
