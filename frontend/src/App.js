@@ -872,7 +872,7 @@ function App() {
     <div className="min-h-screen chat-background text-white">
       {/* Premium Glassy Header */}
       <div className="glassy-header shadow-lg">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between relative z-10">
           <div className="flex items-center space-x-4">
             <div className="logo-container">
               <img 
