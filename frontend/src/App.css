@@ -1091,6 +1091,228 @@ button:active:not(:disabled) {
   -webkit-backdrop-filter: blur(5px);
 }
 
+/* Circular Icon Buttons - Premium 3D Design */
+.circular-icon-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  
+  /* Base glassy background */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* Double-edged borders - Outer ring */
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  
+  /* 3D Deepened effect with multiple shadows */
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(139, 92, 246, 0.2),
+    0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Inner ring effect using pseudo-element */
+.circular-icon-btn::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+/* Outer glow ring using pseudo-element */
+.circular-icon-btn::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.2), 
+    rgba(139, 92, 246, 0.2), 
+    rgba(236, 72, 153, 0.2),
+    rgba(59, 130, 246, 0.2)
+  );
+  z-index: -1;
+  opacity: 0.6;
+  animation: circular-glow 8s linear infinite;
+}
+
+@keyframes circular-glow {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  25% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+  50% {
+    background-position: 100% 100%;
+    opacity: 0.7;
+  }
+  75% {
+    background-position: 0% 100%;
+    opacity: 0.8;
+  }
+}
+
+/* Hover effects */
+.circular-icon-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(139, 92, 246, 0.3),
+    0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.circular-icon-btn:active {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(139, 92, 246, 0.2);
+}
+
+/* Gmail Button States */
+.circular-icon-btn.gmail-ready {
+  border-color: rgba(234, 67, 53, 0.5);
+}
+
+.circular-icon-btn.gmail-ready::after {
+  background: linear-gradient(135deg, 
+    rgba(234, 67, 53, 0.3), 
+    rgba(52, 168, 83, 0.3), 
+    rgba(251, 188, 4, 0.3),
+    rgba(66, 133, 244, 0.3)
+  );
+  animation: gmail-colors 6s linear infinite;
+}
+
+@keyframes gmail-colors {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 25% 50%; }
+  50% { background-position: 50% 50%; }
+  75% { background-position: 75% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.circular-icon-btn.gmail-connected {
+  border-color: rgba(52, 168, 83, 0.6);
+  background: rgba(52, 168, 83, 0.1);
+}
+
+.circular-icon-btn.gmail-connected::after {
+  background: linear-gradient(135deg, 
+    rgba(52, 168, 83, 0.4), 
+    rgba(52, 168, 83, 0.2)
+  );
+  animation: connected-pulse 3s ease-in-out infinite;
+}
+
+@keyframes connected-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+.circular-icon-btn.gmail-error {
+  border-color: rgba(239, 68, 68, 0.5);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Gmail Icon Styling */
+.gmail-icon {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.circular-icon-btn:hover .gmail-icon {
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+  transform: scale(1.1);
+}
+
+/* Connected State with Check Mark */
+.connected-indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connected-check {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%;
+  font-size: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+}
+
+/* New Chat Button */
+.circular-icon-btn.new-chat-btn {
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.circular-icon-btn.new-chat-btn::after {
+  background: linear-gradient(135deg, 
+    rgba(139, 92, 246, 0.3), 
+    rgba(59, 130, 246, 0.3), 
+    rgba(99, 102, 241, 0.3),
+    rgba(139, 92, 246, 0.3)
+  );
+}
+
+.plus-icon {
+  font-size: 24px;
+  font-weight: 300;
+  color: #e2e8f0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.circular-icon-btn.new-chat-btn:hover .plus-icon {
+  transform: rotate(90deg) scale(1.1);
+  color: #ffffff;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Error State */
+.error-icon {
+  font-size: 20px;
+  color: #fbbf24;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* Glassy Input Area with Double-Deeped Frosted Glass Effect */
 .glassy-input-area {
   background: rgba(0, 0, 0, 0.25);
