@@ -2340,7 +2340,11 @@ class ElvaBackendTester:
 
     def run_all_tests(self):
         """Run all backend tests"""
-        print("🚀 Starting Comprehensive Gmail API OAuth2 Integration & Cleanup Verification Testing")
+        print("🚀 Starting Gmail OAuth2 Integration Testing with Updated Credentials")
+        print("=" * 80)
+        print("🎯 TESTING FOCUS: Gmail OAuth2 with client_id: 191070483179-5ldsbkb4fl76at31kbldgj24org21hpl.apps.googleusercontent.com")
+        print("🔗 REDIRECT URI: https://fdda3d29-2c2b-4e80-a552-365a2356b8ba.preview.emergentagent.com/api/gmail/callback")
+        print("📋 PROJECT: elva-ai-466708")
         print("=" * 80)
         
         test_methods = [
