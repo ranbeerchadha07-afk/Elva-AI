@@ -1443,7 +1443,7 @@ button:active:not(:disabled) {
   top: 60px; /* Position below the plus button */
   left: 50%;
   transform: translateX(-50%); /* Center relative to button */
-  z-index: 1000;
+  z-index: 9999; /* Ensure it appears above all other elements */
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1456,6 +1456,9 @@ button:active:not(:disabled) {
   padding: 16px 12px;
   overflow: hidden;
   min-width: 80px;
+  /* Prevent layout shift */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Simple double-edged border effect without glow */
