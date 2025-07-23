@@ -762,7 +762,9 @@ button:active:not(:disabled) {
   display: flex;
   flex-direction: column;
   min-height: 0; /* Critical for flex container */
+  height: 100%;
   background: transparent;
+  overflow: hidden; /* Prevent container overflow */
 }
 
 /* Circular Icon Buttons - Premium 3D Design */
