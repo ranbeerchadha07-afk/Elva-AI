@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, setMessages }) {
+function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, setMessages, userProfile, setUserProfile }) {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
@@ -125,7 +125,34 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
     try {
       await checkGmailAuthStatus();
       
+      // Fetch user profile after successful authentication
+      const profileResponse = await axios.get(`${API}/gmail/profile?session_id=${sessionId}`);
+      
+      // Set user profile in app state
+      if (profileResponse.data.success && setUserProfile) {
+        setUserProfile(profileResponse.data.profile);
+      }
+      
       // Add styled success message with proper chat bubble formatting
+      const successMessage = {
+        id: 'gmail_auth_success_' + Date.now(),
+        session_id: sessionId,
+        user_id: 'system',
+        message: 'Gmail connected successfully ✅',
+        response: 'Gmail connected successfully ✅',
+        timestamp: new Date().toISOString(),
+        intent_data: null,
+        needs_approval: false,
+        isGmailSuccess: true, // Special flag for styling
+        userProfile: profileResponse.data.success ? profileResponse.data.profile : null
+      };
+      
+      setMessages(prev => [...prev, successMessage]);
+      console.log('Gmail authentication successful - status updated!');
+    } catch (error) {
+      console.error('Error handling Gmail auth success:', error);
+      
+      // Still show success message even if profile fetch fails
       const successMessage = {
         id: 'gmail_auth_success_' + Date.now(),
         session_id: sessionId,
@@ -139,9 +166,6 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
       };
       
       setMessages(prev => [...prev, successMessage]);
-      console.log('Gmail authentication successful - status updated!');
-    } catch (error) {
-      console.error('Error handling Gmail auth success:', error);
     }
   };
 
@@ -219,12 +243,51 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
     return getAutomationStatusMessage(message) !== null;
   };
 
-  const renderGmailSuccessMessage = () => {
+  const renderGmailSuccessMessage = (message) => {
+    const profile = message?.userProfile || userProfile;
+    
     return (
-      <div className="gmail-success-message">
-        <div className="gmail-success-text">
-          <span>✅</span>
-          <span>Gmail connected successfully</span>
+      <div className="premium-gmail-success-card bg-gradient-to-r from-green-900/30 to-emerald-900/30 border border-green-500/40 rounded-xl p-6 backdrop-blur-sm shadow-xl">
+        <div className="flex items-center space-x-4">
+          {/* Success Icon */}
+          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+            <span className="text-white text-2xl">✅</span>
+          </div>
+          
+          {/* Success Content */}
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-green-100 mb-2">
+              Gmail Connected Successfully!
+            </h3>
+            
+            {profile && (
+              <div className="flex items-center space-x-3 mb-3">
+                {profile.picture && (
+                  <img 
+                    src={profile.picture} 
+                    alt={profile.name || 'User'} 
+                    className="w-10 h-10 rounded-full border-2 border-green-400/30 shadow-md"
+                  />
+                )}
+                <div>
+                  <p className="text-green-200 font-medium">
+                    {profile.name || 'Unknown User'}
+                  </p>
+                  <p className="text-green-300 text-sm">
+                    {profile.email || profile.gmail_address}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <div className="text-green-300 text-sm space-y-1">
+              <p>🎉 Your Gmail account is now connected to Elva AI!</p>
+              <p>📧 I can now help you with email management, reading, and sending.</p>
+              {profile && profile.messages_total && (
+                <p>📊 Found {profile.messages_total.toLocaleString()} messages in your account.</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -681,6 +744,37 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
     );
   };
 
+  const renderUserAvatar = () => {
+    if (userProfile && userProfile.picture) {
+      return (
+        <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden ml-3 shadow-lg border-2 border-blue-400/30 user-avatar">
+          <img 
+            src={userProfile.picture} 
+            alt={userProfile.name || 'User'} 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to initials if image fails to load
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          <div 
+            className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold"
+            style={{ display: 'none' }}
+          >
+            {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : 'U'}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center ml-3 shadow-lg user-avatar">
+          <span className="text-white text-sm font-bold">👤</span>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col h-full">
       {/* Chat Messages - Scrollable Area */}
@@ -706,7 +800,7 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
                     {!message.isGmailSuccess && renderAIAvatar()}
                     <div className="flex-1">
                       {message.isGmailSuccess ? (
-                        renderGmailSuccessMessage()
+                        renderGmailSuccessMessage(message)
                       ) : (
                         <div className="whitespace-pre-wrap">
                           {message.response ? renderEmailDisplay(message.response) : message.message}
@@ -721,13 +815,16 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
                 )}
 
                 {message.isUser && (
-                  <div>
-                    <div className="whitespace-pre-wrap">
-                      {message.message}
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-1">
+                      <div className="whitespace-pre-wrap">
+                        {message.message}
+                      </div>
+                      <div className="text-xs opacity-70 mt-2">
+                        {message.timestamp && new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </div>
                     </div>
-                    <div className="text-xs opacity-70 mt-2">
-                      {message.timestamp && new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </div>
+                    {renderUserAvatar()}
                   </div>
                 )}
               </div>

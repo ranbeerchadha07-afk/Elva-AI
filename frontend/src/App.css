@@ -1464,3 +1464,65 @@ button:active:not(:disabled) {
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, rgba(0, 212, 255, 0.8), rgba(59, 130, 246, 0.8));
 }
+
+/* Gmail Success Card Animations */
+.premium-gmail-success-card {
+  animation: gmailSuccessSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-gmail-success-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: gmailShimmer 2s ease-in-out;
+}
+
+@keyframes gmailSuccessSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes gmailShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* User Avatar Animations */
+.user-avatar {
+  animation: userAvatarPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes userAvatarPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+  }
+  70% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
