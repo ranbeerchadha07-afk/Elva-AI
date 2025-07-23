@@ -907,17 +907,17 @@ function App() {
             </div>
           </div>
           
-          <div className="flex items-center space-x-3">
-            {/* Gmail Authentication Button */}
+          <div className="flex items-center space-x-4">
+            {/* Gmail Authentication Circular Button */}
             {!gmailAuthStatus.loading && (
               <button
                 onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                className={`px-6 py-3 rounded-full flex items-center space-x-2 text-xs font-medium transition-all duration-300 ${
+                className={`circular-icon-btn ${
                   gmailAuthStatus.authenticated 
-                    ? 'premium-gmail-connected cursor-default' 
+                    ? 'gmail-connected' 
                     : gmailAuthStatus.credentialsConfigured 
-                      ? 'premium-gmail-btn hover:scale-105'
-                      : 'premium-gmail-error cursor-not-allowed opacity-75'
+                      ? 'gmail-ready'
+                      : 'gmail-error'
                 }`}
                 title={
                   gmailAuthStatus.authenticated 
@@ -928,30 +928,26 @@ function App() {
                 }
                 disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
               >
-                <span className="text-sm">
-                  {gmailAuthStatus.authenticated 
-                    ? '✅' 
-                    : gmailAuthStatus.credentialsConfigured 
-                      ? '📧' 
-                      : '⚠️'}
-                </span>
-                <span className="font-semibold">
-                  {gmailAuthStatus.authenticated 
-                    ? 'Gmail Connected' 
-                    : gmailAuthStatus.credentialsConfigured 
-                      ? 'Connect Gmail' 
-                      : 'Gmail Setup Required'}
-                </span>
+                {gmailAuthStatus.authenticated ? (
+                  <div className="connected-indicator">
+                    <img src="/gmail-icon.svg" alt="Gmail" className="gmail-icon" />
+                    <div className="connected-check">✓</div>
+                  </div>
+                ) : gmailAuthStatus.credentialsConfigured ? (
+                  <img src="/gmail-icon.svg" alt="Gmail" className="gmail-icon" />
+                ) : (
+                  <div className="error-icon">⚠️</div>
+                )}
               </button>
             )}
             
+            {/* New Chat Circular Button */}
             <button
               onClick={startNewChat}
-              className="premium-new-chat-btn px-6 py-2.5 rounded-full flex items-center space-x-2 shadow-lg"
+              className="circular-icon-btn new-chat-btn"
               title="Start New Chat"
             >
-              <span className="text-xl premium-plus-icon">+</span>
-              <span className="text-sm font-medium">New Chat</span>
+              <div className="plus-icon">+</div>
             </button>
           </div>
         </div>
