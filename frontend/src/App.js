@@ -784,7 +784,56 @@ function App() {
   const startNewChat = () => {
     setSessionId(generateSessionId());
     setMessages([]);
+    setShowDropPanel(false); // Close panel when starting new chat
   };
+
+  // Toggle drop-left panel
+  const toggleDropPanel = () => {
+    setShowDropPanel(!showDropPanel);
+  };
+
+  // Theme toggle function
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+    // Apply theme changes to document
+    if (isDarkTheme) {
+      document.documentElement.classList.add('light-theme');
+    } else {
+      document.documentElement.classList.remove('light-theme');
+    }
+  };
+
+  // Export chat function
+  const exportChat = () => {
+    const chatData = messages.map(msg => `${msg.user ? 'User' : 'AI'}: ${msg.message}`).join('\n\n');
+    const blob = new Blob([chatData], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `elva-chat-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setShowDropPanel(false); // Close panel after export
+  };
+
+  // Click outside to close panel
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropPanelRef.current && !dropPanelRef.current.contains(event.target)) {
+        setShowDropPanel(false);
+      }
+    };
+
+    if (showDropPanel) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropPanel]);
 
   const renderIntentData = (intentData) => {
     if (!intentData || intentData.intent === 'general_chat') return null;
