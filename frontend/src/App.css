@@ -1482,7 +1482,7 @@ button:active:not(:disabled) {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   
-  /* 3D deepened effect with multiple shadows */
+  /* Simple 3D effect without glow */
   box-shadow: 
     0 6px 25px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
@@ -1490,7 +1490,7 @@ button:active:not(:disabled) {
     0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Inner ring effect using pseudo-element */
+/* Simple inner ring effect */
 .panel-btn::before {
   content: '';
   position: absolute;
@@ -1502,49 +1502,6 @@ button:active:not(:disabled) {
   border: 1px solid rgba(255, 255, 255, 0.1);
   pointer-events: none;
   z-index: 1;
-}
-
-/* Outer glow ring using pseudo-element */
-.panel-btn::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, 
-    rgba(59, 130, 246, 0.2), 
-    rgba(139, 92, 246, 0.2), 
-    rgba(99, 102, 241, 0.2)
-  );
-  background-size: 200% 200%;
-  animation: panel-btn-glow 6s linear infinite;
-  z-index: -1;
-  opacity: 0.7;
-}
-
-@keyframes panel-btn-glow {
-  0% {
-    background-position: 0% 50%;
-    opacity: 0.5;
-  }
-  25% {
-    background-position: 50% 0%;
-    opacity: 0.7;
-  }
-  50% {
-    background-position: 100% 50%;
-    opacity: 0.6;
-  }
-  75% {
-    background-position: 50% 100%;
-    opacity: 0.8;
-  }
-  100% {
-    background-position: 0% 50%;
-    opacity: 0.5;
-  }
 }
 
 /* Hover effects for panel buttons */
