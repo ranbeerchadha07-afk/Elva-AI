@@ -1557,14 +1557,186 @@ button:active:not(:disabled) {
 }
 
 
-/* Light theme support (future enhancement) */
-.light-theme .drop-down-panel {
+/* Light theme support - Comprehensive Implementation */
+.light-theme {
+  color: #1f2937;
+}
+
+/* Light Theme - Header */
+.light-theme .glassy-header {
   background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(25px);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 0 40px rgba(0, 0, 0, 0.02);
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.05));
+}
+
+.light-theme .glassy-header::before {
   border-color: rgba(0, 0, 0, 0.08);
 }
 
+.light-theme .glassy-header::after {
+  background: linear-gradient(90deg, 
+    rgba(59, 130, 246, 0.2), 
+    rgba(139, 92, 246, 0.2), 
+    rgba(236, 72, 153, 0.2),
+    rgba(59, 130, 246, 0.2)
+  );
+}
+
+/* Light Theme - Title */
+.light-theme .smooth-glow-title {
+  background: linear-gradient(135deg, #1f2937 0%, #4f46e5 50%, #06b6d4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 
+    0 0 20px rgba(31, 41, 55, 0.3),
+    0 0 40px rgba(79, 70, 229, 0.2),
+    0 0 60px rgba(6, 182, 212, 0.1);
+  filter: 
+    drop-shadow(0 0 10px rgba(31, 41, 55, 0.2))
+    drop-shadow(0 0 20px rgba(79, 70, 229, 0.15));
+}
+
+/* Light Theme - Chat Container */
+.light-theme .premium-chat-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+/* Light Theme - Message Bubbles */
+.light-theme .message-bubble {
+  color: #1f2937;
+}
+
+.light-theme .message-bubble::before {
+  background: linear-gradient(45deg, rgba(79, 70, 229, 0.05), rgba(139, 92, 246, 0.05));
+}
+
+/* Light Theme - Drop Panel */
+.light-theme .drop-down-panel {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .drop-down-panel::before {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
 .light-theme .panel-btn {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.4);
+  color: #1f2937;
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.light-theme .panel-btn::before {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .panel-btn:hover {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 10px 35px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Light Theme - Input Area */
+.light-theme .glassy-input-area {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    0 0 30px rgba(0, 0, 0, 0.02),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.light-theme .glassy-input-area::before {
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.1) 0%, 
+    rgba(0, 0, 0, 0.02) 50%, 
+    rgba(0, 0, 0, 0.05) 100%);
+}
+
+.light-theme .glassy-input-area::after {
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(79, 70, 229, 0.03) 0%, transparent 50%);
+}
+
+.light-theme .clean-input {
+  color: #1f2937;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .clean-input::placeholder {
+  color: rgba(31, 41, 55, 0.45);
+}
+
+.light-theme .clean-input:focus::placeholder {
+  color: rgba(31, 41, 55, 0.25);
+}
+
+/* Light Theme - Buttons */
+.light-theme .premium-new-chat-btn {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border-color: rgba(79, 70, 229, 0.2);
+  box-shadow: 
+    0 0 30px rgba(79, 70, 229, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.1);
+  color: #1f2937;
+}
+
+.light-theme .premium-new-chat-btn:hover {
+  box-shadow: 
+    0 0 40px rgba(79, 70, 229, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 12px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(79, 70, 229, 0.3);
+}
+
+.light-theme .premium-plus-icon {
+  filter: 
+    drop-shadow(0 0 15px rgba(79, 70, 229, 0.4))
+    drop-shadow(0 0 30px rgba(59, 130, 246, 0.3))
+    drop-shadow(0 0 45px rgba(79, 70, 229, 0.2));
+}
+
+/* Light Theme - Text Colors */
+.light-theme .text-white {
+  color: #1f2937 !important;
+}
+
+.light-theme .text-gray-300 {
+  color: #4b5563 !important;
+}
+
+.light-theme .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+.light-theme .text-gray-500 {
+  color: #9ca3af !important;
 }
 
 /* Error State */
