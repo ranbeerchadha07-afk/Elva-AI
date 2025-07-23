@@ -137,7 +137,7 @@ function App() {
   });
 
   return (
-    <div className="chat-background min-h-screen text-white flex flex-col">
+    <div className="chat-background h-screen text-white flex flex-col overflow-hidden">
       {/* Premium Glassy Header */}
       <header className="glassy-header shadow-lg flex-shrink-0">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between relative z-10">
