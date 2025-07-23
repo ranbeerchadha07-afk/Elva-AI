@@ -99,12 +99,12 @@ function GmailAuthHandler({ gmailAuthStatus, setGmailAuthStatus, sessionId, setM
       // Update auth status
       await checkGmailAuthStatus(); // Re-check the actual status
       
-      // Add success message to chat with special formatting
+      // Add success message to chat with enhanced styling
       const successMessage = {
         id: 'gmail_auth_success_' + Date.now(),
         session_id: sessionId,
         user_id: 'system',
-        message: '✅ Gmail OAuth2 Flow Completed!',
+        message: 'Gmail connected successfully ✅',
         response: '', // Will be handled by special rendering
         timestamp: new Date().toISOString(),
         intent_data: null,
@@ -188,12 +188,12 @@ function GmailAuthHandler({ gmailAuthStatus, setGmailAuthStatus, sessionId, setM
         // Update auth status
         setGmailAuthStatus({ authenticated: true, loading: false });
         
-        // Add success message to chat
+        // Add success message to chat with enhanced styling
         const successMessage = {
           id: 'gmail_auth_success_' + Date.now(),
-          response: "✅ **Gmail Integration Successful!** 🎉\n\nI can now help you with:\n• 📧 Check your Gmail inbox\n• ✉️ Send emails\n• 📨 Read specific emails\n• 🔍 Search your messages\n\nTry saying: '*Check my Gmail inbox*' or '*Send an email to [someone]*'",
+          response: "Gmail connected successfully ✅",
           isUser: false,
-          isSystem: true,
+          isGmailSuccess: true, // Special flag for styling
           timestamp: new Date()
         };
         setMessages(prev => [...prev, successMessage]);

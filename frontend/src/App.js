@@ -137,9 +137,9 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen chat-background text-white">
+    <div className="chat-background min-h-screen text-white flex flex-col">
       {/* Premium Glassy Header */}
-      <div className="glassy-header shadow-lg">
+      <header className="glassy-header shadow-lg flex-shrink-0">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between relative z-10">
           <div className="flex items-center space-x-4">
             <div className="logo-container">
@@ -211,10 +211,10 @@ function App() {
             </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Chat Container */}
-      <div className="premium-chat-container flex-1 flex">
+      {/* Chat Container - Proper Flex Layout */}
+      <main className="premium-chat-container">
         <ChatBox
           sessionId={sessionId}
           gmailAuthStatus={gmailAuthStatus}
@@ -222,11 +222,9 @@ function App() {
           messages={messages}
           setMessages={setMessages}
         />
-      </div>
+      </main>
     </div>
   );
 }
-
-
 
 export default App;

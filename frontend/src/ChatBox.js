@@ -125,16 +125,17 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
     try {
       await checkGmailAuthStatus();
       
+      // Add styled success message with proper chat bubble formatting
       const successMessage = {
         id: 'gmail_auth_success_' + Date.now(),
         session_id: sessionId,
         user_id: 'system',
-        message: '✅ Gmail OAuth2 Flow Completed!',
-        response: '',
+        message: 'Gmail connected successfully ✅',
+        response: 'Gmail connected successfully ✅',
         timestamp: new Date().toISOString(),
         intent_data: null,
         needs_approval: false,
-        isGmailSuccess: true
+        isGmailSuccess: true // Special flag for styling
       };
       
       setMessages(prev => [...prev, successMessage]);
@@ -221,23 +222,9 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
   const renderGmailSuccessMessage = () => {
     return (
       <div className="gmail-success-message">
-        <div className="gmail-success-title">
-          🎉 Gmail Authentication Successful!
-        </div>
-        
-        <div style={{ fontWeight: '600', marginBottom: '12px', color: 'rgba(255, 255, 255, 0.9)' }}>
-          Your Gmail account has been securely connected using OAuth2. I can now help you with:
-        </div>
-        
-        <ul className="gmail-features-list">
-          <li>📧 Check your Gmail inbox</li>
-          <li>✉️ Send emails</li>
-          <li>📨 Read specific emails</li>
-          <li>🔍 Search your messages</li>
-        </ul>
-        
-        <div className="gmail-example-text">
-          Try saying: "Check my Gmail inbox" or "Send an email to [someone]"
+        <div className="gmail-success-text">
+          <span>✅</span>
+          <span>Gmail connected successfully</span>
         </div>
       </div>
     );
@@ -695,8 +682,8 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
   };
 
   return (
-    <div className="flex-1 flex flex-col">
-      {/* Chat Messages */}
+    <div className="flex flex-col h-full">
+      {/* Chat Messages - Scrollable Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-blue-500/50 scrollbar-track-transparent">
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -710,11 +697,13 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
                       ? 'bg-green-900/30 border border-green-500/30 text-green-100'
                       : message.isWelcome
                         ? 'bg-gradient-to-br from-purple-900/40 to-blue-900/40 border border-purple-500/30 text-purple-100'
-                        : 'bg-gray-800/40 backdrop-blur-sm border border-gray-600/30 text-white'
+                        : message.isGmailSuccess
+                          ? 'bg-transparent border-0 p-0' // Special styling for Gmail success
+                          : 'bg-gray-800/40 backdrop-blur-sm border border-gray-600/30 text-white'
               }`}>
                 {!message.isUser && (
                   <div className="flex items-start space-x-3">
-                    {renderAIAvatar()}
+                    {!message.isGmailSuccess && renderAIAvatar()}
                     <div className="flex-1">
                       {message.isGmailSuccess ? (
                         renderGmailSuccessMessage()
@@ -769,8 +758,8 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message Input - Fixed positioning */}
-      <div className="sticky bottom-0 bg-transparent backdrop-blur-sm p-4">
+      {/* Message Input - Fixed at Bottom */}
+      <div className="flex-shrink-0 p-4">
         <div className="max-w-4xl mx-auto">
           <div className="glassy-input-area rounded-xl p-4 flex items-center space-x-3">
             {/* Show automation status if available */}

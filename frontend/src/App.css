@@ -476,16 +476,19 @@ button:active:not(:disabled) {
 
 /* Premium Elva AI Styles */
 
-/* Chat Background with Enhanced Theme Support */
+/* Chat Background - Clear, No Blur Effects */
 .chat-background {
   background-image: url('https://images.unsplash.com/photo-1517825738774-7de9363ef735?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHxibGFjayUyMHBhbnRoZXJ8ZW58MHx8fGJsYWNrfDE3NTMwNjUzMjN8MA&ixlib=rb-4.1.0&q=85');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   position: relative;
-  transition: all 0.5s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Remove blur overlay for clear image */
 .chat-background::before {
   content: '';
   position: absolute;
@@ -493,9 +496,8 @@ button:active:not(:disabled) {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.2); /* Reduced opacity for better image visibility */
   z-index: 0;
-  transition: all 0.5s ease;
 }
 
 .chat-background > * {
@@ -503,24 +505,24 @@ button:active:not(:disabled) {
   z-index: 1;
 }
 
-/* Light Theme Background with Majestic Lion Image */
+/* Light Theme Background - Clear Lion Image */
 .light-theme .chat-background {
   background-image: url('https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwzfHxsaW9ufGVufDB8fHx8MTc1MzI0ODUxOXww&ixlib=rb-4.1.0&q=85');
   background-color: #f8fafc;
 }
 
 .light-theme .chat-background::before {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1); /* Very light overlay for text readability */
 }
 
-/* Premium Glassy Header */
 /* Premium Glassy Header with Enhanced 3D Effects */
 .glassy-header {
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   position: relative;
-  z-index: 1000; /* Lower than dropdown panel */
+  z-index: 1000;
+  flex-shrink: 0;
   
   /* Double-edged borders - Outer ring */
   border: 2px solid rgba(59, 130, 246, 0.4);
@@ -646,6 +648,61 @@ button:active:not(:disabled) {
   }
 }
 
+/* Gmail Success Message Styling */
+.gmail-success-message {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.15));
+  border: 2px solid rgba(34, 197, 94, 0.4);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+  position: relative;
+  overflow: hidden;
+  
+  /* Gradient glow effect */
+  box-shadow: 
+    0 0 30px rgba(34, 197, 94, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  /* Animated border glow */
+  animation: success-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes success-glow {
+  0% {
+    box-shadow: 
+      0 0 30px rgba(34, 197, 94, 0.3),
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    box-shadow: 
+      0 0 40px rgba(34, 197, 94, 0.5),
+      0 12px 40px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+.gmail-success-text {
+  color: #10b981;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 
+    0 0 15px rgba(16, 185, 129, 0.8),
+    0 0 25px rgba(16, 185, 129, 0.6),
+    0 0 35px rgba(16, 185, 129, 0.4);
+  
+  /* Gradient text effect */
+  background: linear-gradient(135deg, #10b981, #059669, #047857);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Premium New Chat Button with Glassy Neon Effect */
 .premium-new-chat-btn {
   background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
@@ -699,499 +756,13 @@ button:active:not(:disabled) {
   animation: glow-pulse 2s ease-in-out infinite alternate;
 }
 
-/* Premium Gmail Connect Button with Flowing Gradient */
-.premium-gmail-btn {
-  background: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, rgba(249, 115, 22, 0.15) 50%, rgba(251, 146, 60, 0.15) 100%);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 2px solid rgba(249, 115, 22, 0.3);
-  box-shadow: 
-    0 0 30px rgba(249, 115, 22, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-    0 8px 32px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.premium-gmail-btn::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(249, 115, 22, 0.1),
-    rgba(251, 146, 60, 0.2),
-    rgba(249, 115, 22, 0.1),
-    transparent
-  );
-  animation: flowing-gradient 3s linear infinite;
-  pointer-events: none;
-}
-
-.premium-gmail-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 
-    0 0 40px rgba(249, 115, 22, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-    0 12px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(249, 115, 22, 0.5);
-}
-
-/* Gmail Connected State with Green Gradient */
-.premium-gmail-connected {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(5, 150, 105, 0.15) 100%);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 2px solid rgba(34, 197, 94, 0.3);
-  box-shadow: 
-    0 0 30px rgba(34, 197, 94, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-    0 8px 32px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.premium-gmail-connected::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(34, 197, 94, 0.1),
-    rgba(16, 185, 129, 0.2),
-    rgba(5, 150, 105, 0.1),
-    transparent
-  );
-  animation: flowing-gradient 4s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes flowing-gradient {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-/* Gmail Connected State with Beautiful Green Gradient */
-.premium-gmail-connected {
-  background: linear-gradient(135deg, #10b981, #059669, #047857);
-  border: 2px solid rgba(16, 185, 129, 0.5);
-  backdrop-filter: blur(20px);
-  box-shadow: 
-    0 8px 32px rgba(16, 185, 129, 0.3),
-    0 0 20px rgba(16, 185, 129, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.95);
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-  animation: greenGlow 3s ease-in-out infinite;
-}
-
-.premium-gmail-connected::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.premium-gmail-connected:hover::before {
-  left: 100%;
-}
-
-.premium-gmail-connected:hover {
-  background: linear-gradient(135deg, #059669, #047857, #065f46);
-  transform: scale(1.02);
-  box-shadow: 
-    0 12px 40px rgba(16, 185, 129, 0.4),
-    0 0 30px rgba(16, 185, 129, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  animation: none;
-}
-
-/* Green glow animation for connected Gmail button */
-@keyframes greenGlow {
-  0%, 100% {
-    box-shadow: 
-      0 8px 32px rgba(16, 185, 129, 0.3),
-      0 0 20px rgba(16, 185, 129, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  }
-  50% {
-    box-shadow: 
-      0 8px 32px rgba(16, 185, 129, 0.4),
-      0 0 30px rgba(16, 185, 129, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-}
-.gmail-success-message {
-  font-weight: 700;
-  text-shadow: 
-    0 0 10px rgba(16, 185, 129, 0.8),
-    0 0 20px rgba(16, 185, 129, 0.6),
-    0 0 30px rgba(16, 185, 129, 0.4);
-  border: 2px solid rgba(16, 185, 129, 0.6);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 95, 70, 0.1));
-  border-radius: 12px;
-  padding: 16px;
-  margin: 8px 0;
-}
-
-.gmail-success-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #10b981;
-  text-shadow: 
-    0 0 15px rgba(16, 185, 129, 0.9),
-    0 0 25px rgba(16, 185, 129, 0.7);
-  margin-bottom: 12px;
-  display: block;
-}
-
-.gmail-features-list {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0;
-}
-
-.gmail-features-list li {
-  padding: 8px 0;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
-  display: flex;
-  align-items: center;
-  border-left: 3px solid rgba(16, 185, 129, 0.6);
-  padding-left: 12px;
-  margin: 4px 0;
-  transition: all 0.3s ease;
-}
-
-.gmail-features-list li:hover {
-  border-left-color: #10b981;
-  text-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
-  transform: translateX(4px);
-}
-
-.gmail-example-text {
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  font-style: italic;
-  margin-top: 12px;
-  padding: 8px;
-  background: rgba(16, 185, 129, 0.1);
-  border-radius: 8px;
-  border-left: 3px solid #10b981;
-}
-.premium-gmail-error {
-  background: linear-gradient(135deg, #dc2626, #991b1b);
-  border: 2px solid rgba(239, 68, 68, 0.4);
-  backdrop-filter: blur(20px);
-  box-shadow: 
-    0 8px 32px rgba(220, 38, 38, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.premium-gmail-error:hover {
-  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
-}
-.email-display-card {
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 20px;
-  margin: 16px 0;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.email-display-card::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  background: linear-gradient(135deg, 
-    rgba(59, 130, 246, 0.2), 
-    rgba(139, 92, 246, 0.2), 
-    rgba(236, 72, 153, 0.2),
-    rgba(59, 130, 246, 0.2)
-  );
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.6;
-  animation: rainbow-border 6s linear infinite;
-}
-
-.email-display-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-}
-
-@keyframes rainbow-border {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.email-display-card::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.02),
-    transparent
-  );
-  animation: shimmer-email 3s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes shimmer-email {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
-}
-
-.email-header {
-  color: #e2e8f0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 4s ease infinite;
-}
-
-.email-item {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 0;
-  transition: all 0.3s ease;
-}
-
-.email-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateX(4px);
-}
-
-.email-field {
-  display: flex;
-  align-items: flex-start;
-  margin: 8px 0;
-  font-size: 0.9rem;
-}
-
-.email-field-icon {
-  min-width: 20px;
-  margin-right: 8px;
-  margin-top: 1px;
-}
-
-.email-field-label {
-  font-weight: 600;
-  color: #94a3b8;
-  min-width: 80px;
-  margin-right: 8px;
-}
-
-.email-field-content {
-  color: #e2e8f0;
-  flex: 1;
-  word-break: break-word;
-}
-
-.email-snippet {
-  font-style: italic;
-  color: #cbd5e1;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 8px 12px;
-  border-radius: 8px;
-  border-left: 3px solid rgba(59, 130, 246, 0.4);
-}
-
-.email-count-badge {
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-}
-
-/* Enhanced Gmail Card with Double-Edged Deep Borders */
-.premium-gmail-card {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 2px solid rgba(59, 130, 246, 0.3);
-  position: relative;
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    inset 0 2px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(139, 92, 246, 0.2);
-}
-
-.premium-gmail-card::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: linear-gradient(135deg, 
-    rgba(59, 130, 246, 0.3), 
-    rgba(139, 92, 246, 0.3), 
-    rgba(236, 72, 153, 0.3),
-    rgba(59, 130, 246, 0.3)
-  );
-  border-radius: inherit;
-  z-index: -2;
-  opacity: 0.8;
-  animation: premium-border-glow 8s linear infinite;
-}
-
-.premium-gmail-card::after {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1), 
-    transparent, 
-    rgba(255, 255, 255, 0.05)
-  );
-  border-radius: inherit;
-  z-index: -1;
-}
-
-@keyframes premium-border-glow {
-  0%, 100% {
-    background-position: 0% 50%;
-    opacity: 0.8;
-  }
-  25% {
-    background-position: 100% 50%;
-    opacity: 1;
-  }
-  50% {
-    background-position: 100% 100%;
-    opacity: 0.9;
-  }
-  75% {
-    background-position: 0% 100%;
-    opacity: 1;
-  }
-}
-
-.email-count-badge-enhanced {
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-  color: white;
-  padding: 6px 16px;
-  border-radius: 24px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  box-shadow: 
-    0 6px 20px rgba(59, 130, 246, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: inline-block;
-  animation: count-badge-pulse 2s ease-in-out infinite alternate;
-}
-
-@keyframes count-badge-pulse {
-  0% {
-    box-shadow: 
-      0 6px 20px rgba(59, 130, 246, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-  100% {
-    box-shadow: 
-      0 8px 25px rgba(59, 130, 246, 0.7),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-}
-
-.no-emails-header {
-  background: linear-gradient(135deg, #10b981, #3b82f6, #8b5cf6);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: success-gradient-shift 3s ease infinite;
-}
-
-@keyframes success-gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Enhanced Chat Container */
+/* Enhanced Chat Container - Proper Flex Layout */
 .premium-chat-container {
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Critical for flex container */
+  background: transparent;
 }
 
 /* Circular Icon Buttons - Premium 3D Design */
@@ -1411,51 +982,13 @@ button:active:not(:disabled) {
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive adjustments for panel */
-@media (max-width: 768px) {
-  .drop-down-panel {
-    left: 50%;
-    transform: translateX(-50%) scale(0.9);
-  }
-  
-  .panel-btn {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .btn-icon {
-    width: 18px;
-    height: 18px;
-  }
-  
-  .btn-icon-text {
-    font-size: 14px;
-  }
-}
-
-/* Accessibility improvements */
-.panel-btn:focus {
-  outline: 2px solid rgba(59, 130, 246, 0.5);
-  outline-offset: 2px;
-}
-
-.panel-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.panel-btn:disabled:hover {
-  transform: none;
-  box-shadow: initial;
-}
-
 /* Drop-Down Panel Styles - Optimized for Smooth Transitions */
 .drop-down-panel {
   position: absolute;
-  top: 60px; /* Position below the plus button */
+  top: 60px;
   left: 50%;
-  transform: translateX(-50%); /* Center relative to button */
-  z-index: 9999; /* Ensure it appears above all other elements */
+  transform: translateX(-50%);
+  z-index: 9999;
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1468,15 +1001,12 @@ button:active:not(:disabled) {
   padding: 16px 12px;
   overflow: hidden;
   min-width: 80px;
-  /* Prevent layout shift - Critical for smooth animations */
   will-change: transform, opacity;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  /* Ensure hardware acceleration */
   transform: translateX(-50%) translateZ(0);
 }
 
-/* Simple double-edged border effect without glow */
 .drop-down-panel::before {
   content: '';
   position: absolute;
@@ -1509,12 +1039,10 @@ button:active:not(:disabled) {
   border: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Glassy background */
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   
-  /* Simple 3D effect without glow */
   box-shadow: 
     0 6px 25px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
@@ -1522,7 +1050,6 @@ button:active:not(:disabled) {
     0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Simple inner ring effect */
 .panel-btn::before {
   content: '';
   position: absolute;
@@ -1536,7 +1063,6 @@ button:active:not(:disabled) {
   z-index: 1;
 }
 
-/* Hover effects for panel buttons */
 .panel-btn:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 
@@ -1554,7 +1080,6 @@ button:active:not(:disabled) {
     inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Icon styling inside panel buttons */
 .btn-icon {
   width: 20px;
   height: 20px;
@@ -1574,13 +1099,11 @@ button:active:not(:disabled) {
   transform: scale(1.1);
 }
 
-
 /* Light theme support - Comprehensive Implementation */
 .light-theme {
   color: #1f2937;
 }
 
-/* Light Theme - Header */
 .light-theme .glassy-header {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(25px);
@@ -1607,7 +1130,6 @@ button:active:not(:disabled) {
   );
 }
 
-/* Light Theme - Title */
 .light-theme .smooth-glow-title {
   background: linear-gradient(135deg, #1f2937 0%, #4f46e5 50%, #06b6d4 100%);
   background-clip: text;
@@ -1622,13 +1144,10 @@ button:active:not(:disabled) {
     drop-shadow(0 0 20px rgba(79, 70, 229, 0.15));
 }
 
-/* Light Theme - Chat Container */
 .light-theme .premium-chat-container {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
+  background: transparent;
 }
 
-/* Light Theme - Message Bubbles */
 .light-theme .message-bubble {
   color: #1f2937;
 }
@@ -1637,7 +1156,6 @@ button:active:not(:disabled) {
   background: linear-gradient(45deg, rgba(79, 70, 229, 0.05), rgba(139, 92, 246, 0.05));
 }
 
-/* Light Theme - Drop Panel */
 .light-theme .drop-down-panel {
   background: rgba(255, 255, 255, 0.35);
   border-color: rgba(0, 0, 0, 0.08);
@@ -1674,90 +1192,6 @@ button:active:not(:disabled) {
     0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
-/* Light Theme - Input Area */
-.light-theme .glassy-input-area {
-  background: rgba(255, 255, 255, 0.35);
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
-    0 0 30px rgba(0, 0, 0, 0.02),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.02);
-}
-
-.light-theme .glassy-input-area::before {
-  background: linear-gradient(135deg, 
-    rgba(0, 0, 0, 0.1) 0%, 
-    rgba(0, 0, 0, 0.02) 50%, 
-    rgba(0, 0, 0, 0.05) 100%);
-}
-
-.light-theme .glassy-input-area::after {
-  background: 
-    radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(79, 70, 229, 0.03) 0%, transparent 50%);
-}
-
-.light-theme .clean-input {
-  color: #1f2937 !important;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .clean-input::placeholder {
-  color: rgba(31, 41, 55, 0.45);
-}
-
-.light-theme .clean-input:focus::placeholder {
-  color: rgba(31, 41, 55, 0.25);
-}
-
-/* Light Theme - Buttons */
-.light-theme .premium-new-chat-btn {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-  border-color: rgba(79, 70, 229, 0.2);
-  box-shadow: 
-    0 0 30px rgba(79, 70, 229, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
-    0 8px 32px rgba(0, 0, 0, 0.1);
-  color: #1f2937;
-}
-
-.light-theme .premium-new-chat-btn:hover {
-  box-shadow: 
-    0 0 40px rgba(79, 70, 229, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-    0 12px 40px rgba(0, 0, 0, 0.15);
-  border-color: rgba(79, 70, 229, 0.3);
-}
-
-.light-theme .premium-plus-icon {
-  filter: 
-    drop-shadow(0 0 15px rgba(79, 70, 229, 0.4))
-    drop-shadow(0 0 30px rgba(59, 130, 246, 0.3))
-    drop-shadow(0 0 45px rgba(79, 70, 229, 0.2));
-}
-
-/* Light Theme - Text Colors */
-.light-theme .text-white {
-  color: #1f2937 !important;
-}
-
-.light-theme .text-gray-300 {
-  color: #4b5563 !important;
-}
-
-.light-theme .text-gray-400 {
-  color: #6b7280 !important;
-}
-
-.light-theme .text-gray-500 {
-  color: #9ca3af !important;
-}
-
-/* Light Theme - Circular Icon Buttons */
 .light-theme .circular-icon-btn {
   background: rgba(255, 255, 255, 0.4);
   border-color: rgba(0, 0, 0, 0.15);
@@ -1792,40 +1226,54 @@ button:active:not(:disabled) {
     0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Error State */
-.circular-icon-btn.gmail-error {
-  border-color: rgba(239, 68, 68, 0.5);
-  cursor: not-allowed;
-  opacity: 0.7;
+.light-theme .clean-input {
+  color: #1f2937 !important;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Glassy Input Area with Double-Deeped Frosted Glass Effect */
+.light-theme .clean-input::placeholder {
+  color: rgba(31, 41, 55, 0.45);
+}
+
+.light-theme .clean-input:focus::placeholder {
+  color: rgba(31, 41, 55, 0.25);
+}
+
+.light-theme .text-white {
+  color: #1f2937 !important;
+}
+
+.light-theme .text-gray-300 {
+  color: #4b5563 !important;
+}
+
+.light-theme .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+.light-theme .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+/* Glassy Input Area - Anchored at Bottom */
 .glassy-input-area {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   
-  /* Double-deeped border effect */
   border: 2px solid rgba(255, 255, 255, 0.15);
   position: relative;
   
-  /* Enhanced shadow for depth */
   box-shadow: 
-    /* Outer deep shadow */
     0 12px 40px rgba(0, 0, 0, 0.6),
-    /* Inner glow */
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-    /* Ambient glow */
     0 0 30px rgba(59, 130, 246, 0.1),
-    /* Inner border shadow for double-depth effect */
     inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   
-  /* Frosted glass texture */
   overflow: hidden;
 }
 
-/* Double-deeped border pseudo-element */
 .glassy-input-area::before {
   content: '';
   position: absolute;
@@ -1842,7 +1290,6 @@ button:active:not(:disabled) {
   opacity: 0.8;
 }
 
-/* Inner frosted layer for additional depth */
 .glassy-input-area::after {
   content: '';
   position: absolute;
@@ -1858,7 +1305,6 @@ button:active:not(:disabled) {
   pointer-events: none;
 }
 
-/* Hover effect for enhanced interactivity */
 .glassy-input-area:hover {
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 
@@ -1869,7 +1315,6 @@ button:active:not(:disabled) {
     inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-/* Focus state for the container */
 .glassy-input-area:focus-within {
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 
@@ -1878,6 +1323,30 @@ button:active:not(:disabled) {
     inset 0 -1px 0 rgba(0, 0, 0, 0.3),
     0 0 50px rgba(59, 130, 246, 0.2),
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.light-theme .glassy-input-area {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    0 0 30px rgba(0, 0, 0, 0.02),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.light-theme .glassy-input-area::before {
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.1) 0%, 
+    rgba(0, 0, 0, 0.02) 50%, 
+    rgba(0, 0, 0, 0.05) 100%);
+}
+
+.light-theme .glassy-input-area::after {
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(79, 70, 229, 0.03) 0%, transparent 50%);
 }
 
 /* Clean Input Field - Modern Frosted Glass Style with NO Focus Ring */
@@ -1893,7 +1362,6 @@ button:active:not(:disabled) {
   position: relative;
   z-index: 2;
   
-  /* Ensure no focus ring appears */
   box-shadow: none !important;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1918,7 +1386,6 @@ button:active:not(:disabled) {
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
-/* Remove any browser-default focus styles */
 .clean-input:focus-visible {
   outline: none !important;
   box-shadow: none !important;
