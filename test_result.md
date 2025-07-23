@@ -314,8 +314,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Gmail API OAuth2 Integration"
-    - "Cleanup Verification - Cookie-Based Code Removal"
     - "System Health & Integration Verification"
   stuck_tasks: []
   test_all: false
