@@ -759,7 +759,7 @@ function ChatBox({ sessionId, gmailAuthStatus, setGmailAuthStatus, messages, set
       </div>
 
       {/* Message Input - Fixed at Bottom */}
-      <div className="flex-shrink-0 p-4">
+      <div className="chat-input-container p-4">
         <div className="max-w-4xl mx-auto">
           <div className="glassy-input-area rounded-xl p-4 flex items-center space-x-3">
             {/* Show automation status if available */}
