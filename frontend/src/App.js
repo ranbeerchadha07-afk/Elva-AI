@@ -27,7 +27,10 @@ function App() {
     error: null,
     debugInfo: null 
   }); // Gmail authentication status
+  const [showDropPanel, setShowDropPanel] = useState(false); // Drop-left panel state
+  const [isDarkTheme, setIsDarkTheme] = useState(true); // Theme toggle state
   const messagesEndRef = useRef(null);
+  const dropPanelRef = useRef(null); // Reference for drop panel
 
   function generateSessionId() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
