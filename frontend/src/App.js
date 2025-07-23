@@ -1011,66 +1011,30 @@ function App() {
                 </motion.div>
               </button>
 
-              {/* Drop-Left Panel */}
+              {/* Drop-Down Panel */}
               <AnimatePresence>
                 {showDropPanel && (
                   <motion.div
-                    initial={{ opacity: 0, x: 50, scale: 0.8 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    exit={{ opacity: 0, x: 50, scale: 0.8 }}
+                    initial={{ opacity: 0, y: -20, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.8 }}
                     transition={{ 
                       type: "spring", 
                       stiffness: 300, 
                       damping: 25,
                       duration: 0.4 
                     }}
-                    className="drop-left-panel"
+                    className="drop-down-panel"
                   >
                     <div className="drop-panel-content">
-                      {/* Gmail Button */}
-                      <motion.button
-                        onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                        className={`panel-btn gmail-panel-btn ${
-                          gmailAuthStatus.authenticated 
-                            ? 'gmail-connected' 
-                            : gmailAuthStatus.credentialsConfigured 
-                              ? 'gmail-ready'
-                              : 'gmail-error'
-                        }`}
-                        title={
-                          gmailAuthStatus.authenticated 
-                            ? "Gmail Connected ✅" 
-                            : gmailAuthStatus.credentialsConfigured 
-                              ? "Connect Gmail" 
-                              : "Gmail credentials missing ❌"
-                        }
-                        disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {gmailAuthStatus.authenticated ? (
-                          <div className="panel-btn-content">
-                            <img src="/gmail-icon.svg" alt="Gmail" className="btn-icon" />
-                            <div className="connected-indicator-small">✓</div>
-                          </div>
-                        ) : gmailAuthStatus.credentialsConfigured ? (
-                          <img src="/gmail-icon.svg" alt="Gmail" className="btn-icon" />
-                        ) : (
-                          <div className="error-icon-small">⚠️</div>
-                        )}
-                      </motion.button>
-
                       {/* Theme Toggle Button */}
                       <motion.button
                         onClick={toggleTheme}
                         className="panel-btn theme-panel-btn"
                         title="Toggle Theme"
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
+                        transition={{ delay: 0.1 }}
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -1088,9 +1052,9 @@ function App() {
                         onClick={exportChat}
                         className="panel-btn export-panel-btn"
                         title="Export Chat"
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
+                        transition={{ delay: 0.2 }}
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -1102,9 +1066,9 @@ function App() {
                         onClick={startNewChat}
                         className="panel-btn new-chat-panel-btn"
                         title="Start New Chat"
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
+                        transition={{ delay: 0.3 }}
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
