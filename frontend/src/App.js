@@ -961,39 +961,6 @@ function App() {
           </div>
           
           <div className="flex items-center space-x-4">
-            {/* Gmail Authentication Circular Button */}
-            {!gmailAuthStatus.loading && (
-              <button
-                onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                className={`circular-icon-btn ${
-                  gmailAuthStatus.authenticated 
-                    ? 'gmail-connected' 
-                    : gmailAuthStatus.credentialsConfigured 
-                      ? 'gmail-ready'
-                      : 'gmail-error'
-                }`}
-                title={
-                  gmailAuthStatus.authenticated 
-                    ? "Gmail Connected ✅" 
-                    : gmailAuthStatus.credentialsConfigured 
-                      ? "Connect Gmail" 
-                      : "Gmail credentials missing ❌"
-                }
-                disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
-              >
-                {gmailAuthStatus.authenticated ? (
-                  <div className="connected-indicator">
-                    <img src="/gmail-icon.svg" alt="Gmail" className="gmail-icon" />
-                    <div className="connected-check">✓</div>
-                  </div>
-                ) : gmailAuthStatus.credentialsConfigured ? (
-                  <img src="/gmail-icon.svg" alt="Gmail" className="gmail-icon" />
-                ) : (
-                  <div className="error-icon">⚠️</div>
-                )}
-              </button>
-            )}
-            
             {/* Drop-Left Panel with 3D Buttons */}
             <div className="relative" ref={dropPanelRef}>
               {/* Plus Button Trigger */}
