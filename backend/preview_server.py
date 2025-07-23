@@ -206,6 +206,25 @@ async def initiate_gmail_auth(session_id: str = None):
         "auth_url": None
     }
 
+@api_router.get("/gmail/profile")
+async def get_gmail_profile(session_id: str = None):
+    """Mock Gmail profile for preview"""
+    return {
+        "success": True,
+        "profile": {
+            "email": "demo@example.com",
+            "name": "Demo User",
+            "given_name": "Demo",
+            "family_name": "User",
+            "picture": "https://via.placeholder.com/150/4F46E5/FFFFFF?text=DU",
+            "verified_email": True,
+            "gmail_address": "demo@example.com",
+            "messages_total": 1250,
+            "threads_total": 892,
+            "history_id": "123456789"
+        }
+    }
+
 @api_router.get("/health")
 async def health_check():
     """Health check endpoint"""
@@ -235,4 +254,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("preview_server:app", host="0.0.0.0", port=8000, reload=True)

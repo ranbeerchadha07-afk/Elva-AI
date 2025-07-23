@@ -5,6 +5,7 @@ import TypewriterTagline from './TypewriterTagline';
 import ChatBox from './ChatBox';
 import DropdownMenu from './DropdownMenu';
 import GmailAuthHandler from './GmailAuthHandler';
+import TestGmailFlow from './TestGmailFlow';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -24,6 +25,7 @@ function App() {
     error: null,
     debugInfo: null 
   }); // Gmail authentication status
+  const [userProfile, setUserProfile] = useState(null); // User profile data
   const [showDropPanel, setShowDropPanel] = useState(false); // Drop-left panel state
 
   function generateSessionId() {
@@ -133,7 +135,9 @@ function App() {
     gmailAuthStatus, 
     setGmailAuthStatus, 
     sessionId, 
-    setMessages 
+    setMessages,
+    userProfile,
+    setUserProfile
   });
 
   return (
@@ -213,16 +217,27 @@ function App() {
         </div>
       </header>
 
-      {/* Chat Container - Proper Flex Layout */}
-      <main className="premium-chat-container">
-        <ChatBox
-          sessionId={sessionId}
-          gmailAuthStatus={gmailAuthStatus}
-          setGmailAuthStatus={setGmailAuthStatus}
-          messages={messages}
-          setMessages={setMessages}
-        />
-      </main>
+              {/* Test Controls */}
+        <div className="bg-gray-900/50 border-b border-gray-600/30">
+          <TestGmailFlow 
+            sessionId={sessionId}
+            setMessages={setMessages}
+            setUserProfile={setUserProfile}
+          />
+        </div>
+
+        {/* Chat Container - Proper Flex Layout */}
+        <main className="premium-chat-container">
+                   <ChatBox 
+             sessionId={sessionId} 
+             gmailAuthStatus={gmailAuthStatus}
+             setGmailAuthStatus={setGmailAuthStatus}
+             messages={messages}
+             setMessages={setMessages}
+             userProfile={userProfile}
+             setUserProfile={setUserProfile}
+           />
+        </main>
     </div>
   );
 }

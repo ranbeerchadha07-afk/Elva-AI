@@ -4,7 +4,7 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-function GmailAuthHandler({ gmailAuthStatus, setGmailAuthStatus, sessionId, setMessages }) {
+function GmailAuthHandler({ gmailAuthStatus, setGmailAuthStatus, sessionId, setMessages, userProfile, setUserProfile }) {
   
   // Check Gmail authentication status
   const checkGmailAuthStatus = async () => {
@@ -99,7 +99,35 @@ function GmailAuthHandler({ gmailAuthStatus, setGmailAuthStatus, sessionId, setM
       // Update auth status
       await checkGmailAuthStatus(); // Re-check the actual status
       
-      // Add success message to chat with enhanced styling
+      // Fetch user profile after successful authentication
+      const profileResponse = await axios.get(`${API}/gmail/profile?session_id=${sessionId}`);
+      
+      // Set user profile in app state
+      if (profileResponse.data.success && setUserProfile) {
+        setUserProfile(profileResponse.data.profile);
+      }
+      
+      // Add success message to chat with enhanced styling and profile data
+      const successMessage = {
+        id: 'gmail_auth_success_' + Date.now(),
+        session_id: sessionId,
+        user_id: 'system',
+        message: 'Gmail connected successfully ✅',
+        response: '', // Will be handled by special rendering
+        timestamp: new Date().toISOString(),
+        intent_data: null,
+        needs_approval: false,
+        isGmailSuccess: true, // Special flag for custom rendering
+        userProfile: profileResponse.data.success ? profileResponse.data.profile : null
+      };
+      
+      setMessages(prev => [...prev, successMessage]);
+      
+      console.log('Gmail authentication successful - status updated!');
+    } catch (error) {
+      console.error('Error handling Gmail auth success:', error);
+      
+      // Still show success message even if profile fetch fails
       const successMessage = {
         id: 'gmail_auth_success_' + Date.now(),
         session_id: sessionId,
@@ -113,10 +141,6 @@ function GmailAuthHandler({ gmailAuthStatus, setGmailAuthStatus, sessionId, setM
       };
       
       setMessages(prev => [...prev, successMessage]);
-      
-      console.log('Gmail authentication successful - status updated!');
-    } catch (error) {
-      console.error('Error handling Gmail auth success:', error);
     }
   };
 

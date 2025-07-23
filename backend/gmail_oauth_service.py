@@ -36,7 +36,9 @@ class GmailOAuthService:
             'https://www.googleapis.com/auth/gmail.readonly',
             'https://www.googleapis.com/auth/gmail.send',
             'https://www.googleapis.com/auth/gmail.compose',
-            'https://www.googleapis.com/auth/gmail.modify'
+            'https://www.googleapis.com/auth/gmail.modify',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
         ]
         
         # Load credentials configuration
@@ -489,6 +491,67 @@ class GmailOAuthService:
                 'authenticated': False,
                 'session_id': session_id,
                 'requires_auth': True,
+                'error': str(e)
+            }
+    
+    async def get_user_profile(self, session_id: str) -> Dict[str, Any]:
+        """Fetch user profile information from Google"""
+        try:
+            credentials = await self._load_token(session_id)
+            if not credentials:
+                return {
+                    'success': False,
+                    'error': 'No authentication found. Please connect Gmail first.'
+                }
+            
+            # Build OAuth2 service for user info
+            oauth2_service = build('oauth2', 'v2', credentials=credentials)
+            
+            # Fetch user info
+            user_info = oauth2_service.userinfo().get().execute()
+            
+            # Fetch Gmail profile as well
+            gmail_service = build('gmail', 'v1', credentials=credentials)
+            gmail_profile = gmail_service.users().getProfile(userId='me').execute()
+            
+            profile_data = {
+                'success': True,
+                'profile': {
+                    'email': user_info.get('email'),
+                    'name': user_info.get('name'),
+                    'given_name': user_info.get('given_name'),
+                    'family_name': user_info.get('family_name'),
+                    'picture': user_info.get('picture'),
+                    'verified_email': user_info.get('verified_email'),
+                    'gmail_address': gmail_profile.get('emailAddress'),
+                    'messages_total': gmail_profile.get('messagesTotal', 0),
+                    'threads_total': gmail_profile.get('threadsTotal', 0),
+                    'history_id': gmail_profile.get('historyId')
+                }
+            }
+            
+            # Save profile to database
+            if self.db:
+                await self.db.user_profiles.update_one(
+                    {'session_id': session_id},
+                    {
+                        '$set': {
+                            'session_id': session_id,
+                            'profile_data': profile_data['profile'],
+                            'updated_at': datetime.utcnow().isoformat(),
+                            'service': 'gmail'
+                        }
+                    },
+                    upsert=True
+                )
+            
+            logger.info(f"✅ User profile fetched successfully for session: {session_id}")
+            return profile_data
+            
+        except Exception as e:
+            logger.error(f"❌ Error fetching user profile: {e}")
+            return {
+                'success': False,
                 'error': str(e)
             }
 
