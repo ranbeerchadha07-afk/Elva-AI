@@ -130,6 +130,11 @@ input:focus, textarea:focus, button:focus {
   color: rgba(255, 255, 255, 0.95);
 }
 
+/* Light theme chat input - black text */
+.light-theme .clean-input:focus {
+  color: rgba(0, 0, 0, 0.95) !important;
+}
+
 /* Button hover effects */
 button {
   transform: scale(1);
@@ -471,7 +476,7 @@ button:active:not(:disabled) {
 
 /* Premium Elva AI Styles */
 
-/* Chat Background with Panther Image */
+/* Chat Background with Enhanced Theme Support */
 .chat-background {
   background-image: url('https://images.unsplash.com/photo-1517825738774-7de9363ef735?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHxibGFjayUyMHBhbnRoZXJ8ZW58MHx8fGJsYWNrfDE3NTMwNjUzMjN8MA&ixlib=rb-4.1.0&q=85');
   background-size: cover;
@@ -498,14 +503,14 @@ button:active:not(:disabled) {
   z-index: 1;
 }
 
-/* Light Theme Background with Lion Image */
+/* Light Theme Background with Majestic Lion Image */
 .light-theme .chat-background {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJsaW9uLWJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjdmOGZhIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNlMWU1ZTkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkMWQ1ZGIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0idXJsKCNsaW9uLWJnKSIvPjx0ZXh0IHg9IjI1MCIgeT0iMjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZm9udC1zaXplPSIxMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZmlsbD0iIzZiNzI4MCIgZmlsbC1vcGFjaXR5PSIwLjEiPjw/4paEPC90ZXh0Pjwvc3ZnPg==');
+  background-image: url('https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwzfHxsaW9ufGVufDB8fHx8MTc1MzI0ODUxOXww&ixlib=rb-4.1.0&q=85');
   background-color: #f8fafc;
 }
 
 .light-theme .chat-background::before {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Premium Glassy Header */
@@ -1339,10 +1344,12 @@ button:active:not(:disabled) {
 
 /* Gmail Icon Styling */
 .gmail-icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   transition: all 0.3s ease;
+  object-fit: cover;
 }
 
 .circular-icon-btn:hover .gmail-icon {
@@ -1442,7 +1449,7 @@ button:active:not(:disabled) {
   box-shadow: initial;
 }
 
-/* Drop-Down Panel Styles */
+/* Drop-Down Panel Styles - Optimized for Smooth Transitions */
 .drop-down-panel {
   position: absolute;
   top: 60px; /* Position below the plus button */
@@ -1461,9 +1468,12 @@ button:active:not(:disabled) {
   padding: 16px 12px;
   overflow: hidden;
   min-width: 80px;
-  /* Prevent layout shift */
+  /* Prevent layout shift - Critical for smooth animations */
   will-change: transform, opacity;
   backface-visibility: hidden;
+  transform-style: preserve-3d;
+  /* Ensure hardware acceleration */
+  transform: translateX(-50%) translateZ(0);
 }
 
 /* Simple double-edged border effect without glow */
@@ -1690,7 +1700,7 @@ button:active:not(:disabled) {
 }
 
 .light-theme .clean-input {
-  color: #1f2937;
+  color: #1f2937 !important;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -1745,6 +1755,41 @@ button:active:not(:disabled) {
 
 .light-theme .text-gray-500 {
   color: #9ca3af !important;
+}
+
+/* Light Theme - Circular Icon Buttons */
+.light-theme .circular-icon-btn {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.02),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .circular-icon-btn::before {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .circular-icon-btn::after {
+  background: linear-gradient(135deg, 
+    rgba(79, 70, 229, 0.15), 
+    rgba(139, 92, 246, 0.15), 
+    rgba(236, 72, 153, 0.15),
+    rgba(79, 70, 229, 0.15)
+  );
+}
+
+.light-theme .circular-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 /* Error State */

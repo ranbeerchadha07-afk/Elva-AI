@@ -7,9 +7,7 @@ function DropdownMenu({
   toggleTheme, 
   isDarkTheme, 
   exportChat, 
-  startNewChat, 
-  gmailAuthStatus, 
-  initiateGmailAuth 
+  startNewChat
 }) {
   const dropPanelRef = useRef(null);
 
@@ -46,7 +44,10 @@ function DropdownMenu({
         <motion.div 
           className="plus-icon"
           animate={{ rotate: showDropPanel ? 45 : 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ 
+            duration: 0.3,
+            ease: "easeInOut"
+          }}
         >
           +
         </motion.div>
@@ -63,40 +64,15 @@ function DropdownMenu({
               type: "spring", 
               stiffness: 300, 
               damping: 25,
-              duration: 0.4 
+              duration: 0.4
             }}
             className="drop-down-panel"
+            style={{
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden'
+            }}
           >
             <div className="drop-panel-content">
-              {/* Gmail Button */}
-              <motion.button
-                onClick={gmailAuthStatus.authenticated ? null : initiateGmailAuth}
-                className={`panel-btn gmail-panel-btn ${
-                  gmailAuthStatus.authenticated 
-                    ? 'gmail-connected' 
-                    : gmailAuthStatus.credentialsConfigured 
-                      ? 'gmail-ready' 
-                      : 'gmail-error'
-                }`}
-                title={
-                  gmailAuthStatus.authenticated 
-                    ? "Gmail Connected ✅" 
-                    : gmailAuthStatus.credentialsConfigured 
-                      ? "Connect Gmail" 
-                      : "Gmail credentials missing ❌"
-                }
-                disabled={gmailAuthStatus.authenticated || !gmailAuthStatus.credentialsConfigured}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className="btn-icon-text">
-                  {gmailAuthStatus.authenticated ? '✅' : '📧'}
-                </div>
-              </motion.button>
-
               {/* Theme Toggle Button */}
               <motion.button
                 onClick={toggleTheme}
@@ -104,7 +80,7 @@ function DropdownMenu({
                 title="Toggle Theme"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.1 }}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -124,7 +100,7 @@ function DropdownMenu({
                 title="Export Chat"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.2 }}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -138,7 +114,7 @@ function DropdownMenu({
                 title="Start New Chat"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.3 }}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
