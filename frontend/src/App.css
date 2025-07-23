@@ -1542,37 +1542,6 @@ button:active:not(:disabled) {
   transform: scale(1.1);
 }
 
-/* Connected indicator for Gmail in panel */
-.panel-btn-content {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.connected-indicator-small {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 14px;
-  height: 14px;
-  background: rgba(16, 185, 129, 0.9);
-  border-radius: 50%;
-  color: white;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
-}
-
-.error-icon-small {
-  font-size: 16px;
-  color: #fbbf24;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
 
 /* Light theme support (future enhancement) */
 .light-theme .drop-down-panel {
