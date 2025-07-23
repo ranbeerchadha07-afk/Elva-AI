@@ -484,6 +484,7 @@ button:active:not(:disabled) {
   background-attachment: fixed;
   position: relative;
   min-height: 100vh;
+  height: 100vh; /* Ensure full viewport height */
   display: flex;
   flex-direction: column;
 }
