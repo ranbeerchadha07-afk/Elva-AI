@@ -208,7 +208,11 @@ async def initiate_gmail_auth(session_id: str = None):
     try:
         from gmail_oauth_service import GmailOAuthService
         gmail_service = GmailOAuthService()
-        auth_url = await gmail_service.get_auth_url(session_id)
+        auth_response = gmail_service.get_auth_url()
+        if auth_response.get('success', False):
+            auth_url = auth_response.get('auth_url')
+        else:
+            raise Exception(auth_response.get('message', 'Unknown error'))
         return {
             "success": True,
             "auth_url": auth_url,
@@ -221,24 +225,44 @@ async def initiate_gmail_auth(session_id: str = None):
             "auth_url": None
         }
 
+@api_router.get("/gmail/callback")
+async def gmail_callback(code: str = None, state: str = None, error: str = None):
+    """Handle Gmail OAuth callback"""
+    try:
+        if error:
+            return RedirectResponse(url=f"https://radar-concerns-control-affect.trycloudflare.com?auth=error&service=gmail&message={error}")
+        
+        if not code:
+            return RedirectResponse(url=f"https://radar-concerns-control-affect.trycloudflare.com?auth=error&service=gmail&message=no_code")
+        
+        # Extract session_id from state if available
+        session_id = state.split('_')[0] if state and '_' in state else 'default'
+        
+        from gmail_oauth_service import GmailOAuthService
+        gmail_service = GmailOAuthService()
+        result = await gmail_service.handle_oauth_callback(code, session_id)
+        
+        if result.get('success'):
+            return RedirectResponse(url=f"https://radar-concerns-control-affect.trycloudflare.com?auth=success&service=gmail&session_id={session_id}")
+        else:
+            return RedirectResponse(url=f"https://radar-concerns-control-affect.trycloudflare.com?auth=error&service=gmail&message=auth_failed&details={result.get('message', '')}")
+            
+    except Exception as e:
+        return RedirectResponse(url=f"https://radar-concerns-control-affect.trycloudflare.com?auth=error&service=gmail&message=server_error&details={str(e)}")
+
 @api_router.get("/gmail/profile")
 async def get_gmail_profile(session_id: str = None):
-    """Mock Gmail profile for preview"""
-    return {
-        "success": True,
-        "profile": {
-            "email": "demo@example.com",
-            "name": "Demo User",
-            "given_name": "Demo",
-            "family_name": "User",
-            "picture": "https://via.placeholder.com/150/4F46E5/FFFFFF?text=DU",
-            "verified_email": True,
-            "gmail_address": "demo@example.com",
-            "messages_total": 1250,
-            "threads_total": 892,
-            "history_id": "123456789"
+    """Get real Gmail profile for authenticated user"""
+    try:
+        from gmail_oauth_service import GmailOAuthService
+        gmail_service = GmailOAuthService()
+        profile_result = await gmail_service.get_user_profile(session_id)
+        return profile_result
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
         }
-    }
 
 @api_router.get("/health")
 async def health_check():
