@@ -1389,9 +1389,9 @@ button:active:not(:disabled) {
 
 /* Responsive adjustments for panel */
 @media (max-width: 768px) {
-  .drop-left-panel {
-    right: 50px;
-    transform: scale(0.9);
+  .drop-down-panel {
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
   }
   
   .panel-btn {
